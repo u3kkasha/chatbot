@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from "@nuxt/ui";
 
-const { loggedIn, openInPopup } = useUserSession();
 const { renameChat, deleteChat } = useChatActions();
 
 const sidebarOpen = ref(false);
 const searchOpen = ref(false);
 
-const { data: chats, refresh: refreshChats } = await useFetch("/api/chats", {
+const { data: chats } = await useFetch("/api/chats", {
   key: "chats",
   transform: (data) =>
     data.map((chat) => ({
@@ -25,12 +24,6 @@ onNuxtReady(async () => {
     // prefetch the chat and let the browser cache it
     await $fetch(`/api/chats/${chat.id}`);
   }
-});
-
-watch(loggedIn, () => {
-  refreshChats();
-
-  sidebarOpen.value = false;
 });
 
 const { groups } = useChats(chats);
@@ -174,16 +167,7 @@ defineShortcuts({
       </template>
 
       <template #footer="{ collapsed }">
-        <UserMenu v-if="loggedIn" :collapsed="collapsed" />
-        <UButton
-          v-else
-          :label="collapsed ? '' : 'Login with GitHub'"
-          icon="i-simple-icons-github"
-          color="neutral"
-          variant="ghost"
-          class="w-full"
-          @click="openInPopup('/auth/github')"
-        />
+        <UserMenu :collapsed="collapsed" />
       </template>
     </UDashboardSidebar>
 
