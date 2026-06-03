@@ -16,17 +16,6 @@ const greeting = computed(() => {
   return name ? `${timeGreeting}, ${name}` : `${timeGreeting}`;
 });
 
-const {
-  dropzoneRef,
-  dragging,
-  open,
-  files,
-  uploading,
-  uploadedFiles,
-  removeFile,
-  clearFiles,
-} = useFileUploadWithStatus(chatId);
-
 const { csrf, headerName } = useCsrf();
 
 async function createChat(prompt: string) {
@@ -39,10 +28,6 @@ async function createChat(prompt: string) {
     mediaType?: string;
     url?: string;
   }> = [{ type: "text", text: prompt }];
-
-  if (uploadedFiles.value.length > 0) {
-    parts.push(...uploadedFiles.value);
-  }
 
   const chat = await $fetch("/api/chats", {
     method: "POST",
@@ -62,7 +47,6 @@ async function createChat(prompt: string) {
 
 async function onSubmit() {
   await createChat(input.value);
-  clearFiles();
 }
 
 const quickChats = [
@@ -96,9 +80,7 @@ const quickChats = [
     </template>
 
     <template #body>
-      <div ref="dropzoneRef" class="flex flex-1">
-        <DragDropOverlay :show="dragging" />
-
+      <div class="flex flex-1">
         <UContainer
           class="flex-1 flex flex-col justify-center gap-4 sm:gap-6 py-8"
         >
@@ -109,27 +91,19 @@ const quickChats = [
           <UChatPrompt
             v-model="input"
             :status="loading ? 'streaming' : 'ready'"
-            :disabled="uploading"
             class="[view-transition-name:chat-prompt]"
             variant="subtle"
             :ui="{ base: 'px-1.5' }"
             @submit="onSubmit"
           >
-            <template v-if="files.length > 0" #header>
-              <ChatFiles :files="files" @remove="removeFile" />
-            </template>
-
             <template #footer>
               <div class="flex items-center gap-1">
-                <ChatFileUploadButton :open="open" />
-
                 <ModelSelect />
               </div>
 
               <UChatPromptSubmit
                 color="neutral"
                 size="sm"
-                :disabled="uploading"
               />
             </template>
           </UChatPrompt>

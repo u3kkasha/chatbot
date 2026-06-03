@@ -3,7 +3,9 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@comark/nuxt'
+    '@comark/nuxt',
+    'nuxt-auth-utils',
+    'nuxt-csurf'
   ],
 
   devtools: {
@@ -20,7 +22,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['striptags']
+      include: []
     }
   },
 
