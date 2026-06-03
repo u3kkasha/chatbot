@@ -1,7 +1,9 @@
 # Architectural Reference Document (ARD)
+
 ## Enterprise Multi-Tenant Customer Support Bot Architecture
 
 ### 1. System Topology Overview
+
 This architecture is built on a decoupled, microservices-led structure. High performance, strict data isolation boundaries, and optimized hardware resource allocation are prioritized.
 
 ```mermaid
@@ -33,38 +35,42 @@ graph TD
 
 #### Component Architecture Definition
 
-*   **Client Tier (Nuxt.js):**
-    *   Client using **Nuxt 4**.
-    *   Utilizes `@microsoft/signalr` client to negotiate real-time streaming connections.
-    *   Manages local tenant themes, state hydration, and JWT token retention.
-*   **Core API Gateway / Business Tier (.NET 10 Core Web API):**
-    *   The compiled orchestrator using **.NET 10**.
-    *   Houses business logic, role-based authorization, metadata-mapping, and tenant routing.
-    *   Embeds **Microsoft Semantic Kernel (SK)** to unify vector database lookups, chat templating, and external API gateways.
-*   **In-Memory/Vector Tier (Qdrant):**
-    *   Stores 1536-dimension OpenAI embeddings.
-    *   Leverages internal payload matching to execute deterministic tenant filtering alongside similarity math.
-*   **Data Extraction Workers (Docling-Serve):**
-    *   A CPU-optimized Python service running inside a local Podman container.
-    *   Exposes REST endpoints to parse uploaded raw documents and emit semantic layout hierarchies as JSON payloads.
-*   **Relational Storage Tier (PostgreSQL):**
-    *   Stores tenant directory tables, customer account credentials, billing details, agent workspaces, configurations, and raw chat logs.
-    *   Using **PostgreSQL 18**.
+- **Client Tier (Nuxt.js):**
+  - Client using **Nuxt 4**.
+  - Utilizes `@microsoft/signalr` client to negotiate real-time streaming connections.
+  - Manages local tenant themes, state hydration, and JWT token retention.
+- **Core API Gateway / Business Tier (.NET 10 Core Web API):**
+  - The compiled orchestrator using **.NET 10**.
+  - Houses business logic, role-based authorization, metadata-mapping, and tenant routing.
+  - Embeds **Microsoft Semantic Kernel (SK)** to unify vector database lookups, chat templating, and external API gateways.
+- **In-Memory/Vector Tier (Qdrant):**
+  - Stores 1536-dimension OpenAI embeddings.
+  - Leverages internal payload matching to execute deterministic tenant filtering alongside similarity math.
+- **Data Extraction Workers (Docling-Serve):**
+  - A CPU-optimized Python service running inside a local Podman container.
+  - Exposes REST endpoints to parse uploaded raw documents and emit semantic layout hierarchies as JSON payloads.
+- **Relational Storage Tier (PostgreSQL):**
+  - Stores tenant directory tables, customer account credentials, billing details, agent workspaces, configurations, and raw chat logs.
+  - Using **PostgreSQL 18**.
 
 ---
 
 ### 2. Multi-Tenancy Strategy (Logical Isolation Vault)
+
 Strict data security demands multi-tier isolation. The system implements Logical Tenant Isolation across the entire stack.
 
 #### 2.1 API Authentication Layer
+
 Every request sent to the .NET Backend must carry a cryptographically signed Bearer JWT. The JWT payload must contain:
-*   `tid` (Tenant ID - GUID)
-*   `uid` (User ID - GUID)
-*   `role` (Admin / Agent / Customer)
+
+- `tid` (Tenant ID - GUID)
+- `uid` (User ID - GUID)
+- `role` (Admin / Agent / Customer)
 
 An ASP.NET Core middleware validation filter intercepts all requests, extracting the `tid` and storing it in a scoped execution context object (`TenantContext`).
 
 #### 2.2 Relational Storage Isolation (PostgreSQL Row-Level Security)
+
 To protect structural tables, PostgreSQL Row-Level Security (RLS) is enabled on all tables sharing multi-tenant metrics:
 
 ```sql
@@ -80,6 +86,7 @@ CREATE POLICY tenant_isolation_policy ON chat_sessions
 Before executing any database query, the Entity Framework Core interceptor sets the transaction session variable `app.current_tenant_id` based on the scoped `TenantContext.TenantId`.
 
 #### 2.3 Vector Database Isolation (Qdrant Payload Filtering)
+
 Instead of spinning up individual server instances or collections for each tenant, we utilize Qdrant's highly optimized Payload Filtering.
 
 Every document vector upserted to Qdrant contains a payload attribute: `tenant_id`. The C# Semantic Kernel connector or Qdrant Client applies a mandatory Payload Match Filter on every lookup.
@@ -91,7 +98,10 @@ Every document vector upserted to Qdrant contains a payload attribute: `tenant_i
   "limit": 5,
   "filter": {
     "must": [
-      { "key": "tenant_id", "match": { "value": "a4d3b841-7290-4bf6-b5fa-cae80e1590fc" } }
+      {
+        "key": "tenant_id",
+        "match": { "value": "a4d3b841-7290-4bf6-b5fa-cae80e1590fc" }
+      }
     ]
   }
 }
@@ -104,6 +114,7 @@ Because Qdrant indexes metadata keys using a payload index, Qdrant skips evaluat
 ### 3. Core Pipelines & Sequences
 
 #### 3.1 Document Ingestion Flow
+
 This sequence maps how a Tenant Administrator uploads a PDF manual and populates both PostgreSQL and Qdrant.
 
 ```text
@@ -134,6 +145,7 @@ This sequence maps how a Tenant Administrator uploads a PDF manual and populates
 ```
 
 #### 3.2 Chat & Retrieval RAG Flow
+
 This sequence details how a customer's question is parsed, matched, formulated into an isolated LLM prompt, and streamed back using SignalR.
 
 ```mermaid
@@ -163,6 +175,7 @@ sequenceDiagram
 ### 4. Concrete Database Schema Blueprint
 
 #### 4.1 PostgreSQL Schema (Relational Store)
+
 Below is the SQL Schema definition required to handle tenants, configurations, session states, and document index trees.
 
 ```sql
@@ -240,6 +253,7 @@ CREATE INDEX idx_messages_session ON chat_messages(session_id);
 ```
 
 #### 4.2 Qdrant Payload Structure
+
 The following payload properties are appended to every single vector point stored within Qdrant:
 
 ```json
@@ -261,11 +275,12 @@ The following payload properties are appended to every single vector point store
 ---
 
 ### 5. Development Infrastructure Setup (Local Podman Configuration)
+
 Below is your local development topology. Using Podman, you can spin up the entire isolated stack natively inside your NixOS-WSL terminal.
 
 ```yaml
 # filepath: compose.yaml
-version: '3.8'
+version: "3.8"
 
 services:
   # Transactional Database
@@ -305,14 +320,14 @@ services:
     container_name: docling-serve-local
     environment:
       - DOCLING_SERVE_ENABLE_UI=false
-      - OMP_NUM_THREADS=2           # Keeps background math limited to 2 CPU threads
-      - UVICORN_WORKERS=1           # Ensures linear parsing queue to prevent RAM lock
+      - OMP_NUM_THREADS=2 # Keeps background math limited to 2 CPU threads
+      - UVICORN_WORKERS=1 # Ensures linear parsing queue to prevent RAM lock
     ports:
       - "5001:5001"
     deploy:
       resources:
         limits:
-          memory: 3.5g              # Minimum threshold to safely hold visual models in RAM
+          memory: 3.5g # Minimum threshold to safely hold visual models in RAM
 
 volumes:
   postgres_data:

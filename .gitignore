@@ -1,0 +1,50 @@
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Nix / Direnv
+.direnv/
+result
+result-*
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+*.envrc.local
+
+# .NET
+bin/
+obj/
+appsettings.Development.json
+*.user
+*.suo
+*.cache
+*.bak
+*.pfx
+*.publishsettings
+TestResults/
+[Bb]uildLog.*
+
+# Node / Nuxt (Client)
+client/.output/
+client/.data/
+client/.nuxt/
+client/.nitro/
+client/.cache/
+client/dist/
+client/node_modules/
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/bun.lockb
+
+# Logs
+logs/
+*.log
+
+# Docker
+.docker/
