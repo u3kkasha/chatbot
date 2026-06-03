@@ -38,10 +38,15 @@
 
         devshells.default = {
           name = "chatbot-dev";
+
+          env = [];
+
           packages = with pkgs; [
             bun
             dotnet-sdk_10
             tilt
+            docker
+            docker-compose
             config.treefmt.build.wrapper
           ];
 

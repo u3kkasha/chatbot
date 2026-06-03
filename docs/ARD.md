@@ -47,7 +47,7 @@ graph TD
   - Stores 1536-dimension OpenAI embeddings.
   - Leverages internal payload matching to execute deterministic tenant filtering alongside similarity math.
 - **Data Extraction Workers (Docling-Serve):**
-  - A CPU-optimized Python service running inside a local Podman container.
+  - A CPU-optimized Python service running inside a local Docker container.
   - Exposes REST endpoints to parse uploaded raw documents and emit semantic layout hierarchies as JSON payloads.
 - **Relational Storage Tier (PostgreSQL):**
   - Stores tenant directory tables, customer account credentials, billing details, agent workspaces, configurations, and raw chat logs.
@@ -274,9 +274,9 @@ The following payload properties are appended to every single vector point store
 
 ---
 
-### 5. Development Infrastructure Setup (Local Podman Configuration)
+### 5. Development Infrastructure Setup (Local Docker Configuration)
 
-Below is your local development topology. Using Podman, you can spin up the entire isolated stack natively inside your NixOS-WSL terminal.
+Below is your local development topology. Using Docker, you can spin up the entire isolated stack natively inside your NixOS-WSL terminal.
 
 ```yaml
 # filepath: compose.yaml

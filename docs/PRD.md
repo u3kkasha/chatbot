@@ -110,4 +110,4 @@ graph TD
 - **Backend:** .NET 10 Web API (C#, Semantic Kernel).
 - **Database:** PostgreSQL 18 (Relational), Qdrant (Vector).
 - **AI Services:** OpenAI (GPT-4o, Text-Embedding-3-Small).
-- **Infrastructure:** Podman/Docker Compose for local development.
+- **Infrastructure:** Docker Compose for local development.

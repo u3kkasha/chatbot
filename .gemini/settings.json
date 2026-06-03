@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "tilt": {
+      "command": "npx",
+      "args": ["-y", "@0xbigboss/tilt-mcp"],
+      "env": {
+        "TILT_PORT": "10350"
+      }
+    }
+  }
+}
