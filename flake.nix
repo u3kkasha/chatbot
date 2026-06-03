@@ -39,7 +39,12 @@
         devshells.default = {
           name = "chatbot-dev";
 
-          env = [];
+          env = [
+            {
+              name = "BROWSER";
+              value = "wsl-open";
+            }
+          ];
 
           packages = with pkgs; [
             bun
@@ -47,6 +52,7 @@
             tilt
             docker
             docker-compose
+            xdg-utils
             config.treefmt.build.wrapper
           ];
 
