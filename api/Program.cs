@@ -10,6 +10,58 @@ builder.Services.AddSingleton<IChatClient>(
 
 var app = builder.Build();
 
+var chats = new List<ChatDto>();
+
+app.MapGet("/api/chats", () => chats);
+
+app.MapPost(
+    "/api/chats",
+    (ChatCreateDto request) =>
+    {
+        var chat = new ChatDto
+        {
+            Id = request.Id ?? Guid.NewGuid().ToString(),
+            Title = "New Chat",
+            CreatedAt = DateTime.UtcNow,
+        };
+        chats.Add(chat);
+        return Results.Created($"/api/chats/{chat.Id}", chat);
+    }
+);
+
+app.MapGet(
+    "/api/chats/{id}",
+    (string id) =>
+    {
+        var chat = chats.FirstOrDefault(c => c.Id == id);
+        return chat is not null ? Results.Ok(chat) : Results.NotFound();
+    }
+);
+
+app.MapPatch(
+    "/api/chats/{id}/title",
+    (string id, ChatUpdateDto request) =>
+    {
+        var chat = chats.FirstOrDefault(c => c.Id == id);
+        if (chat is null)
+            return Results.NotFound();
+        chat.Title = request.Title;
+        return Results.Ok(chat);
+    }
+);
+
+app.MapDelete(
+    "/api/chats/{id}",
+    (string id) =>
+    {
+        var chat = chats.FirstOrDefault(c => c.Id == id);
+        if (chat is null)
+            return Results.NotFound();
+        chats.Remove(chat);
+        return Results.NoContent();
+    }
+);
+
 app.MapPost(
     "/api/chat",
     async (ChatRequest request, IChatClient chatClient, HttpContext context) =>
@@ -40,11 +92,30 @@ app.MapPost(
     }
 );
 
+app.MapGet("/health", () => Results.Ok("Healthy"));
+
 app.Run();
 
 public class ChatRequest
 {
     public List<MessageDto> Messages { get; set; } = new();
+}
+
+public class ChatDto
+{
+    public string Id { get; set; } = "";
+    public string Title { get; set; } = "";
+    public DateTime CreatedAt { get; set; }
+}
+
+public class ChatCreateDto
+{
+    public string? Id { get; set; }
+}
+
+public class ChatUpdateDto
+{
+    public string Title { get; set; } = "";
 }
 
 public class MessageDto

@@ -10,8 +10,7 @@ const input = ref("");
 const chat = new Chat({
   id: (route.params.id as string) || "default-chat",
   transport: new DefaultChatTransport({
-    // Hardcode the API endpoint to our local .NET 10 API for now
-    api: `http://localhost:5245/api/chat`,
+    api: "/api/chat",
   }),
   onError(error) {
     let message = error.message;

@@ -20,6 +20,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: "2024-07-11",
 
+  routeRules: {
+    "/api/**": {
+      proxy: "http://localhost:5136/api/**",
+    },
+  },
+
   vite: {
     optimizeDeps: {
       include: [],
