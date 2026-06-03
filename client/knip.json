@@ -1,0 +1,28 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "project": ["**/*.{js,mjs,cjs,jsx,ts,tsx,mts,cts,vue}!"],
+  "paths": {
+    "~/*": ["./app/*"],
+    "@/*": ["./app/*"],
+    "~~/*": ["./*"],
+    "@@/*": ["./*"],
+    "#shared": ["./shared"],
+    "#shared/*": ["./shared/*"],
+    "#components": ["./.nuxt/components.d.ts"],
+    "#imports": ["./.nuxt/imports.d.ts"]
+  },
+  "nuxt": {
+    "entry": [
+      "nuxt.config.ts",
+      "app/app.vue",
+      "app/error.vue",
+      "app/app.config.ts",
+      "app/pages/**/*.{vue,jsx,tsx}",
+      "app/layouts/**/*.{vue,jsx,tsx}",
+      "app/middleware/**/*.ts",
+      "app/components/**/*.{vue,jsx,tsx}",
+      "app/composables/**/*.ts",
+      "app/utils/**/*.ts"
+    ]
+  }
+}

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Chat } from "~~/shared/types/chat";
+
 const input = ref("");
 const loading = ref(false);
 const chatId = crypto.randomUUID();
@@ -29,7 +31,7 @@ async function createChat(prompt: string) {
     url?: string;
   }> = [{ type: "text", text: prompt }];
 
-  const chat = await $fetch("/api/chats", {
+  const chat = await $fetch<Chat>("/api/chats", {
     method: "POST",
     headers: { [headerName]: csrf },
     body: {
@@ -101,10 +103,7 @@ const quickChats = [
                 <ModelSelect />
               </div>
 
-              <UChatPromptSubmit
-                color="neutral"
-                size="sm"
-              />
+              <UChatPromptSubmit color="neutral" size="sm" />
             </template>
           </UChatPrompt>
 

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from "@nuxt/ui";
+import type { Chat } from "~~/shared/types/chat";
+import type { UIChat } from "~/composables/useChats";
 
 const { renameChat, deleteChat } = useChatActions();
 
@@ -8,8 +10,8 @@ const searchOpen = ref(false);
 
 const { data: chats } = await useFetch("/api/chats", {
   key: "chats",
-  transform: (data) =>
-    data.map((chat) => ({
+  transform: (data: unknown): UIChat[] =>
+    (data as Chat[]).map((chat) => ({
       id: chat.id,
       label: chat.title || "Untitled",
       to: `/chat/${chat.id}`,

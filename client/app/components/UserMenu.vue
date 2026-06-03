@@ -12,7 +12,7 @@ const appConfig = useAppConfig();
 const user = ref({
   name: "User",
   avatar: undefined,
-  username: "user"
+  username: "user",
 });
 
 const colors = [

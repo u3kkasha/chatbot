@@ -3,6 +3,7 @@ import { isToday, isYesterday, subMonths } from "date-fns";
 export interface UIChat {
   id: string;
   label: string;
+  to: string;
   icon: string;
   createdAt: string;
 }

@@ -8,10 +8,10 @@ const toast = useToast();
 const input = ref("");
 
 const chat = new Chat({
-  id: route.params.id as string || "default-chat",
+  id: (route.params.id as string) || "default-chat",
   transport: new DefaultChatTransport({
     // Hardcode the API endpoint to our local .NET 10 API for now
-    api: `http://localhost:5245/api/chat`, 
+    api: `http://localhost:5245/api/chat`,
   }),
   onError(error) {
     let message = error.message;
@@ -74,10 +74,7 @@ async function handleSubmit(e: Event) {
             </template>
 
             <template #content="{ message }">
-              <ChatMessageContent
-                :message="message"
-                :editing="false"
-              />
+              <ChatMessageContent :message="message" :editing="false" />
             </template>
           </UChatMessages>
 
@@ -91,7 +88,7 @@ async function handleSubmit(e: Event) {
           >
             <template #footer>
               <div class="flex items-center gap-1">
-                 <!-- Actions go here later -->
+                <!-- Actions go here later -->
               </div>
 
               <UChatPromptSubmit
