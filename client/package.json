@@ -1,19 +1,53 @@
 {
-  "name": "chatbot-client",
+  "name": "nuxt-ui-template-chat",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck",
+    "db:generate": "nuxt db generate",
+    "db:migrate": "nuxt db migrate"
   },
   "dependencies": {
-    "nuxt": "^4.0.0-rc.2"
+    "@ai-sdk/anthropic": "^3.0.81",
+    "@ai-sdk/gateway": "^3.0.121",
+    "@ai-sdk/google": "^3.0.80",
+    "@ai-sdk/openai": "^3.0.67",
+    "@ai-sdk/vue": "^3.0.193",
+    "@comark/nuxt": "^0.3.1",
+    "@iconify-json/logos": "^1.2.11",
+    "@iconify-json/lucide": "^1.2.111",
+    "@iconify-json/simple-icons": "^1.2.84",
+    "@libsql/client": "^0.17.3",
+    "@nuxt/ui": "^4.8.1",
+    "@nuxthub/core": "^0.10.7",
+    "@shikijs/langs": "^4.1.0",
+    "@vercel/blob": "^2.4.0",
+    "@vueuse/core": "^14.3.0",
+    "ai": "^6.0.193",
+    "date-fns": "^4.4.0",
+    "drizzle-orm": "^0.45.2",
+    "motion-v": "^2.2.1",
+    "nuxt": "^4.4.6",
+    "nuxt-auth-utils": "^0.5.29",
+    "nuxt-charts": "^2.1.4",
+    "nuxt-csurf": "^1.6.5",
+    "shiki": "^4.1.0",
+    "striptags": "3.2.0",
+    "tailwindcss": "^4.3.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.12.0",
-    "tailwindcss": "^3.4.4"
-  }
+    "@nuxt/eslint": "^1.15.2",
+    "@types/node": "^24.12.4",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^10.4.1",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.3"
+  },
+  "packageManager": "pnpm@11.5.0"
 }

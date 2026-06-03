@@ -1,9 +1,50 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-04-03",
-  devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss"],
-  future: {
-    compatibilityVersion: 4,
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/ui",
+    "@comark/nuxt",
+    "@nuxthub/core",
+    "nuxt-auth-utils",
+    "nuxt-charts",
+    "nuxt-csurf",
+  ],
+
+  devtools: {
+    enabled: true,
+  },
+
+  css: ["~/assets/css/main.css"],
+
+  experimental: {
+    viewTransition: true,
+  },
+
+  compatibilityDate: "2024-07-11",
+
+  nitro: {
+    experimental: {
+      openAPI: true,
+    },
+  },
+
+  hub: {
+    db: "sqlite",
+    blob: true,
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ["striptags"],
+    },
+  },
+
+  eslint: {
+    config: {
+      stylistic: {
+        commaDangle: "never",
+        braceStyle: "1tbs",
+      },
+    },
   },
 });
