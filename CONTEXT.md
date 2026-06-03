@@ -22,3 +22,8 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
   - `csharpier` for C#.
   - `prettier` for TypeScript, Vue, JSON, Markdown, and YAML.
   - `alejandra` for Nix.
+
+## Documentation
+
+- **[Product Requirement Document (PRD)](docs/PRD.md):** Defines the core goals, user personas, and functional requirements.
+- **[Architectural Reference Document (ARD)](docs/ARD.md):** Detailed system topology, multi-tenancy strategy, and database schema.
