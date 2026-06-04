@@ -58,7 +58,7 @@ public class VectorBroker(IConfiguration configuration) : IVectorBroker
 
         return results.Select(r => new VectorPoint(
             r.Id.Num,
-            r.Vectors.Vector.Data.ToArray(),
+            r.Vectors.Vector.Dense.Data.ToArray(),
             r.Payload.ToDictionary(k => k.Key, v => v.Value.ToValue())
         ));
     }
