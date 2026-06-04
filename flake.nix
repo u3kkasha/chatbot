@@ -33,7 +33,7 @@
           projectRootFile = "flake.nix";
           programs.alejandra.enable = true;
           programs.csharpier.enable = true;
-          programs.prettier.enable = true;
+          programs.prettier.enable = false;
         };
 
         devshells.default = {
