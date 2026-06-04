@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "skills": {
+    "The Standard Architecture": {
+      "source": "hassanhabib/the-standard-skills",
+      "sourceType": "github",
+      "skillPath": ".skills/the-standard-architecture/SKILL.md",
+      "computedHash": "cd0b86dbfa5cb6504fafb0b2874b3d23ab683ea2b30f2c7a061b6a95a54ac542"
+    },
+    "The Standard Core": {
+      "source": "hassanhabib/the-standard-skills",
+      "sourceType": "github",
+      "skillPath": ".skills/the-standard-core/SKILL.md",
+      "computedHash": "e9ed5a046f83cc85c8d09a5cd16d1323f30842c727f6f395af2dbc12e736be14"
+    },
+    "The Standard Events": {
+      "source": "hassanhabib/the-standard-skills",
+      "sourceType": "github",
+      "skillPath": ".skills/the-standard-events/SKILL.md",
+      "computedHash": "f24bcb117162563b2a4548a2abd2e12d99acb7bed57ba0d23e0f07064f822fc2"
+    },
+    "The Standard Practices": {
+      "source": "hassanhabib/the-standard-skills",
+      "sourceType": "github",
+      "skillPath": ".skills/the-standard-practices/SKILL.md",
+      "computedHash": "d43afc5d6114862cc459149c68178be40cf556b040a3d4a952215c11c359b8fe"
+    },
+    "The Standard Testing": {
+      "source": "hassanhabib/the-standard-skills",
+      "sourceType": "github",
+      "skillPath": ".skills/the-standard-testing/SKILL.md",
+      "computedHash": "cff6eea9ca593a289dc51716148dd8917b75d42eec69203154bd0bb3eef9515b"
+    },
+    "The Standard Versioning": {
+      "source": "hassanhabib/the-standard-skills",
+      "sourceType": "github",
+      "skillPath": ".skills/the-standard-versioning/SKILL.md",
+      "computedHash": "ba25a8625aa3230f2de6961589bf26df484f3696a3d140327ddecd02505740f2"
+    }
+  }
+}

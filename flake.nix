@@ -34,6 +34,7 @@
           programs.alejandra.enable = true;
           programs.csharpier.enable = true;
           programs.prettier.enable = false;
+          settings.global.excludes = [".agents/**"];
         };
 
         devshells.default = {
