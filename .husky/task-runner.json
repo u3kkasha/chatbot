@@ -8,6 +8,25 @@
       "include": ["**/*"]
     },
     {
+      "name": "backend-typecheck",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["build", "/p:VerifyNoChanges=true"],
+      "include": ["**/*.cs", "**/*.csproj"]
+    },
+    {
+      "name": "frontend-typecheck",
+      "group": "pre-commit",
+      "command": "bun",
+      "args": ["--cwd", "client", "typecheck"]
+    },
+    {
+      "name": "frontend-knip",
+      "group": "pre-commit",
+      "command": "bun",
+      "args": ["--cwd", "client", "knip"]
+    },
+    {
       "name": "backend-lint",
       "group": "pre-push",
       "command": "dotnet",
