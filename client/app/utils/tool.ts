@@ -6,11 +6,11 @@ export interface Source {
 }
 
 interface GoogleGroundingChunk {
-  web?: { uri?: string; title?: string }
+  web?: { uri?: string, title?: string }
 }
 
 interface SearchOutput {
-  sources?: { url: string; type?: string }[]
+  sources?: { url: string, type?: string }[]
   groundingChunks?: GoogleGroundingChunk[]
   groundingMetadata?: { groundingChunks?: GoogleGroundingChunk[] }
 }
@@ -36,16 +36,16 @@ export function getSources(part: ToolPart): Source[] {
 
   // OpenAI: { sources: [{ type: 'url', url }] }
   if (typed.sources) {
-    return typed.sources.filter((s) => s.url).map((s) => ({ url: s.url }))
+    return typed.sources.filter(s => s.url).map(s => ({ url: s.url }))
   }
 
   // Google: grounding chunks with { web: { uri, title } }
-  const chunks =
-    typed.groundingChunks ?? typed.groundingMetadata?.groundingChunks
+  const chunks
+    = typed.groundingChunks ?? typed.groundingMetadata?.groundingChunks
   if (chunks) {
     return chunks
-      .filter((c) => c.web?.uri)
-      .map((c) => ({ url: c.web!.uri!, title: c.web!.title }))
+      .filter(c => c.web?.uri)
+      .map(c => ({ url: c.web!.uri!, title: c.web!.title }))
   }
 
   return []

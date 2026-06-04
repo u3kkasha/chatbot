@@ -12,7 +12,11 @@ This file provides foundational mandates for AI agents (like Gemini CLI) operati
 
 ## Source Control
 
+- **Commit Format:** ALWAYS use the `type(scope): message` format (Conventional Commits).
+  - **Types:** `feat`, `fix`, `perf`, `refactor`, `docs`, `chore`, `test`, `style`.
+  - **Scope:** The module or component name (e.g., `chat`, `identity`, `api`, `client`).
 - **Gitmojis:** Use [gitmojis](https://gitmoji.dev/) in commit messages. **CRITICAL:** Only use abstract or inanimate gitmojis (e.g., 🔧, ⚙️, ⚡, 📝, 📦). NEVER use animate gitmojis (e.g., 🐛, 🚀, 🐳).
+- **Workflow:** Adhere to the [Git Workflow Strategy](docs/GIT_WORKFLOW.md).
 - **Surgical Edits:** Prefer targeted `replace` calls over rewriting entire files unless necessary.
 
 ## Documentation

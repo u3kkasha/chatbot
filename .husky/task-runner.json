@@ -27,17 +27,16 @@
       "args": ["--cwd", "client", "knip"]
     },
     {
+      "name": "frontend-lint",
+      "group": "pre-commit",
+      "command": "bun",
+      "args": ["--cwd", "client", "lint"]
+    },
+    {
       "name": "backend-lint",
       "group": "pre-push",
       "command": "dotnet",
       "args": ["format", "--verify-no-changes"]
-    },
-
-    {
-      "name": "frontend-lint",
-      "group": "pre-push",
-      "command": "bun",
-      "args": ["--cwd", "client", "lint"]
     },
     {
       "name": "backend-tests",
@@ -56,6 +55,12 @@
       "group": "pre-push",
       "command": "gitleaks",
       "args": ["protect", "--staged", "--verbose"]
+    },
+    {
+      "name": "commit-msg-validation",
+      "group": "commit-msg",
+      "command": "bash",
+      "args": [".husky/scripts/validate-commit.sh", "${args}"]
     }
   ]
 }

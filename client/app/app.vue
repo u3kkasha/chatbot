@@ -16,8 +16,8 @@ useHead({
 })
 
 const title = 'Chatbot'
-const description =
-  'A high-performance chatbot interface built with Nuxt 4 and .NET 10.'
+const description
+  = 'A high-performance chatbot interface built with Nuxt 4 and .NET 10.'
 
 useSeoMeta({
   title,

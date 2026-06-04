@@ -54,3 +54,4 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
 - **[Product Requirement Document (PRD)](docs/PRD.md):** Defines the core goals, user personas, and functional requirements.
 - **[Architectural Reference Document (ARD)](docs/ARD.md):** Detailed system topology, multi-tenancy strategy, and database schema.
 - **[Implementation Plan (PLAN)](docs/PLAN.md):** Roadmap for transitioning from mock implementation to full omnichannel support.
+- **[Git Workflow Strategy](docs/GIT_WORKFLOW.md):** Standards for commits, branching, and merging.
