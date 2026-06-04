@@ -16,15 +16,15 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
         // Arrange
         await ((DbContext)_storageBroker).Database.EnsureCreatedAsync();
 
-        var user = new User
-        {
-            Id = UserId.From(Guid.NewGuid()),
-            Username = "testuser",
-            Email = "test@example.com",
-            PasswordHash = "hash",
-            CreatedDate = SystemClock.Instance.GetCurrentInstant(),
-            UpdatedDate = SystemClock.Instance.GetCurrentInstant(),
-        };
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var user = new User(
+            Id: UserId.From(Guid.NewGuid()),
+            Username: "testuser",
+            Email: "test@example.com",
+            PasswordHash: "hash",
+            CreatedDate: now,
+            UpdatedDate: now
+        );
 
         // Act
         var insertedUser = await _storageBroker.InsertUserAsync(user);
