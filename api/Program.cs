@@ -1,5 +1,6 @@
 using Chatbot.Api.Infrastructure.ExceptionHandlers;
 using Chatbot.Api.Infrastructure.Middleware;
+using Chatbot.Api.Infrastructure.Serialization;
 using Chatbot.Modules.Chat;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
@@ -33,8 +34,23 @@ builder.Services.AddScheduler();
 builder.Services.AddQueue();
 builder.Services.AddEvents();
 
-// 2.2 Add AI Client
+// 2.2 Add HybridCache
+builder.Services.AddHybridCache(options =>
+{
+    options.DefaultEntryOptions = new Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions
+    {
+        Expiration = TimeSpan.FromMinutes(30),
+        LocalCacheExpiration = TimeSpan.FromMinutes(5),
+    };
+});
+
+// 2.3 Add AI Client
 builder.Services.AddSingleton<IChatClient, NoopChatClient>();
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+});
 
 builder.Services.AddControllers();
 
@@ -69,7 +85,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-app.MapGet("/health", () => Results.Ok(new { Status = "Healthy", Timestamp = DateTime.UtcNow }));
+app.MapGet("/health", () => Results.Ok(new HealthCheckResponse("Healthy", DateTime.UtcNow)));
 
 app.Run();
 
