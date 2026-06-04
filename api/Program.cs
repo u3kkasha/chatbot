@@ -5,8 +5,7 @@ using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
 using Chatbot.Shared;
 using Chatbot.Shared.Brokers.Ai;
-using Hangfire;
-using Hangfire.PostgreSql;
+using Coravel;
 using Microsoft.Extensions.AI;
 using Scalar.AspNetCore;
 using Serilog;
@@ -29,20 +28,10 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
-// 2.1 Add Hangfire
-builder.Services.AddHangfire(config =>
-    config
-        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-        .UseSimpleAssemblyNameTypeSerializer()
-        .UseRecommendedSerializerSettings()
-        .UsePostgreSqlStorage(options =>
-            options.UseNpgsqlConnection(
-                builder.Configuration.GetConnectionString("DefaultConnection")
-            )
-        )
-);
-
-builder.Services.AddHangfireServer();
+// 2.1 Add Coravel
+builder.Services.AddScheduler();
+builder.Services.AddQueue();
+builder.Services.AddEvents();
 
 // 2.2 Add AI Client
 builder.Services.AddSingleton<IChatClient, NoopChatClient>();

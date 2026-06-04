@@ -8,9 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageReference Include="Coravel" Version="6.0.2" />
     <PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.23" />
-    <PackageReference Include="Hangfire.PostgreSql" Version="1.21.1" />
     <PackageReference Include="Microsoft.Agents.AI" Version="1.8.0" />
     <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.8.0" />
     <PackageReference Include="Microsoft.Agents.Hosting.AspNetCore" Version="1.6.92-beta" />

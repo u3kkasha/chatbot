@@ -7,11 +7,13 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
 ## Tech Stack
 
 - **Backend:** .NET 10 (C# 14) using `Microsoft.Agents` and `Microsoft.Extensions.AI`.
-  - Architecture: **"The Standard" by Hasan Habib** within a **Modular Monolith** structure (Ready-to-Split).
+  - Architecture: **"The Standard" by Hasan Habib** within a **Modular Monolith** structure (Ready-to-Split), evolving towards **Vertical Slice Architecture** within modules.
   - Principles: **DDD**, **FP**, **Reactive Domain Events**, and strict **TDD**.
   - Syntax: **C# 14/13 Excellence** (Primary Constructors, Records, Extension Members, Pattern Matching, Collection Expressions).
+  - Package Management: **Central Package Management (CPM)** via `Directory.Packages.props`.
   - Performance: **Native AOT** readiness with **Source Generators** (JSON, DI).
   - API: **OpenAPI** (Scalar) with **ProblemDetails**, **IExceptionHandler**, and **Correlation ID**.
+  - Real-time: **SignalR** for state synchronization and **TypedResults.ServerSentEvents** for AI token streaming.
   - AI-Native: **Semantic Kernel Plugin Architecture** (API endpoints as AI Tools).
   - Brokers: **RESTfulSense** for communication; **PII Masking** for compliance; **AI Usage Tracking** for cost control.
   - Models: **Manual Mapping** only to prevent domain leakage.
@@ -19,10 +21,10 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
   - Caching: **HybridCache** (.NET 10) for optimized L1/L2 data access.
   - Resilience: **Polly** and **Testcontainers**.
   - Validation: **FluentValidation**, **GuardClauses**, and **NetArchTest**.
-  - Processing: **Hangfire** for reliable background ingestion jobs.
+  - Processing: **Coravel** for near-zero config background jobs, queuing, and scheduling.
   - Feature Management: **Microsoft.FeatureManagement** for toggling AI and experimental flows.
   - Logging: **Serilog** with structured sinks.
-  - Data: **EF Core** with **SnakeCase** naming and **Audit Interceptors**.
+  - Data: **EF Core 10** with **Native JSON mapping**, **SnakeCase** naming, and **Audit Interceptors**.
   - Time: **NodaTime**.
   - Observability: **OpenTelemetry** and **Health Checks**.
 - **Frontend:** Nuxt 4 (TypeScript, Vue 3, TailwindCSS, **Nuxt UI**).

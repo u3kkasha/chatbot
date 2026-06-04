@@ -33,7 +33,7 @@ graph TD
     end
 
     Channels -- "Webhooks / Polling" --> API
-    API -- "SignalR (Real-time Updates)" --> Client
+    API -- "SignalR & SSE (Real-time Updates)" --> Client
     Client -- "HTTPS" --> API
     API -- "Internal Access" --> PostgreSQL
     API -- "gRPC / REST" --> Qdrant
@@ -68,7 +68,7 @@ Every request carries a Bearer JWT containing `tid` (Tenant ID). A middleware ex
 
 #### 2.2 Relational Storage Isolation (PostgreSQL RLS)
 
-PostgreSQL Row-Level Security (RLS) is used to isolate tenant data. The `app.current_tenant_id` session variable is set per transaction.
+PostgreSQL Row-Level Security (RLS) is used to isolate tenant data. The `app.current_tenant_id` session variable is set per transaction. Complex metadata and citations are managed via **EF Core 10 Native JSON Mapping** into `jsonb` columns.
 
 #### 2.3 Vector Database Isolation (Qdrant Payload Filtering)
 
@@ -184,4 +184,8 @@ CREATE INDEX idx_messages_session ON chat_messages(session_id);
 ### 5. Development Infrastructure Setup
 
 (Standard Docker configuration for Postgres, Qdrant, and Docling remains applicable as per the unified topology).
+.
+ns applicable as per the unified topology).
+.
+ology).
 .

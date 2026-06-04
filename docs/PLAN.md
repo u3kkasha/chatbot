@@ -3,13 +3,16 @@
 ## Phase 0: Project Governance & Scaffolding
 
 - [x] **ADR Initialization:**
-  - Establish records for "The Standard", OneOf, NodaTime, Verify, Hangfire, Native AOT, Domain Events, and PII Masking.
+  - Establish records for "The Standard", OneOf, NodaTime, Verify, Coravel, Native AOT, Domain Events, and PII Masking.
   - **Modular Monolith ADR:** Document the module boundaries and internal communication strategy.
+  - [ ] **Vertical Slice Architecture (VSA) ADR:** Document the strategy for grouping features (Logic, DTOs, Endpoints) by folder within modules.
 - [x] **Infrastructure Scaffolding:**
   - Set up **Scalar**, **Vitest**, **Testcontainers**, **Verify**, **Husky.Net**, and **Tailwind CSS Sorting**.
   - Initialize the **Modular Monolith** project structure (e.g., `Modules/Identity`, `Modules/Chat`).
+- [ ] **Central Package Management (CPM):**
+  - [ ] Initialize `Directory.Packages.props` and migrate all solution projects to central versioning.
 - [x] **Core Cross-Cutting Concerns:**
-  - Implement **IExceptionHandler**, **Correlation ID** middleware, and **Hangfire**.
+  - Implement **IExceptionHandler**, **Correlation ID** middleware, and **Coravel**.
   - Initialize **Living Documentation** standards using **Mermaid.js**.
 
 ## Phase 1: Foundation, Infrastructure & Brokers
@@ -25,7 +28,9 @@
   - Initialize **HybridCache** for high-performance L1/L2 data access.
 - [ ] **DDD & Data Layer:**
   - Define Entities and Value Objects (using **Records**, **Primary Constructors**, **Extension Members**, **StronglyTypedId**, and **Vogen**).
-  - Configure EF Core with **SnakeCase** naming and **Audit Interceptors**.
+  - Configure EF Core 10 with **SnakeCase** naming, **Audit Interceptors**, and **Native JSON Mapping** for citations and AI metadata.
+- [ ] **Real-time Streaming Foundation:**
+  - [ ] Scaffold **TypedResults.ServerSentEvents** support for lightweight, unidirectional AI token streaming.
 - [ ] **Secret Management:**
   - Implement **VarLock** for secure local secret management.
 - [ ] **Startup Configuration Validation:**
@@ -55,9 +60,9 @@
 - [ ] **Orchestration Services:**
   - Coordinate multi-broker/multi-service flows.
 - [ ] **SignalR Hubs:**
-  - Real-time communication grouped by Tenant ID.
-- [ ] **Background Processing (Hangfire):**
-  - Refactor ingestion flows to use **Hangfire** jobs.
+  - Real-time communication grouped by Tenant ID for state synchronization.
+- [ ] **Background Processing (Coravel):**
+  - Refactor ingestion flows to use **Coravel** jobs.
 
 ## Phase 4: AI & Knowledge Base Orchestration
 
@@ -65,6 +70,8 @@
   - RAG pipeline (Embed -> Search -> Prompt -> Complete).
   - **AI Plugins:** Design API endpoints as **AI Tools** for Semantic Kernel.
   - **Feature Toggles:** Wrap AI flows in **Microsoft.FeatureManagement**.
+- [ ] **AI Streaming Implementation:**
+  - [ ] Use **TypedResults.ServerSentEvents** to stream LLM completion tokens to the client.
 - [ ] **Ingestion Orchestration:**
   - Full ingestion flow (Upload -> Parse -> Chunk -> Embed -> Index).
 
@@ -74,7 +81,8 @@
   - Implement **Composables** and **Pinia Colada** using generated types/schemas.
 - [ ] **Unified Inbox UI (Nuxt UI):**
   - 3-pane layout using **Nuxt UI** components.
-  - Integrate `@microsoft/signalr` into the Nuxt client.
+  - Integrate `@microsoft/signalr` into the Nuxt client for state updates.
+  - Implement SSE listeners for AI response streaming.
 
 ## Phase 6: End-to-End Testing & Polish
 

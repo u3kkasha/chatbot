@@ -1,20 +1,12 @@
 using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Hangfire;
+using Coravel.Queuing.Interfaces;
 
 namespace Chatbot.Shared.Brokers.Processing;
 
-public class ProcessingBroker(IBackgroundJobClient backgroundJobClient) : IProcessingBroker
+public class ProcessingBroker(IQueue queue) : IProcessingBroker
 {
-    public void Enqueue(Expression<Action> methodCall) => backgroundJobClient.Enqueue(methodCall);
+    public void Enqueue(Action action) => queue.QueueTask(action);
 
-    public void Enqueue(Expression<Func<Task>> methodCall) =>
-        backgroundJobClient.Enqueue(methodCall);
-
-    public void Schedule(Expression<Action> methodCall, TimeSpan delay) =>
-        backgroundJobClient.Schedule(methodCall, delay);
-
-    public void Schedule(Expression<Func<Task>> methodCall, TimeSpan delay) =>
-        backgroundJobClient.Schedule(methodCall, delay);
+    public void Enqueue(Func<Task> function) => queue.QueueAsyncTask(function);
 }
