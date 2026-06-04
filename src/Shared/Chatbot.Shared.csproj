@@ -5,28 +5,28 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.28.0" />
-    <PackageReference Include="Coravel" Version="6.0.2" />
-    <PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.6.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="10.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.6.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
-    <PackageReference Include="Microsoft.Recognizers.Text.Choice" Version="1.8.13" />
-    <PackageReference Include="Microsoft.Recognizers.Text.DateTime" Version="1.8.13" />
-    <PackageReference Include="Microsoft.Recognizers.Text.Number" Version="1.8.13" />
-    <PackageReference Include="Microsoft.Recognizers.Text.Sequence" Version="1.8.13" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="10.0.2" />
-    <PackageReference Include="NuGet.CommandLine" Version="6.13.2">
+    <PackageReference Include="Azure.Storage.Blobs" />
+    <PackageReference Include="Coravel" />
+    <PackageReference Include="EFCore.NamingConventions" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Recognizers.Text.Choice" />
+    <PackageReference Include="Microsoft.Recognizers.Text.DateTime" />
+    <PackageReference Include="Microsoft.Recognizers.Text.Number" />
+    <PackageReference Include="Microsoft.Recognizers.Text.Sequence" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" />
+    <PackageReference Include="NuGet.CommandLine">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Polly" Version="8.6.6" />
-    <PackageReference Include="Qdrant.Client" Version="1.18.1" />
-    <PackageReference Include="Vogen" Version="8.0.5" />
+    <PackageReference Include="Polly" />
+    <PackageReference Include="Qdrant.Client" />
+    <PackageReference Include="Vogen" />
   </ItemGroup>
 </Project>

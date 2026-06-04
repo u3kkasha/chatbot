@@ -9,8 +9,8 @@
 - [x] **Infrastructure Scaffolding:**
   - Set up **Scalar**, **Vitest**, **Testcontainers**, **Verify**, **Husky.Net**, and **Tailwind CSS Sorting**.
   - Initialize the **Modular Monolith** project structure (e.g., `Modules/Identity`, `Modules/Chat`).
-- [ ] **Central Package Management (CPM):**
-  - [ ] Initialize `Directory.Packages.props` and migrate all solution projects to central versioning.
+- [x] **Central Package Management (CPM):**
+  - [x] Initialize `Directory.Packages.props` and migrate all solution projects to central versioning.
 - [x] **Core Cross-Cutting Concerns:**
   - Implement **IExceptionHandler**, **Correlation ID** middleware, and **Coravel**.
   - Initialize **Living Documentation** standards using **Mermaid.js**.
