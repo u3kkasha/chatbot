@@ -52,10 +52,13 @@
 - [ ] **Session State Machine:**
   - Implement **Stateless** configuration for status transitions.
 
-## Phase 3: Orchestration & Domain Events
+## Phase 3: Orchestration & Domain Events (MassTransit)
 
-- [ ] **Reactive Domain Event Broker:**
-  - Implement decoupled system behavior using events.
+- [ ] **MassTransit & EDA Foundation:**
+  - Implement **MassTransit (In-Memory)** for the internal bus.
+  - Configure the **Transactional Outbox** with EF Core 10.
+- [ ] **Reactive Domain Events:**
+  - Implement decoupled system behavior using MassTransit Pub/Sub.
 - [ ] **Concurrency & Safety:**
   - Implement **Distributed Locking** in orchestration services.
 - [ ] **Orchestration Services:**
@@ -63,7 +66,8 @@
 - [ ] **SignalR Hubs:**
   - Real-time communication grouped by Tenant ID for state synchronization.
 - [ ] **Background Processing (Coravel):**
-  - Refactor ingestion flows to use **Coravel** jobs.
+  - Use **Coravel** for scheduling and simple background jobs.
+  - Refactor ingestion flows to use **Coravel** jobs or **MassTransit** consumers where appropriate.
 
 ## Phase 4: AI & Knowledge Base Orchestration
 
