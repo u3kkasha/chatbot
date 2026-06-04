@@ -5,7 +5,7 @@
 - [x] **ADR Initialization:**
   - Establish records for "The Standard", OneOf, NodaTime, Verify, Coravel, Native AOT, Domain Events, and PII Masking.
   - **Modular Monolith ADR:** Document the module boundaries and internal communication strategy.
-  - [ ] **Vertical Slice Architecture (VSA) ADR:** Document the strategy for grouping features (Logic, DTOs, Endpoints) by folder within modules.
+  - [x] **Vertical Slice Architecture (VSA) ADR:** Document the strategy for grouping features (Logic, DTOs, Endpoints) by folder within modules.
 - [x] **Infrastructure Scaffolding:**
   - Set up **Scalar**, **Vitest**, **Testcontainers**, **Verify**, **Husky.Net**, and **Tailwind CSS Sorting**.
   - Initialize the **Modular Monolith** project structure (e.g., `Modules/Identity`, `Modules/Chat`).
