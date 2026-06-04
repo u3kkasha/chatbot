@@ -92,7 +92,7 @@ defineShortcuts({
       <template #header="{ collapsed }">
         <NuxtLink v-if="!collapsed" to="/" class="flex items-end gap-0.5">
           <Logo class="h-8 w-auto shrink-0" />
-          <span class="text-xl font-bold text-highlighted">Chat</span>
+          <span class="text-highlighted text-xl font-bold">Chat</span>
         </NuxtLink>
 
         <UDashboardSidebarCollapse class="ms-auto" />
@@ -122,7 +122,7 @@ defineShortcuts({
           <template #item-trailing="{ item }">
             <div
               v-if="item.kbds?.length"
-              class="flex items-center gap-px opacity-0 group-hover:opacity-100 transition-opacity"
+              class="flex items-center gap-px opacity-0 transition-opacity group-hover:opacity-100"
             >
               <UKbd
                 v-for="kbd in item.kbds"
@@ -158,7 +158,7 @@ defineShortcuts({
                 color="neutral"
                 variant="link"
                 size="sm"
-                class="rounded-[5px] hover:bg-accented/50 focus-visible:bg-accented/50 data-[state=open]:bg-accented/50"
+                class="hover:bg-accented/50 focus-visible:bg-accented/50 data-[state=open]:bg-accented/50 rounded-[5px]"
                 aria-label="Chat actions"
                 tabindex="-1"
                 @click.stop.prevent
@@ -193,7 +193,7 @@ defineShortcuts({
     />
 
     <div
-      class="flex-1 flex m-4 lg:ml-0 rounded-lg ring ring-default bg-default/75 shadow min-w-0 overflow-hidden"
+      class="ring-default bg-default/75 m-4 flex min-w-0 flex-1 overflow-hidden rounded-lg shadow ring lg:ml-0"
     >
       <slot />
     </div>

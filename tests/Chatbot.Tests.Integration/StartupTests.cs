@@ -1,10 +1,10 @@
+using System.Net;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net;
 
 namespace Chatbot.Tests.Integration;
 
-public class StartupTests(WebApplicationFactory<Program> factory) 
+public class StartupTests(WebApplicationFactory<Program> factory)
     : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _httpClient = factory.CreateClient();
@@ -17,7 +17,7 @@ public class StartupTests(WebApplicationFactory<Program> factory)
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+
         var content = await response.Content.ReadAsStringAsync();
         content.Should().Contain("Healthy");
     }

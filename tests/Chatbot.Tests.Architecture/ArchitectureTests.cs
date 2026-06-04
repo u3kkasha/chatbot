@@ -1,13 +1,14 @@
+using System.Reflection;
 using FluentAssertions;
 using NetArchTest.Rules;
 using Xunit;
-using System.Reflection;
 
 namespace Chatbot.Tests.Architecture;
 
 public class ArchitectureTests
 {
     private static readonly Assembly ApiAssembly = typeof(Program).Assembly;
+
     // We'll need to load these by name or by a known type in the assembly
     private static readonly Assembly IdentityAssembly = Assembly.Load("Chatbot.Modules.Identity");
     private static readonly Assembly ChatAssembly = Assembly.Load("Chatbot.Modules.Chat");
@@ -23,14 +24,17 @@ public class ArchitectureTests
         foreach (var module in modules)
         {
             var otherModules = moduleNames.Where(n => n != module.GetName().Name).ToArray();
-            
-            var result = Types.InAssembly(module)
+
+            var result = Types
+                .InAssembly(module)
                 .ShouldNot()
                 .HaveDependencyOnAny(otherModules)
                 .GetResult();
 
             // Assert
-            result.IsSuccessful.Should().BeTrue($"Module {module.GetName().Name} should be isolated.");
+            result
+                .IsSuccessful.Should()
+                .BeTrue($"Module {module.GetName().Name} should be isolated.");
         }
     }
 
@@ -38,7 +42,8 @@ public class ArchitectureTests
     public void Api_ShouldHaveControllers()
     {
         // Arrange
-        var result = Types.InAssembly(ApiAssembly)
+        var result = Types
+            .InAssembly(ApiAssembly)
             .That()
             .ResideInNamespace("Chatbot.Api.Controllers")
             .GetTypes();
@@ -51,7 +56,8 @@ public class ArchitectureTests
     public void IdentityModule_ShouldExist()
     {
         // Arrange
-        var result = Types.InAssembly(IdentityAssembly)
+        var result = Types
+            .InAssembly(IdentityAssembly)
             .That()
             .HaveName("IdentityModule")
             .GetTypes();

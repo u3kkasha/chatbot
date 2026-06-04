@@ -1,29 +1,42 @@
 {
-   "tasks": [
-      {
-         "name": "formatting",
-         "group": "pre-commit",
-         "command": "treefmt",
-         "args": ["--staged"],
-         "include": ["**/*"]
-      },
-      {
-         "name": "backend-tests",
-         "group": "pre-push",
-         "command": "dotnet",
-         "args": ["test"]
-      },
-      {
-         "name": "frontend-tests",
-         "group": "pre-push",
-         "command": "bun",
-         "args": ["--cwd", "client", "test"]
-      },
-      {
-         "name": "secret-scanning",
-         "group": "pre-push",
-         "command": "gitleaks",
-         "args": ["protect", "--staged", "--verbose"]
-      }
-   ]
+  "tasks": [
+    {
+      "name": "formatting",
+      "group": "pre-commit",
+      "command": "treefmt",
+      "args": ["${staged}"],
+      "include": ["**/*"]
+    },
+    {
+      "name": "backend-lint",
+      "group": "pre-push",
+      "command": "dotnet",
+      "args": ["format", "--verify-no-changes"]
+    },
+
+    {
+      "name": "frontend-lint",
+      "group": "pre-push",
+      "command": "bun",
+      "args": ["--cwd", "client", "lint"]
+    },
+    {
+      "name": "backend-tests",
+      "group": "pre-push",
+      "command": "dotnet",
+      "args": ["test"]
+    },
+    {
+      "name": "frontend-tests",
+      "group": "pre-push",
+      "command": "bun",
+      "args": ["--cwd", "client", "test", "run"]
+    },
+    {
+      "name": "secret-scanning",
+      "group": "pre-push",
+      "command": "gitleaks",
+      "args": ["protect", "--staged", "--verbose"]
+    }
+  ]
 }

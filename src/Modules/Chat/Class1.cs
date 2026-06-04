@@ -1,6 +1,3 @@
 ﻿namespace Chatbot.Modules.Chat;
 
-public class Class1
-{
-
-}
+public class Class1 { }

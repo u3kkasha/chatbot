@@ -1,8 +1,8 @@
+using Chatbot.Api.Infrastructure.ExceptionHandlers;
+using Chatbot.Api.Infrastructure.Middleware;
 using Chatbot.Modules.Chat;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
-using Chatbot.Api.Infrastructure.ExceptionHandlers;
-using Chatbot.Api.Infrastructure.Middleware;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -25,20 +25,18 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 
 // 3. Add Domain Modules
-builder.Services.AddIdentityModule()
-                .AddChatModule()
-                .AddKnowledgeModule();
-
+builder.Services.AddIdentityModule().AddChatModule().AddKnowledgeModule();
 
 // 4. Configure API
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 

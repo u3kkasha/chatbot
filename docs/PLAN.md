@@ -1,6 +1,7 @@
 # Implementation Plan: Omnichannel Customer Support Operator Platform
 
 ## Phase 0: Project Governance & Scaffolding
+
 - [x] **ADR Initialization:**
   - Establish records for "The Standard", OneOf, NodaTime, Verify, Hangfire, Native AOT, Domain Events, and PII Masking.
   - **Modular Monolith ADR:** Document the module boundaries and internal communication strategy.
@@ -12,6 +13,7 @@
   - Initialize **Living Documentation** standards using **Mermaid.js**.
 
 ## Phase 1: Foundation, Infrastructure & Brokers
+
 - [ ] **"The Standard" Brokers:**
   - Implement Brokers (Storage, Vector, Blob, AI, Processing).
   - **RESTfulSense:** For all REST-based Brokers.
@@ -35,6 +37,7 @@
   - Auto-generate **TypeScript Types** AND **Zod Schemas** from OpenAPI JSON.
 
 ## Phase 2: Foundation & Processing Services
+
 - [ ] **Foundation Services (TDD):**
   - Use **NSubstitute**, **OneOf**, and **Verify**.
   - Apply **Modern C# Pattern Matching** for result handling.
@@ -42,6 +45,7 @@
   - Implement **Stateless** configuration for status transitions.
 
 ## Phase 3: Orchestration & Domain Events
+
 - [ ] **Reactive Domain Event Broker:**
   - Implement decoupled system behavior using events.
 - [ ] **Concurrency & Safety:**
@@ -54,6 +58,7 @@
   - Refactor ingestion flows to use **Hangfire** jobs.
 
 ## Phase 4: AI & Knowledge Base Orchestration
+
 - [ ] **AI Orchestration (Semantic Kernel):**
   - RAG pipeline (Embed -> Search -> Prompt -> Complete).
   - **AI Plugins:** Design API endpoints as **AI Tools** for Semantic Kernel.
@@ -62,6 +67,7 @@
   - Full ingestion flow (Upload -> Parse -> Chunk -> Embed -> Index).
 
 ## Phase 5: Frontend Refactoring (Nuxt 4 Operator Workspace)
+
 - [ ] **Idiomatic Nuxt Refactoring:**
   - Implement **Composables** and **Pinia Colada** using generated types/schemas.
 - [ ] **Unified Inbox UI (Nuxt UI):**
@@ -69,6 +75,7 @@
   - Integrate `@microsoft/signalr` into the Nuxt client.
 
 ## Phase 6: End-to-End Testing & Polish
+
 - [ ] **Playwright E2E:**
   - Verify critical flows.
 - [ ] **Security Validation:**

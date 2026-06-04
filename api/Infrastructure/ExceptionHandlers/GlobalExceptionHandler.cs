@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chatbot.Api.Infrastructure.ExceptionHandlers;
 
-public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+    : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
 
@@ -17,7 +19,7 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
             Status = StatusCodes.Status500InternalServerError,
             Title = "Internal Server Error",
             Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
-            Detail = "An unexpected error occurred on the server."
+            Detail = "An unexpected error occurred on the server.",
         };
 
         if (httpContext.RequestServices.GetService<IWebHostEnvironment>()?.IsDevelopment() ?? false)

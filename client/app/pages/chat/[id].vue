@@ -10,7 +10,7 @@ const { messages, input, handleSubmit, status, stop, regenerate, error } =
     id: (route.params.id as string) || "default-chat",
     api: "/api/chat",
     headers: {
-      [headerName]: csrf
+      [headerName]: csrf,
     },
     onError(error) {
       let message = error.message;
@@ -48,7 +48,7 @@ const { messages, input, handleSubmit, status, stop, regenerate, error } =
 
     <template #body>
       <div class="flex flex-1">
-        <UContainer class="flex-1 flex flex-col gap-4 sm:gap-6">
+        <UContainer class="flex flex-1 flex-col gap-4 sm:gap-6">
           <UChatMessages
             should-auto-scroll
             :messages="messages"
@@ -71,7 +71,7 @@ const { messages, input, handleSubmit, status, stop, regenerate, error } =
             v-model="input"
             :error="error"
             variant="subtle"
-            class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
+            class="sticky bottom-0 z-10 rounded-b-none [view-transition-name:chat-prompt]"
             :ui="{ base: 'px-1.5' }"
             @submit="handleSubmit"
           >

@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Chatbot.Modules.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Chatbot.Api.Controllers;
 
