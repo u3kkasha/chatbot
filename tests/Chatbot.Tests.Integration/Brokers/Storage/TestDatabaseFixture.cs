@@ -1,3 +1,4 @@
+using DotNet.Testcontainers.Builders;
 using Microsoft.Extensions.Configuration;
 using Testcontainers.PostgreSql;
 using Testcontainers.Redis;
@@ -9,7 +10,12 @@ public class TestDatabaseFixture : IAsyncLifetime
     public PostgreSqlContainer PostgreSqlContainer { get; } =
         new PostgreSqlBuilder("postgres:18-alpine").Build();
 
-    public RedisContainer RedisContainer { get; } = new RedisBuilder("redis:latest").Build();
+    public RedisContainer RedisContainer { get; } =
+        new RedisBuilder("ghcr.io/microsoft/garnet:latest")
+            .WithWaitStrategy(
+                Wait.ForUnixContainer().UntilMessageIsLogged("Ready to accept connections")
+            )
+            .Build();
 
     public IConfiguration Configuration { get; private set; } = null!;
 
