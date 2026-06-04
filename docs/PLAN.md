@@ -23,7 +23,7 @@
   - **PII Masking Broker:** Implement automated PII scrubbing.
   - **AI Usage Broker:** Implement token tracking and logging.
   - **Resilience:** Integrate **Polly** policies.
-- [ ] **Native AOT & Performance Scaffolding:**
+- [x] **Native AOT & Performance Scaffolding:**
   - Configure **System.Text.Json** and **DI Source Generators**.
   - Initialize **HybridCache** for high-performance L1/L2 data access.
 - [ ] **DDD & Data Layer:**
