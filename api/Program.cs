@@ -3,6 +3,7 @@ using Chatbot.Api.Infrastructure.Middleware;
 using Chatbot.Modules.Chat;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
+using Chatbot.Shared;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -22,6 +23,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSharedInfrastructure();
 builder.Services.AddControllers();
 
 // 3. Add Domain Modules

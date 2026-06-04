@@ -1,0 +1,46 @@
+using System.IO;
+using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Microsoft.Extensions.Configuration;
+
+namespace Chatbot.Shared.Brokers.Blobs;
+
+public class BlobBroker(IConfiguration configuration) : IBlobBroker
+{
+    private readonly string connectionString =
+        configuration.GetConnectionString("BlobStorage")
+        ?? throw new System.InvalidOperationException("Connection string 'BlobStorage' not found.");
+
+    public async ValueTask UploadBlobAsync(string containerName, string blobName, Stream content)
+    {
+        var blobServiceClient = new BlobServiceClient(this.connectionString);
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(
+            containerName
+        );
+        await containerClient.CreateIfNotExistsAsync();
+        BlobClient blobClient = containerClient.GetBlobClient(blobName);
+        await blobClient.UploadAsync(content, overwrite: true);
+    }
+
+    public async ValueTask<Stream> DownloadBlobAsync(string containerName, string blobName)
+    {
+        var blobServiceClient = new BlobServiceClient(this.connectionString);
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(
+            containerName
+        );
+        BlobClient blobClient = containerClient.GetBlobClient(blobName);
+        var response = await blobClient.DownloadAsync();
+
+        return response.Value.Content;
+    }
+
+    public async ValueTask DeleteBlobAsync(string containerName, string blobName)
+    {
+        var blobServiceClient = new BlobServiceClient(this.connectionString);
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(
+            containerName
+        );
+        BlobClient blobClient = containerClient.GetBlobClient(blobName);
+        await blobClient.DeleteIfExistsAsync();
+    }
+}

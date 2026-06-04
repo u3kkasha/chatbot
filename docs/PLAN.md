@@ -14,7 +14,7 @@
 
 ## Phase 1: Foundation, Infrastructure & Brokers
 
-- [ ] **"The Standard" Brokers:**
+- [x] **"The Standard" Brokers:**
   - Implement Brokers (Storage, Vector, Blob, AI, Processing).
   - **RESTfulSense:** For all REST-based Brokers.
   - **PII Masking Broker:** Implement automated PII scrubbing.
@@ -26,6 +26,8 @@
 - [ ] **DDD & Data Layer:**
   - Define Entities and Value Objects (using **Records**, **Primary Constructors**, **Extension Members**, **StronglyTypedId**, and **Vogen**).
   - Configure EF Core with **SnakeCase** naming and **Audit Interceptors**.
+- [ ] **Secret Management:**
+  - Implement **VarLock** for secure local secret management.
 - [ ] **Startup Configuration Validation:**
   - Implement validated Options patterns for environment safety.
 - [ ] **OpenAPI, Observability & Error Handling:**
