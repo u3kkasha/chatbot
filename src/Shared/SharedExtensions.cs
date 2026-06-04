@@ -7,6 +7,7 @@ using Chatbot.Shared.Brokers.Pii;
 using Chatbot.Shared.Brokers.Processing;
 using Chatbot.Shared.Brokers.Vectors;
 using Chatbot.Shared.Infrastructure.Resilience;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NodaTime;
 
@@ -14,13 +15,26 @@ namespace Chatbot.Shared;
 
 public static class SharedExtensions
 {
-    public static IServiceCollection AddSharedInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddSharedInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         // NodaTime
         services.AddSingleton<IClock>(SystemClock.Instance);
 
         // Resilience
         services.AddStandardResilience();
+
+        // Caching
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis");
+        });
+
+#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this since we are in net10.0 and this is a core feature we want to use.
+        services.AddHybridCache();
+#pragma warning restore EXTEXP0018
 
         // Brokers
         services.AddTransient<ILoggingBroker, LoggingBroker>();
