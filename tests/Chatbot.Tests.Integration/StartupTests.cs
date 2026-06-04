@@ -1,13 +1,31 @@
 using System.Net;
+using Chatbot.Tests.Integration.Brokers.Storage;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 
 namespace Chatbot.Tests.Integration;
 
-public class StartupTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public class StartupTests
+    : IClassFixture<TestDatabaseFixture>,
+        IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly HttpClient _httpClient = factory.CreateClient();
+    private readonly HttpClient _httpClient;
+
+    public StartupTests(TestDatabaseFixture fixture, WebApplicationFactory<Program> factory)
+    {
+        _httpClient = factory
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureAppConfiguration(
+                    (context, config) =>
+                    {
+                        config.AddConfiguration(fixture.Configuration);
+                    }
+                );
+            })
+            .CreateClient();
+    }
 
     [Fact]
     public async Task HealthEndpoint_ReturnsOk()

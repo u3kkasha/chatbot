@@ -4,6 +4,10 @@ using Chatbot.Modules.Chat;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
 using Chatbot.Shared;
+using Chatbot.Shared.Brokers.Ai;
+using Hangfire;
+using Hangfire.PostgreSql;
+using Microsoft.Extensions.AI;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -24,6 +28,25 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
+
+// 2.1 Add Hangfire
+builder.Services.AddHangfire(config =>
+    config
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UsePostgreSqlStorage(options =>
+            options.UseNpgsqlConnection(
+                builder.Configuration.GetConnectionString("DefaultConnection")
+            )
+        )
+);
+
+builder.Services.AddHangfireServer();
+
+// 2.2 Add AI Client
+builder.Services.AddSingleton<IChatClient, NoopChatClient>();
+
 builder.Services.AddControllers();
 
 // 3. Add Domain Modules
