@@ -96,7 +96,7 @@ const quickChats = [
             class="[view-transition-name:chat-prompt]"
             variant="subtle"
             :ui="{ base: 'px-1.5' }"
-            @submit="onSubmit"
+            @submit.prevent="onSubmit"
           >
             <template #footer>
               <div class="flex items-center gap-1">

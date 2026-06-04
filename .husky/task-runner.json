@@ -1,0 +1,29 @@
+{
+   "tasks": [
+      {
+         "name": "formatting",
+         "group": "pre-commit",
+         "command": "treefmt",
+         "args": ["--staged"],
+         "include": ["**/*"]
+      },
+      {
+         "name": "backend-tests",
+         "group": "pre-push",
+         "command": "dotnet",
+         "args": ["test"]
+      },
+      {
+         "name": "frontend-tests",
+         "group": "pre-push",
+         "command": "bun",
+         "args": ["--cwd", "client", "test"]
+      },
+      {
+         "name": "secret-scanning",
+         "group": "pre-push",
+         "command": "gitleaks",
+         "args": ["protect", "--staged", "--verbose"]
+      }
+   ]
+}

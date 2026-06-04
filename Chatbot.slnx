@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/api/">
+    <Project Path="api/Chatbot.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Chat/">
+    <Project Path="src/Modules/Chat/Chatbot.Modules.Chat.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Identity/">
+    <Project Path="src/Modules/Identity/Chatbot.Modules.Identity.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Knowledge/">
+    <Project Path="src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/Chatbot.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Chatbot.Tests.Architecture/Chatbot.Tests.Architecture.csproj" />
+    <Project Path="tests/Chatbot.Tests.Integration/Chatbot.Tests.Integration.csproj" />
+    <Project Path="tests/Chatbot.Tests.Unit/Chatbot.Tests.Unit.csproj" />
+  </Folder>
+</Solution>

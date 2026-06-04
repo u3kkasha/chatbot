@@ -1,45 +1,35 @@
 <script setup lang="ts">
-import { Chat } from "@ai-sdk/vue";
-import { DefaultChatTransport } from "ai";
+import { useChat } from "@ai-sdk/vue";
 
 const route = useRoute();
 const toast = useToast();
+const { csrf, headerName } = useCsrf();
 
-const input = ref("");
-
-const chat = new Chat({
-  id: (route.params.id as string) || "default-chat",
-  transport: new DefaultChatTransport({
+const { messages, input, handleSubmit, status, stop, regenerate, error } =
+  useChat({
+    id: (route.params.id as string) || "default-chat",
     api: "/api/chat",
-  }),
-  onError(error) {
-    let message = error.message;
-    if (typeof message === "string" && message[0] === "{") {
-      try {
-        message = JSON.parse(message).message || message;
-      } catch {
-        // keep original message on malformed JSON
+    headers: {
+      [headerName]: csrf
+    },
+    onError(error) {
+      let message = error.message;
+      if (typeof message === "string" && message[0] === "{") {
+        try {
+          message = JSON.parse(message).message || message;
+        } catch {
+          // keep original message on malformed JSON
+        }
       }
-    }
 
-    toast.add({
-      description: message,
-      icon: "i-lucide-alert-circle",
-      color: "error",
-      duration: 0,
-    });
-  },
-});
-
-async function handleSubmit(e: Event) {
-  e.preventDefault();
-  if (input.value.trim()) {
-    chat.sendMessage({
-      text: input.value,
-    });
-    input.value = "";
-  }
-}
+      toast.add({
+        description: message,
+        icon: "i-lucide-alert-circle",
+        color: "error",
+        duration: 0,
+      });
+    },
+  });
 </script>
 
 <template>
@@ -61,8 +51,8 @@ async function handleSubmit(e: Event) {
         <UContainer class="flex-1 flex flex-col gap-4 sm:gap-6">
           <UChatMessages
             should-auto-scroll
-            :messages="chat.messages"
-            :status="chat.status"
+            :messages="messages"
+            :status="status"
             class="pt-(--ui-header-height) pb-4 sm:pb-6"
           >
             <template #indicator>
@@ -79,7 +69,7 @@ async function handleSubmit(e: Event) {
 
           <UChatPrompt
             v-model="input"
-            :error="chat.error"
+            :error="error"
             variant="subtle"
             class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
             :ui="{ base: 'px-1.5' }"
@@ -91,11 +81,11 @@ async function handleSubmit(e: Event) {
               </div>
 
               <UChatPromptSubmit
-                :status="chat.status"
+                :status="status"
                 color="neutral"
                 size="sm"
-                @stop="chat.stop()"
-                @reload="chat.regenerate()"
+                @stop="stop()"
+                @reload="regenerate()"
               />
             </template>
           </UChatPrompt>

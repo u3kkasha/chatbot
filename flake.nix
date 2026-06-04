@@ -52,13 +52,14 @@
             tilt
             docker
             docker-compose
+            gitleaks
             xdg-utils
             config.treefmt.build.wrapper
           ];
 
           commands = [
             {
-              name = "tilt-up";
+              name = "start";
               command = "tilt up";
               help = "Start the Tilt development environment";
             }

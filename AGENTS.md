@@ -6,7 +6,9 @@ This file provides foundational mandates for AI agents (like Gemini CLI) operati
 
 - **Formatting:** ALWAYS use `treefmt` (or `nix fmt`) before committing changes. Do not use individual formatters manually.
 - **Architecture:** Follow the established pattern of a .NET 10 API and Nuxt 4 Client.
-- **Dependencies:** New tools or SDKs should be added to `flake.nix` to ensure environment consistency.
+- **Dependencies:** 
+  - New tools or SDKs should be added to `flake.nix` to ensure environment consistency.
+  - **Package Management:** AI agents MUST use terminal commands (e.g., `dotnet add package`, `bun add`) to manage project-level dependencies. DO NOT manually edit `csproj`, `package.json`, or lock files for adding/removing packages.
 
 ## Source Control
 

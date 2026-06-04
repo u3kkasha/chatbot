@@ -6,6 +6,8 @@ export default defineNuxtConfig({
     "@comark/nuxt",
     "nuxt-auth-utils",
     "nuxt-csurf",
+    "@pinia/nuxt",
+    "@pinia/colada-nuxt",
   ],
 
   devtools: {
@@ -20,10 +22,21 @@ export default defineNuxtConfig({
 
   compatibilityDate: "2024-07-11",
 
+  routeRules: {
+    "/api/chat/**": { proxy: "http://localhost:5136/api/chat/**" },
+    "/api/chats/**": { proxy: "http://localhost:5136/api/chats/**" },
+  },
+
+  icon: {
+    clientBundle: {
+      scan: true,
+      includeCustomCollections: true,
+    },
+  },
 
   vite: {
     optimizeDeps: {
-      include: [],
+      include: ["@vue/devtools-core", "@vue/devtools-kit", "date-fns"],
     },
   },
 
