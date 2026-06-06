@@ -25,6 +25,31 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
     }
 
     [Fact]
+    public void StorageBroker_ShouldUseSnakeCaseNamingConvention()
+    {
+        // Arrange
+        var entityType = _storageBroker.Model.FindEntityType(typeof(User));
+        entityType.Should().NotBeNull();
+
+        // Act
+        var tableName = entityType!.GetTableName();
+        var idProperty = entityType.FindProperty(nameof(User.Id));
+        var createdDateProperty = entityType.FindProperty(nameof(User.CreatedDate));
+
+        var storeObject = Microsoft.EntityFrameworkCore.Metadata.StoreObjectIdentifier.Table(
+            tableName!,
+            entityType.GetSchema()
+        );
+        var idColumnName = idProperty?.GetColumnName(storeObject);
+        var createdDateColumnName = createdDateProperty?.GetColumnName(storeObject);
+
+        // Assert
+        tableName.Should().Be("users");
+        idColumnName.Should().Be("id");
+        createdDateColumnName.Should().Be("created_date");
+    }
+
+    [Fact]
     public async Task InsertUserAsync_ShouldInsertUser()
     {
         // Arrange

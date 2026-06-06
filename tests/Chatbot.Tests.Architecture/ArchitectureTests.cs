@@ -69,4 +69,27 @@ public class ArchitectureTests
         // Assert
         result.Should().NotBeEmpty("The Identity module should have an IdentityModule type.");
     }
+
+    [Fact]
+    public void Assemblies_ShouldNotHaveDependenciesOnAutoMapperOrMapster()
+    {
+        // Arrange
+        var assemblies = new[] { IdentityAssembly, ChatAssembly, KnowledgeAssembly, ApiAssembly };
+
+        foreach (var assembly in assemblies)
+        {
+            var result = Types
+                .InAssembly(assembly)
+                .ShouldNot()
+                .HaveDependencyOnAny("AutoMapper", "Mapster")
+                .GetResult();
+
+            // Assert
+            result
+                .IsSuccessful.Should()
+                .BeTrue(
+                    $"Assembly {assembly.GetName().Name} should not depend on AutoMapper or Mapster to enforce Manual Mapping Only."
+                );
+        }
+    }
 }
