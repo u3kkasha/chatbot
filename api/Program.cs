@@ -85,6 +85,9 @@ app.UseCors();
 
 app.MapGet("/health", () => Results.Ok(new HealthCheckResponse("Healthy", DateTime.UtcNow)));
 
+// 5. Map Module Endpoints
+app.MapChatModule();
+
 app.Run();
 
 public partial class Program { }

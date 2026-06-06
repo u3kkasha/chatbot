@@ -32,8 +32,8 @@
     - [x] **SnakeCase** naming.
     - [x] **Audit Interceptors** (implemented and unit tested).
     - [x] **Native JSON Mapping** for citations and AI metadata.
-- [ ] **Real-time Streaming Foundation:**
-  - [ ] Scaffold **TypedResults.ServerSentEvents** support for lightweight, unidirectional AI token streaming.
+- [x] **Real-time Streaming Foundation:**
+  - [x] Scaffold **TypedResults.ServerSentEvents** support for lightweight, unidirectional AI token streaming.
 - [ ] **Secret Management:**
   - Implement **VarLock** for secure local secret management.
 - [ ] **Startup Configuration Validation:**
