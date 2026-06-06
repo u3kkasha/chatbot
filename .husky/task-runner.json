@@ -17,8 +17,19 @@
       "name": "frontend-lint",
       "group": "pre-commit",
       "command": "bun",
-      "args": ["--cwd", "client", "eslint", "--fix", "${staged}"],
-      "include": ["client/**/*.ts", "client/**/*.vue", "client/**/*.js", "client/**/*.mjs"]
+      "args": [
+        "client/node_modules/eslint/bin/eslint.js",
+        "--config",
+        "client/eslint.config.mjs",
+        "--fix",
+        "${staged}"
+      ],
+      "include": [
+        "client/**/*.ts",
+        "client/**/*.vue",
+        "client/**/*.js",
+        "client/**/*.mjs"
+      ]
     },
     {
       "name": "backend-typecheck",

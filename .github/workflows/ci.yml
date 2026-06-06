@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Verify Codebase
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: determinateSystems/nix-installer-action@v4
+
+      - name: Magic Nix Cache
+        uses: determinateSystems/magic-nix-cache-action@v4
+
+      - name: Install Frontend Dependencies
+        run: nix develop --command bun install --cwd client
+
+      - name: Check Formatting (treefmt)
+        run: nix develop --command treefmt --check
+
+      - name: Check Backend Formatting (dotnet format)
+        run: nix develop --command dotnet format --verify-no-changes
+
+      - name: Run Knip
+        run: nix develop --command bun --cwd client knip
+
+      - name: Run Backend Build
+        run: nix develop --command dotnet build
+
+      - name: Run Backend Tests
+        run: nix develop --command dotnet test
+
+      - name: Run Frontend Lint
+        run: nix develop --command bun --cwd client lint
+
+      - name: Run Frontend Typecheck
+        run: nix develop --command bun --cwd client typecheck
+
+      - name: Run Frontend Tests
+        run: nix develop --command bun --cwd client test run
