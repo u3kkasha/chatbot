@@ -1,8 +1,8 @@
 using System.Net;
 using Chatbot.Tests.Integration.Brokers.Storage;
-using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Shouldly;
 
 namespace Chatbot.Tests.Integration;
 
@@ -34,10 +34,10 @@ public class StartupTests
         var response = await _httpClient.GetAsync("/health");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        content.Should().Contain("Healthy");
+        content.ShouldContain("Healthy");
     }
 
     [Fact]
@@ -47,6 +47,6 @@ public class StartupTests
         var response = await _httpClient.GetAsync("/scalar/v1");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 }

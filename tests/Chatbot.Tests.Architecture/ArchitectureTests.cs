@@ -1,6 +1,6 @@
 using System.Reflection;
-using FluentAssertions;
 using NetArchTest.Rules;
+using Shouldly;
 using Xunit;
 
 namespace Chatbot.Tests.Architecture;
@@ -32,9 +32,7 @@ public class ArchitectureTests
                 .GetResult();
 
             // Assert
-            result
-                .IsSuccessful.Should()
-                .BeTrue($"Module {module.GetName().Name} should be isolated.");
+            result.IsSuccessful.ShouldBeTrue($"Module {module.GetName().Name} should be isolated.");
         }
     }
 
@@ -49,11 +47,9 @@ public class ArchitectureTests
             .GetTypes();
 
         // Assert
-        result
-            .Should()
-            .BeEmpty(
-                "The API host should not use reflection-based MVC controllers to maintain Native AOT compatibility."
-            );
+        result.ShouldBeEmpty(
+            "The API host should not use reflection-based MVC controllers to maintain Native AOT compatibility."
+        );
     }
 
     [Fact]
@@ -67,7 +63,7 @@ public class ArchitectureTests
             .GetTypes();
 
         // Assert
-        result.Should().NotBeEmpty("The Identity module should have an IdentityModule type.");
+        result.ShouldNotBeEmpty("The Identity module should have an IdentityModule type.");
     }
 
     [Fact]
@@ -85,11 +81,9 @@ public class ArchitectureTests
                 .GetResult();
 
             // Assert
-            result
-                .IsSuccessful.Should()
-                .BeTrue(
-                    $"Assembly {assembly.GetName().Name} should not depend on AutoMapper or Mapster to enforce Manual Mapping Only."
-                );
+            result.IsSuccessful.ShouldBeTrue(
+                $"Assembly {assembly.GetName().Name} should not depend on AutoMapper or Mapster to enforce Manual Mapping Only."
+            );
         }
     }
 }

@@ -1,8 +1,8 @@
 using Chatbot.Modules.Identity.Brokers.Storage;
 using Chatbot.Modules.Identity.Models.Users;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using Shouldly;
 
 namespace Chatbot.Tests.Integration.Brokers.Storage;
 
@@ -21,7 +21,7 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
         var schema = entityType?.GetSchema();
 
         // Assert
-        schema.Should().Be("identity");
+        schema.ShouldBe("identity");
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
     {
         // Arrange
         var entityType = _storageBroker.Model.FindEntityType(typeof(User));
-        entityType.Should().NotBeNull();
+        entityType.ShouldNotBeNull();
 
         // Act
         var tableName = entityType!.GetTableName();
@@ -44,9 +44,9 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
         var createdDateColumnName = createdDateProperty?.GetColumnName(storeObject);
 
         // Assert
-        tableName.Should().Be("users");
-        idColumnName.Should().Be("id");
-        createdDateColumnName.Should().Be("created_date");
+        tableName.ShouldBe("users");
+        idColumnName.ShouldBe("id");
+        createdDateColumnName.ShouldBe("created_date");
     }
 
     [Fact]
@@ -69,11 +69,11 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
         var insertedUser = await _storageBroker.InsertUserAsync(user);
 
         // Assert
-        insertedUser.Should().NotBeNull();
-        insertedUser.Id.Should().Be(user.Id);
+        insertedUser.ShouldNotBeNull();
+        insertedUser.Id.ShouldBe(user.Id);
 
         var selectUser = await _storageBroker.SelectUserByIdAsync(user.Id);
-        selectUser.Should().NotBeNull();
-        selectUser!.Username.Should().Be(user.Username);
+        selectUser.ShouldNotBeNull();
+        selectUser!.Username.ShouldBe(user.Username);
     }
 }

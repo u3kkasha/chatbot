@@ -10,7 +10,7 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Moq;
 using Xunit;
 
@@ -40,8 +40,8 @@ namespace MyProject.Tests.Unit.Services.Foundations.Students
             Student actualStudent = await this.studentService.AddStudentAsync(inputStudent);
 
             // then
-            // test-102: FluentAssertions
-            actualStudent.Should().BeEquivalentTo(expectedStudent);
+            // test-102: Shouldly
+            actualStudent.ShouldBeEquivalentTo(expectedStudent);
 
             // test-030: Verify exact broker calls
             this.storageBrokerMock.Verify(

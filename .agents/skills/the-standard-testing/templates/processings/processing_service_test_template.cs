@@ -9,7 +9,7 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Force.DeepCloner;
 using [Namespace].Models.Foundations.[Entities];
 using [Namespace].Models.Processings.[Entities].Exceptions;
@@ -53,7 +53,7 @@ namespace [Namespace].Tests.Unit.Services.Processings.[Entities]
                 .ModifyOrAdd[Entity]Async(modified[Entity]);
 
             // Then
-            actual[Entity].Should().BeEquivalentTo(expected[Entity]);
+            actual[Entity].ShouldBeEquivalentTo(expected[Entity]);
 
             this.[entity]ServiceMock.Verify(service =>
                 service.Retrieve[Entity]ByIdAsync(modified[Entity].Id),
@@ -151,7 +151,7 @@ namespace [Namespace].Tests.Unit.Services.Processings.[Entities]
                     [entity]ModifyOrAddTask.AsTask);
 
             // then
-            actualException.Should().BeEquivalentTo(expected[Entity]ProcessingDependencyValidationException);
+            actualException.ShouldBeEquivalentTo(expected[Entity]ProcessingDependencyValidationException);
 
             this.[entity]ServiceMock.Verify(service =>
                 service.Retrieve[Entity]ByIdAsync(input[Entity].Id),
@@ -195,7 +195,7 @@ namespace [Namespace].Tests.Unit.Services.Processings.[Entities]
                     [entity]ModifyOrAddTask.AsTask);
 
             // then
-            actualException.Should().BeEquivalentTo(expected[Entity]ProcessingDependencyException);
+            actualException.ShouldBeEquivalentTo(expected[Entity]ProcessingDependencyException);
 
             this.[entity]ServiceMock.Verify(service =>
                 service.Retrieve[Entity]ByIdAsync(input[Entity].Id),
@@ -243,7 +243,7 @@ namespace [Namespace].Tests.Unit.Services.Processings.[Entities]
                 await Assert.ThrowsAsync<[Entity]ProcessingServiceException>(add[Entity]Task.AsTask);
 
             // then
-            actualException.Should().BeEquivalentTo(expected[Entity]ProcessingServiveException);
+            actualException.ShouldBeEquivalentTo(expected[Entity]ProcessingServiveException);
 
             this.[entity]ServiceMock.Verify(service =>
                 service.Retrieve[Entity]ByIdAsync(input[Entity].Id),
@@ -294,8 +294,7 @@ namespace [Namespace].Tests.Unit.Services.Processings.[Entities]
                 await Assert.ThrowsAsync<[Entity]ProcessingValidationException>(Add[Entity]Task.AsTask);
 
             //then
-            actual[Entity]ProcessingValidationException.Should()
-                .BeEquivalentTo(expected[Entity]ProcessingValidationException);
+            actual[Entity]ProcessingValidationException.ShouldBeEquivalentTo(expected[Entity]ProcessingValidationException);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogErrorAsync(It.Is(SameExceptionAs(
@@ -336,8 +335,7 @@ namespace [Namespace].Tests.Unit.Services.Processings.[Entities]
                 await Assert.ThrowsAsync<[Entity]ProcessingValidationException>(Retrieve[Entity]Task.AsTask);
 
             //then
-            actual[Entity]ProcessingValidationException.Should()
-                .BeEquivalentTo(expected[Entity]ProcessingValidationException);
+            actual[Entity]ProcessingValidationException.ShouldBeEquivalentTo(expected[Entity]ProcessingValidationException);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogErrorAsync(It.Is(SameExceptionAs(

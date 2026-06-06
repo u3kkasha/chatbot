@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Chatbot.Shared.Infrastructure.Resilience;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Registry;
+using Shouldly;
 using Xunit;
 
 namespace Chatbot.Tests.Unit.Infrastructure;
@@ -38,8 +38,8 @@ public class ResilienceTests
         });
 
         // Assert
-        result.Should().Be("success");
-        callCount.Should().Be(3); // Attempt 1 (fail), Attempt 2 (fail), Attempt 3 (success)
+        result.ShouldBe("success");
+        callCount.ShouldBe(3); // Attempt 1 (fail), Attempt 2 (fail), Attempt 3 (success)
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class ResilienceTests
         };
 
         // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>();
-        callCount.Should().Be(4); // Attempt 1 (initial) + 3 retries = 4 attempts total
+        await Should.ThrowAsync<InvalidOperationException>(act);
+        callCount.ShouldBe(4); // Attempt 1 (initial) + 3 retries = 4 attempts total
     }
 }

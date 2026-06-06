@@ -151,7 +151,7 @@
   "required_libraries": {
     "event_infrastructure": "LeVent",
     "mocking": "Moq",
-    "assertions": "FluentAssertions",
+    "assertions": "Shouldly",
     "test_framework": "xUnit",
     "exception_base": "Xeption"
   }

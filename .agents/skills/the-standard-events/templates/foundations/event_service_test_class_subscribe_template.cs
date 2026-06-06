@@ -50,7 +50,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entity]Events
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Moq;
 using [Namespace].Models.Services.Foundations.[Entity]Events;
 using [Namespace].Models.Foundations.[Entity]Events.Exceptions;
@@ -81,8 +81,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entity]Events
                 Assert.Throws<[Entity]EventValidationException>(subscribeTo[Entity]EventAction);
 
             // then
-            actual[Entity]EventValidationException.Should()
-                .BeEquivalentTo(expected[Entity]EventValidationException);
+            actual[Entity]EventValidationException.ShouldBeEquivalentTo(expected[Entity]EventValidationException);
 
             this.eventBrokerMock.Verify(broker =>
                 broker.SubscribeTo[Entity]Event([entity]EventHandlerMock),
@@ -100,7 +99,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entity]Events
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Moq;
 using [Namespace].Models.Services.Foundations.[Entity]Events;
 using [Namespace].Models.Foundations.[Entity]Events.Exceptions;
@@ -141,8 +140,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entity]Events
                 Assert.Throws<[Entity]EventServiceException>(subscribeTo[Entity]EventAction);
 
             // then
-            actual[Entity]EventValidationException.Should()
-                .BeEquivalentTo(expected[Entity]EventServiceException);
+            actual[Entity]EventValidationException.ShouldBeEquivalentTo(expected[Entity]EventServiceException);
 
             this.eventBrokerMock.Verify(broker =>
                 broker.SubscribeTo[Entity]Event([entity]EventHandlerMock.Object),

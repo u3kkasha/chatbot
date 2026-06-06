@@ -293,7 +293,7 @@ Each entity's tests mirror the same partial-class split as the service:
 | Convention           | Detail                                                                                      |
 | -------------------- | ------------------------------------------------------------------------------------------- |
 | Mocking              | **Moq** — `Mock<IStorageBroker>`, `Mock<IModernApiBroker>`, `Mock<ILoggingBroker>`         |
-| Assertions           | **FluentAssertions** — `Should().BeEquivalentTo()`                                         |
+| Assertions           | **Shouldly** — `ShouldBeEquivalentTo()`                                                     |
 | Deep cloning         | **DeepCloner** — to isolate input/expected/actual objects                                   |
 | Data generation      | **Tynamix.ObjectFiller** — `Filler<{Entity}>` with custom property setup                  |
 | Exception comparison | `Xeption.SameExceptionAs()` via `SameExceptionAs` expression helper                        |
@@ -341,7 +341,7 @@ For storage-based services, steps 4–7 are replaced with the corresponding SQL/
 | `EFxceptions`          | EF Core wrapper that throws meaningful exceptions |
 | `RESTFulSense`         | HTTP client wrapper for external API brokers      |
 | `Moq`                  | Mock framework for unit tests                     |
-| `FluentAssertions`     | Readable assertion syntax                         |
+| `Shouldly`             | Readable assertion syntax                         |
 | `DeepCloner`           | Value-based deep cloning of test objects           |
 | `Tynamix.ObjectFiller` | Random test data generation                       |
 | `xunit`                | Unit test framework                               |

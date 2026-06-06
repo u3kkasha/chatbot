@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Chatbot.Tests.Integration.Brokers.Storage;
-using FluentAssertions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using Xunit;
 
 namespace Chatbot.Tests.Integration;
@@ -49,9 +49,9 @@ public class MiddlewareTests
         var response = await _httpClient.GetAsync("/health");
 
         // Assert
-        response.Headers.Contains("X-Correlation-Id").Should().BeTrue();
+        response.Headers.Contains("X-Correlation-Id").ShouldBeTrue();
         var correlationId = response.Headers.GetValues("X-Correlation-Id").FirstOrDefault();
-        Guid.TryParse(correlationId, out _).Should().BeTrue();
+        Guid.TryParse(correlationId, out _).ShouldBeTrue();
     }
 
     [Fact]
@@ -66,9 +66,9 @@ public class MiddlewareTests
         var response = await _httpClient.SendAsync(request);
 
         // Assert
-        response.Headers.Contains("X-Correlation-Id").Should().BeTrue();
+        response.Headers.Contains("X-Correlation-Id").ShouldBeTrue();
         var correlationId = response.Headers.GetValues("X-Correlation-Id").FirstOrDefault();
-        correlationId.Should().Be(customCorrelationId);
+        correlationId.ShouldBe(customCorrelationId);
     }
 
     private class ExceptionThrowingStartupFilter : IStartupFilter
@@ -119,11 +119,11 @@ public class MiddlewareTests
         var response = await client.GetAsync("/throw-test-exception");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
         var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-        problemDetails.Should().NotBeNull();
-        problemDetails!.Title.Should().Be("Internal Server Error");
-        problemDetails.Status.Should().Be(500);
-        problemDetails.Detail.Should().NotBeNullOrWhiteSpace();
+        problemDetails.ShouldNotBeNull();
+        problemDetails!.Title.ShouldBe("Internal Server Error");
+        problemDetails.Status.ShouldBe(500);
+        problemDetails.Detail.ShouldNotBeNullOrWhiteSpace();
     }
 }

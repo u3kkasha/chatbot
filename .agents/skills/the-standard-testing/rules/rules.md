@@ -109,7 +109,7 @@
 
 **test-100** [ERROR] Use GWT pattern: Given / When / Then with inline comments.
 **test-101** [ERROR] Mock all dependencies using Moq.
-**test-102** [ERROR] Use FluentAssertions for readable assertions (`Should().BeEquivalentTo()`).
+**test-102** [ERROR] Use Shouldly for readable assertions (`ShouldBeEquivalentTo()`).
 **test-103** [ERROR] Use xUnit: `[Fact]` for single cases, `[Theory] [InlineData]` for parameterized cases.
 **test-104** [ERROR] Test method names: `Should{Action}Async` for success cases; `ShouldThrow{Exception}On{Action}If{Condition}AndLogItAsync` for error cases.
 

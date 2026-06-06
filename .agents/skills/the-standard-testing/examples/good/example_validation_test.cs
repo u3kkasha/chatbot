@@ -10,7 +10,7 @@
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Moq;
 using Xunit;
 
@@ -42,8 +42,7 @@ namespace MyProject.Tests.Unit.Services.Foundations.Students
             // then
             // test-036: Xeption.SameExceptionAs for exception equality
             actualStudentValidationException
-                .Should()
-                .BeEquivalentTo(expectedStudentValidationException);
+                .ShouldBeEquivalentTo(expectedStudentValidationException);
 
             // test-032: Verify logging
             this.loggingBrokerMock.Verify(
@@ -114,8 +113,7 @@ namespace MyProject.Tests.Unit.Services.Foundations.Students
             // then
             // test-021: Continuous validation — all fields collected
             actualStudentValidationException
-                .Should()
-                .BeEquivalentTo(expectedStudentValidationException);
+                .ShouldBeEquivalentTo(expectedStudentValidationException);
 
             this.loggingBrokerMock.Verify(
                 broker =>

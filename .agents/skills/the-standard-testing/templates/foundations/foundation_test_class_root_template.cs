@@ -10,7 +10,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Tynamix.ObjectFiller;

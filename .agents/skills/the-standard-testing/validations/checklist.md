@@ -58,7 +58,7 @@ Each item is binary: PASS or FAIL.
 
 - [ ] **test-100** All tests use GWT pattern with `// given`, `// when`, `// then` comments.
 - [ ] **test-101** All dependencies are mocked with Moq.
-- [ ] **test-102** Assertions use FluentAssertions (`Should().BeEquivalentTo()`).
+- [ ] **test-102** Assertions use Shouldly (`ShouldBeEquivalentTo()`).
 - [ ] **test-103** Single-case tests use `[Fact]`; parameterized tests use `[Theory][InlineData]`.
 - [ ] **test-104** Test names follow `Should{Action}Async` or `ShouldThrow{Exception}On{Action}If{Condition}AndLogItAsync`.
 

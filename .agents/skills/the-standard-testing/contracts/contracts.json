@@ -56,7 +56,7 @@
 
   "required_libraries": {
     "mocking": "Moq",
-    "assertions": "FluentAssertions",
+    "assertions": "Shouldly",
     "deep_cloning": "DeepCloner",
     "random_data": "Tynamix.ObjectFiller",
     "exception_comparison": "Xeption.SameExceptionAs",

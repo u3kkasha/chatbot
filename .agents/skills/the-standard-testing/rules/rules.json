@@ -77,7 +77,7 @@
     { "id": "test-094", "category": "structure", "description": "Exceptions file contains dependency/service exception tests.", "severity": "error" },
     { "id": "test-100", "category": "conventions", "description": "Use GWT pattern: Given / When / Then with inline comments.", "severity": "error" },
     { "id": "test-101", "category": "conventions", "description": "Mock all dependencies using Moq.", "severity": "error" },
-    { "id": "test-102", "category": "conventions", "description": "Use FluentAssertions for readable assertions.", "severity": "error" },
+    { "id": "test-102", "category": "conventions", "description": "Use Shouldly for readable assertions.", "severity": "error" },
     { "id": "test-103", "category": "conventions", "description": "Use xUnit: [Fact] for single cases, [Theory][InlineData] for parameterized.", "severity": "error" },
     { "id": "test-104", "category": "conventions", "description": "Test names: Should{Action}Async or ShouldThrow{Exception}On{Action}If{Condition}AndLogItAsync.", "severity": "error" },
     { "id": "test-110", "category": "implementation-order", "description": "Foundation Add test implementation must follow the exact 14-step order.", "severity": "error" },

@@ -15,7 +15,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using [Namespace].Tests.Acceptance.Models.[Entities];
 
 namespace [Namespace].Tests.Acceptance.Apis.[Entities]
@@ -40,8 +40,8 @@ namespace [Namespace].Tests.Acceptance.Apis.[Entities]
                 [Entity] actual[Entity] = 
                     actual[Entities].Single(approval => approval.Id == expected[Entity].Id);
 
-                // test-102: Use FluentAssertions for readable assertions
-                actual[Entity].Should().BeEquivalentTo(expected[Entity], options => options
+                // test-102: Use Shouldly for readable assertions
+                actual[Entity].ShouldBeEquivalentTo(expected[Entity], options => options
                     .Excluding(property => property.CreatedBy)
                     .Excluding(property => property.CreatedDate)
                     .Excluding(property => property.UpdatedBy)

@@ -40,7 +40,7 @@
     "LeVent",
     "xUnit",
     "Moq",
-    "FluentAssertions",
+    "Shouldly",
     "Xeption"
   ],
 

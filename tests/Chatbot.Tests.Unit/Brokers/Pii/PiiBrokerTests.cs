@@ -1,5 +1,5 @@
 using Chatbot.Shared.Brokers.Pii;
-using FluentAssertions;
+using Shouldly;
 
 namespace Chatbot.Tests.Unit.Brokers.Pii;
 
@@ -26,7 +26,7 @@ public class PiiBrokerTests
         var result = _piiBroker.MaskSensitiveData(input);
 
         // Assert
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Fact]
@@ -39,6 +39,6 @@ public class PiiBrokerTests
         var result = _piiBroker.MaskSensitiveData(input);
 
         // Assert
-        result.Should().Be(input);
+        result.ShouldBe(input);
     }
 }

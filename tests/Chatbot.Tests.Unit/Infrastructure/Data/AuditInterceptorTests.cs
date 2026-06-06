@@ -1,8 +1,8 @@
 using Chatbot.Shared.Infrastructure.Data;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using NSubstitute;
+using Shouldly;
 
 namespace Chatbot.Tests.Unit.Infrastructure.Data;
 
@@ -56,8 +56,8 @@ public class AuditInterceptorTests
         await context.SaveChangesAsync();
 
         // Assert
-        entity.CreatedDate.Should().Be(instant);
-        entity.UpdatedDate.Should().Be(instant);
+        entity.CreatedDate.ShouldBe(instant);
+        entity.UpdatedDate.ShouldBe(instant);
     }
 
     [Fact]
@@ -92,8 +92,8 @@ public class AuditInterceptorTests
             context.Entities.Update(entity);
             await context.SaveChangesAsync();
 
-            entity.CreatedDate.Should().Be(initialInstant); // Stays the same
-            entity.UpdatedDate.Should().Be(modifiedInstant); // Updated to new instant
+            entity.CreatedDate.ShouldBe(initialInstant); // Stays the same
+            entity.UpdatedDate.ShouldBe(modifiedInstant); // Updated to new instant
         }
     }
 }

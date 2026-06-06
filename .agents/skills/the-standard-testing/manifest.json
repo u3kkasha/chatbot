@@ -15,7 +15,7 @@
     "Standard-compliant test files: root + Logic + Validations + Exceptions",
     "Correct test implementation order",
     "Feedback on test violations with rule references",
-    "Test code that follows GWT, uses Moq, FluentAssertions, DeepCloner, ObjectFiller"
+    "Test code that follows GWT, uses Moq, Shouldly, DeepCloner, ObjectFiller"
   ],
 
   "dependencies": [
@@ -31,7 +31,7 @@
   "required_libraries": [
     "xUnit",
     "Moq",
-    "FluentAssertions",
+    "Shouldly",
     "DeepCloner",
     "Tynamix.ObjectFiller",
     "Xeption"

@@ -92,7 +92,7 @@ namespace [Namespace].Tests.Unit.Controllers.[Entities]
             var attribute = methodAttribute ?? controllerAttribute;
 
             // Then
-            attribute.Should().NotBeNull();
+            attribute.ShouldNotBeNull();
 
             var actualAttributeValue = attributeType
                 .GetProperty(attributeProperty)?
@@ -104,8 +104,8 @@ namespace [Namespace].Tests.Unit.Controllers.[Entities]
                 .Where(role => !string.IsNullOrEmpty(role))
                 .ToList();
 
-            // test-102: Use FluentAssertions for readable assertions
-            actualAttributeValues.Should().BeEquivalentTo(expectedAttributeValues);
+            // test-102: Use Shouldly for readable assertions
+            actualAttributeValues.ShouldBeEquivalentTo(expectedAttributeValues);
         }
 
         // test-072: Unit-test auth failure mappings
@@ -129,8 +129,8 @@ namespace [Namespace].Tests.Unit.Controllers.[Entities]
             var attribute = methodAttribute ?? controllerAttribute;
 
             // Then
-            // test-102: Use FluentAssertions for readable assertions
-            attribute.Should().BeNull();
+            // test-102: Use Shouldly for readable assertions
+            attribute.ShouldBeNull();
         }
     }
 }

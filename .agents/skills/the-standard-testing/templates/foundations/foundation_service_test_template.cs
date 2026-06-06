@@ -36,7 +36,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entities]
                 await this.[entity]Service.Add[Entity]Async(input[Entity]);
 
             // then
-            actual[Entity].Should().BeEquivalentTo(expected[Entity]);
+            actual[Entity].ShouldBeEquivalentTo(expected[Entity]);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.Insert[Entity]Async(input[Entity]),
@@ -81,8 +81,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entities]
                     add[Entity]Task.AsTask);
 
             // then
-            actual[Entity]ValidationException.Should()
-                .BeEquivalentTo(expected[Entity]ValidationException);
+            actual[Entity]ValidationException.ShouldBeEquivalentTo(expected[Entity]ValidationException);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -150,8 +149,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entities]
                     add[Entity]Task.AsTask);
 
             // then
-            actual[Entity]ValidationException.Should()
-                .BeEquivalentTo(expected[Entity]ValidationException);
+            actual[Entity]ValidationException.ShouldBeEquivalentTo(expected[Entity]ValidationException);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -216,8 +214,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entities]
                     add[Entity]Task.AsTask);
 
             // then
-            actual[Entity]DependencyValidationException.Should()
-                .BeEquivalentTo(expected[Entity]DependencyValidationException);
+            actual[Entity]DependencyValidationException.ShouldBeEquivalentTo(expected[Entity]DependencyValidationException);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.Insert[Entity]Async(some[Entity]),
@@ -263,8 +260,7 @@ namespace [Namespace].Tests.Unit.Services.Foundations.[Entities]
                     add[Entity]Task.AsTask);
 
             // then
-            actual[Entity]ServiceException.Should()
-                .BeEquivalentTo(expected[Entity]ServiceException);
+            actual[Entity]ServiceException.ShouldBeEquivalentTo(expected[Entity]ServiceException);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.Insert[Entity]Async(some[Entity]),

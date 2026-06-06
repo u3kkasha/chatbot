@@ -1,6 +1,6 @@
 using Chatbot.Modules.Identity.Models.Users;
-using FluentAssertions;
 using NodaTime;
+using Shouldly;
 
 namespace Chatbot.Tests.Unit.Models.Users;
 
@@ -24,7 +24,7 @@ public class UserTests
         );
 
         // Assert
-        user.Id.Should().Be(userId);
-        user.Username.Should().Be("testuser");
+        user.Id.ShouldBe(userId);
+        user.Username.ShouldBe("testuser");
     }
 }

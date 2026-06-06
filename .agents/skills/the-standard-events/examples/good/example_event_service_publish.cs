@@ -256,7 +256,7 @@ namespace MyProject.Tests.Unit.Services.Foundations.PostEvents
 // ---------------------------------------------------------------
 
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Moq;
 using MyProject.Models.Services.Foundations.PostEvents;
 using MyProject.Models.Services.Foundations.PostEvents.Exceptions;
@@ -286,8 +286,7 @@ namespace MyProject.Tests.Unit.Services.Foundations.PostEvents
                 await Assert.ThrowsAsync<PostEventValidationException>(publishPostTask.AsTask);
 
             // then
-            actualPostEventValidationException.Should()
-                .BeEquivalentTo(expectedPostEventValidationException);
+            actualPostEventValidationException.ShouldBeEquivalentTo(expectedPostEventValidationException);
 
             // events-077: Times.Never -- broker must not be called when validation fails
             this.eventBrokerMock.Verify(broker =>
@@ -308,7 +307,7 @@ namespace MyProject.Tests.Unit.Services.Foundations.PostEvents
 
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
+using Shouldly;
 using Moq;
 using MyProject.Models.Services.Foundations.PostEvents;
 using MyProject.Models.Services.Foundations.PostEvents.Exceptions;
@@ -347,8 +346,7 @@ namespace MyProject.Tests.Unit.Services.Foundations.PostEvents
                 await Assert.ThrowsAsync<PostEventServiceException>(publishPostTask.AsTask);
 
             // then
-            actualPostEventServiceException.Should()
-                .BeEquivalentTo(expectedPostEventServiceException);
+            actualPostEventServiceException.ShouldBeEquivalentTo(expectedPostEventServiceException);
 
             this.eventBrokerMock.Verify(broker =>
                 broker.PublishPostEventAsync(inputPost),

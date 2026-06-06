@@ -25,7 +25,7 @@ namespace MyProject.Tests.Bad
             // No mock setup — incomplete test
             var result = await this.studentService.AddStudentAsync(student);
 
-            // test-102 VIOLATION: Not using FluentAssertions
+            // test-102 VIOLATION: Not using Shouldly
             Assert.NotNull(result);
             Assert.Equal(student.Id, result.Id);
 

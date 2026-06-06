@@ -98,7 +98,7 @@ Student expectedStudent = inputStudent; // same reference
 
 Student actualStudent = await this.studentService.AddStudentAsync(inputStudent);
 
-actualStudent.Should().BeEquivalentTo(expectedStudent); // passes vacuously
+actualStudent.ShouldBeEquivalentTo(expectedStudent); // passes vacuously
 ```
 
 **Why harmful:** If the service modifies the input object in-place, all three references see the modification. The test cannot detect incorrect mutations.
