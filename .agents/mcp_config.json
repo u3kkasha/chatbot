@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "tilt": {
+      "command": "bunx",
+      "args": ["@0xbigboss/tilt-mcp"],
+      "env": {
+        "TILT_PORT": "10350"
+      }
+    },
+    "seq": {
+      "command": "bunx",
+      "args": ["mcp-seq"],
+      "env": {
+        "SEQ_BASE_URL": "http://localhost:8081",
+        "SEQ_API_KEY": "mMtrq9KvLBnzVD3azwwT"
+      }
+    }
+  }
+}
