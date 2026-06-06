@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Code Style and Quality -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+
+    <!-- Native AOT / Source Generator Readiness -->
+    <IsAotCompatible Condition="'$(IsTestProject)' != 'true'">true</IsAotCompatible>
+  </PropertyGroup>
+
+  <!-- Prevent AOT warnings on test projects -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.Tests.Integration'))">
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+</Project>
