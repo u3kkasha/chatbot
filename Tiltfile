@@ -23,7 +23,7 @@ local_resource(
     serve_cmd='cd api && dotnet watch run',
     deps=['api'],
     ignore=['api/bin', 'api/obj'],
-    resource_deps=['postgres', 'qdrant', 'azurite', 'docling-serve'],
+    resource_deps=['postgres', 'qdrant', 'azurite', 'docling-serve', 'garnet', 'seq'],
     readiness_probe=probe(
         http_get=http_get_action(port=5136, path='/health'),
         initial_delay_secs=2,
