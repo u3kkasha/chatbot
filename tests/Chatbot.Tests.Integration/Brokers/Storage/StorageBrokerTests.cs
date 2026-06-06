@@ -8,7 +8,21 @@ namespace Chatbot.Tests.Integration.Brokers.Storage;
 
 public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<TestDatabaseFixture>
 {
-    private readonly StorageBroker _storageBroker = new(fixture.Configuration);
+    private readonly StorageBroker _storageBroker = new(
+        fixture.Configuration,
+        new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance)
+    );
+
+    [Fact]
+    public void StorageBroker_ShouldUseIdentitySchema()
+    {
+        // Arrange & Act
+        var entityType = _storageBroker.Model.FindEntityType(typeof(User));
+        var schema = entityType?.GetSchema();
+
+        // Assert
+        schema.Should().Be("identity");
+    }
 
     [Fact]
     public async Task InsertUserAsync_ShouldInsertUser()
