@@ -41,7 +41,35 @@
 - [ ] **Architecture Testing:**
   - Implement **NetArchTest** suite (enforcing "Manual Mapping Only" and "Module Isolation" rules).
 - [ ] **Automated Type & Schema Generation:**
-  - Auto-generate **TypeScript Types** AND **Zod Schemas** from OpenAPI JSON.
+  - Auto-generate **TypeScript Types** AND **Valibot Schemas** from OpenAPI JSON usign @hey-api tool.
+  - Configuration (`openapi-ts.config.ts`):
+    ```typescript
+    import { defineConfig } from '@hey-api/openapi-ts';
+
+    export default defineConfig({
+      input: './openapi.json',     // Directly populated by the dotnet build target!
+      output: './app/api-client', 
+      plugins: [
+        '@hey-api/client-ofetch',
+        'valibot',              
+        {
+          name: '@hey-api/transformers',
+          dates: 'temporal',       // Maps .NET System.DateTime natively to Temporal
+          bigInt: true,            // Maps .NET long / Int64 values natively to BigInt
+        },
+        {
+          name: '@hey-api/sdk', 
+          validator: true,   
+          transformer: true, 
+        },
+        {
+          name: '@pinia/colada', 
+          queryOptions: true,
+          mutationOptions: true,
+        },
+      ],
+    });
+    ```
 
 ## Phase 2: Foundation & Processing Services
 
