@@ -47,27 +47,28 @@
 - [ ] **Automated Type & Schema Generation:**
   - Auto-generate **TypeScript Types** AND **Valibot Schemas** from OpenAPI JSON usign @hey-api tool.
   - Configuration (`openapi-ts.config.ts`):
+
     ```typescript
-    import { defineConfig } from '@hey-api/openapi-ts';
+    import { defineConfig } from "@hey-api/openapi-ts";
 
     export default defineConfig({
-      input: './openapi.json',     // Directly populated by the dotnet build target!
-      output: './app/api-client', 
+      input: "./openapi.json", // Directly populated by the dotnet build target!
+      output: "./app/api-client",
       plugins: [
-        '@hey-api/client-ofetch',
-        'valibot',              
+        "@hey-api/client-ofetch",
+        "valibot",
         {
-          name: '@hey-api/transformers',
-          dates: 'temporal',       // Maps .NET System.DateTime natively to Temporal
-          bigInt: true,            // Maps .NET long / Int64 values natively to BigInt
+          name: "@hey-api/transformers",
+          dates: "temporal", // Maps .NET System.DateTime natively to Temporal
+          bigInt: true, // Maps .NET long / Int64 values natively to BigInt
         },
         {
-          name: '@hey-api/sdk', 
-          validator: true,   
-          transformer: true, 
+          name: "@hey-api/sdk",
+          validator: true,
+          transformer: true,
         },
         {
-          name: '@pinia/colada', 
+          name: "@pinia/colada",
           queryOptions: true,
           mutationOptions: true,
         },
@@ -127,4 +128,4 @@
   - Verify critical flows.
 - [ ] **Security Validation:**
   - Integration tests for Tenant isolation and PII masking verification.
-rification.
+    rification.

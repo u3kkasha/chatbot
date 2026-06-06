@@ -10,7 +10,7 @@ While "The Standard" provides excellent layering (Brokers -> Services -> Exposer
 
 ## Decision
 
-We will adopt a **Vertical Slice Architecture (VSA)** approach *within* each module of our Modular Monolith. 
+We will adopt a **Vertical Slice Architecture (VSA)** approach _within_ each module of our Modular Monolith.
 
 ### Rules:
 

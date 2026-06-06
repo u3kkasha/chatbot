@@ -16,14 +16,8 @@
     {
       "name": "frontend-lint",
       "group": "pre-commit",
-      "command": "bun",
-      "args": [
-        "client/node_modules/eslint/bin/eslint.js",
-        "--config",
-        "client/eslint.config.mjs",
-        "--fix",
-        "${staged}"
-      ],
+      "command": "bash",
+      "args": [".husky/scripts/frontend-lint.sh", "${staged}"],
       "include": [
         "client/**/*.ts",
         "client/**/*.vue",

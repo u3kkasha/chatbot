@@ -15,11 +15,11 @@ namespace Chatbot.Tests.Integration.Modules.Chat;
 
 public class SseStreamingTests
     : IClassFixture<TestDatabaseFixture>,
-        IClassFixture<WebApplicationFactory<Program>>
+        IClassFixture<IntegrationTestWebApplicationFactory>
 {
     private readonly HttpClient _httpClient;
 
-    public SseStreamingTests(TestDatabaseFixture fixture, WebApplicationFactory<Program> factory)
+    public SseStreamingTests(TestDatabaseFixture fixture, IntegrationTestWebApplicationFactory factory)
     {
         _httpClient = factory
             .WithWebHostBuilder(builder =>
@@ -85,7 +85,8 @@ public class SseStreamingTests
 
         var options = new JsonSerializerOptions
         {
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 
         SseItemParser<SseToken?> itemParser = (_, data) =>

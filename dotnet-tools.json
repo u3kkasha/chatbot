@@ -4,16 +4,12 @@
   "tools": {
     "husky": {
       "version": "0.9.1",
-      "commands": [
-        "husky"
-      ],
+      "commands": ["husky"],
       "rollForward": false
     },
     "dotnet-ef": {
       "version": "10.0.8",
-      "commands": [
-        "dotnet-ef"
-      ],
+      "commands": ["dotnet-ef"],
       "rollForward": false
     }
   }

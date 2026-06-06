@@ -58,8 +58,7 @@ internal static class StreamCompletionEndpoints
         }
 
         return TypedResults.ServerSentEvents(
-            BuildStream(service, prompt, cancellationToken),
-            eventType: "token"
+            BuildStream(service, prompt, cancellationToken)
         );
     }
 }

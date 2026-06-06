@@ -23,10 +23,13 @@ This project uses **Nix Flakes** and **direnv** to manage a fully reproducible d
 ### 2. Enter Development Shell
 
 If you have `direnv` configured, entering the project directory will automatically load the environment:
+
 ```bash
 direnv allow
 ```
+
 Alternatively, enter it manually:
+
 ```bash
 nix develop
 ```
@@ -34,10 +37,13 @@ nix develop
 ### 3. Running the Platform
 
 We use [Tilt](https://tilt.dev/) to orchestrate the entire development environment (databases, API, and frontend client):
+
 ```bash
 tilt up
 ```
+
 This will launch a local dashboard at [http://localhost:10350](http://localhost:10350) and spin up:
+
 - **Client Workspace:** [http://localhost:3000](http://localhost:3000)
 - **API Swagger / Scalar:** [http://localhost:5136/scalar/v1](http://localhost:5136/scalar/v1)
 - **Seq Log Viewer:** [http://localhost:8081](http://localhost:8081)
@@ -47,13 +53,17 @@ This will launch a local dashboard at [http://localhost:10350](http://localhost:
 ## 🔧 Essential Development Commands
 
 ### Running Tests
+
 Always run the complete test suite before committing:
+
 ```bash
 dotnet test
 ```
 
 ### Code Formatting
+
 This project uses `treefmt` to enforce unified formatting rules (Csharpier, Prettier, and Alejandra):
+
 ```bash
 treefmt
 ```

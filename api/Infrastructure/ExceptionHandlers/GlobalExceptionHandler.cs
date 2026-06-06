@@ -13,22 +13,36 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         CancellationToken cancellationToken
     )
     {
-        logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
+        var isBadRequest = exception is BadHttpRequestException;
+        var statusCode = isBadRequest
+            ? StatusCodes.Status400BadRequest
+            : StatusCodes.Status500InternalServerError;
+
+        if (isBadRequest)
+        {
+            logger.LogWarning(exception, "A bad request occurred: {Message}", exception.Message);
+        }
+        else
+        {
+            logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
+        }
 
         var problemDetails = new ProblemDetails
         {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "Internal Server Error",
-            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
-            Detail = "An unexpected error occurred on the server.",
+            Status = statusCode,
+            Title = isBadRequest ? "Bad Request" : "Internal Server Error",
+            Type = isBadRequest
+                ? "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1"
+                : "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+            Detail = isBadRequest ? exception.Message : "An unexpected error occurred on the server.",
         };
 
-        if (httpContext.RequestServices.GetService<IWebHostEnvironment>()?.IsDevelopment() ?? false)
+        if (!isBadRequest && (httpContext.RequestServices.GetService<IWebHostEnvironment>()?.IsDevelopment() ?? false))
         {
             problemDetails.Detail = exception.ToString();
         }
 
-        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        httpContext.Response.StatusCode = statusCode;
 
         await httpContext.Response.WriteAsJsonAsync(
             problemDetails,

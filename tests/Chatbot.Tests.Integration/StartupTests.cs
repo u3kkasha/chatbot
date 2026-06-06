@@ -8,11 +8,11 @@ namespace Chatbot.Tests.Integration;
 
 public class StartupTests
     : IClassFixture<TestDatabaseFixture>,
-        IClassFixture<WebApplicationFactory<Program>>
+        IClassFixture<IntegrationTestWebApplicationFactory>
 {
     private readonly HttpClient _httpClient;
 
-    public StartupTests(TestDatabaseFixture fixture, WebApplicationFactory<Program> factory)
+    public StartupTests(TestDatabaseFixture fixture, IntegrationTestWebApplicationFactory factory)
     {
         _httpClient = factory
             .WithWebHostBuilder(builder =>

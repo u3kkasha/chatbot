@@ -19,13 +19,13 @@ namespace Chatbot.Tests.Integration;
 
 public class MiddlewareTests
     : IClassFixture<TestDatabaseFixture>,
-        IClassFixture<WebApplicationFactory<Program>>
+        IClassFixture<IntegrationTestWebApplicationFactory>
 {
     private readonly HttpClient _httpClient;
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly IntegrationTestWebApplicationFactory _factory;
     private readonly TestDatabaseFixture _fixture;
 
-    public MiddlewareTests(TestDatabaseFixture fixture, WebApplicationFactory<Program> factory)
+    public MiddlewareTests(TestDatabaseFixture fixture, IntegrationTestWebApplicationFactory factory)
     {
         _fixture = fixture;
         _factory = factory;

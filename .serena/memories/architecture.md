@@ -3,6 +3,7 @@
 ## Topology
 
 Decoupled modular monolith structure:
+
 - **Nuxt 4 Client** (port 3000) interacting with **.NET 10 API** (port 5136).
 - Datastores: PostgreSQL 18 (relational), Qdrant (vector db), Azurite (blob storage), Garnet (distributed cache/locking).
 - Logging: Seq Log server (port 8081 for UI).

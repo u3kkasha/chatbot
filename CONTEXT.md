@@ -61,36 +61,42 @@ The project is structured to enforce strong logical separation between features 
 
 When local Docker services are running (`tilt up` or `docker compose up`), they bind to the following host endpoints:
 
-| Service | Port | Endpoint | Description |
-| :--- | :--- | :--- | :--- |
-| **Nuxt 4 Client** | `3000` | http://localhost:3000 | Operator web interface |
-| **Seq Log Server** | `8081` | http://localhost:8081 | Admin diagnostic dashboard (Log ingestion on `5341`) |
-| **Scalar OpenAPI Docs** | `5136` | http://localhost:5136/scalar/v1 | Interactive API endpoint schema sandbox |
-| **PostgreSQL** | `5432` | localhost:5432 | Relational datastore (`support_platform` DB) |
-| **Qdrant DB** | `6333` | http://localhost:6333 | Vector storage UI/API (gRPC on `6334`) |
-| **Garnet Store** | `6379` | localhost:6379 | Redis-compatible distributed cache and locker |
-| **Docling-serve** | `5001` | http://localhost:5001 | Document extraction microservice |
-| **Azurite Storage** | `10000` | localhost:10000 | Blob storage API (Queue on `10001`, Table on `10002`) |
-| **Tilt Dashboard** | `10350`| http://localhost:10350 | Local developer orchestrator dashboard |
+| Service                 | Port    | Endpoint                        | Description                                           |
+| :---------------------- | :------ | :------------------------------ | :---------------------------------------------------- |
+| **Nuxt 4 Client**       | `3000`  | http://localhost:3000           | Operator web interface                                |
+| **Seq Log Server**      | `8081`  | http://localhost:8081           | Admin diagnostic dashboard (Log ingestion on `5341`)  |
+| **Scalar OpenAPI Docs** | `5136`  | http://localhost:5136/scalar/v1 | Interactive API endpoint schema sandbox               |
+| **PostgreSQL**          | `5432`  | localhost:5432                  | Relational datastore (`support_platform` DB)          |
+| **Qdrant DB**           | `6333`  | http://localhost:6333           | Vector storage UI/API (gRPC on `6334`)                |
+| **Garnet Store**        | `6379`  | localhost:6379                  | Redis-compatible distributed cache and locker         |
+| **Docling-serve**       | `5001`  | http://localhost:5001           | Document extraction microservice                      |
+| **Azurite Storage**     | `10000` | localhost:10000                 | Blob storage API (Queue on `10001`, Table on `10002`) |
+| **Tilt Dashboard**      | `10350` | http://localhost:10350          | Local developer orchestrator dashboard                |
 
 ---
 
 ## 🔧 Operational Workflow Commands
 
 ### Database Migrations
+
 Always add migrations targeting a specific module since the database uses multiple schemas (e.g. `identity` schema):
+
 ```bash
 snip -- dotnet ef migrations add <MigrationName> --project src/Shared/Chatbot.Shared.csproj --startup-project api/Chatbot.Api.csproj
 ```
 
 ### Running Tests
+
 To run tests:
+
 ```bash
 snip -- dotnet test
 ```
 
 ### Verification
+
 Run `treefmt` to format the workspace:
+
 ```bash
 snip -- treefmt
 ```
