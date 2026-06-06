@@ -70,6 +70,20 @@ services:
       timeout: 5s
       retries: 5
 
+  seq:
+    image: docker.io/datalust/seq:latest
+    container_name: seq-local
+    ports:
+      - "5341:5341"
+      - "8081:80"
+    environment:
+      - ACCEPT_EULA=Y
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
 volumes:
   postgres_data:
   qdrant_data:
