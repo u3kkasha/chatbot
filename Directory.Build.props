@@ -17,5 +17,7 @@
 
     <!-- Native AOT / Source Generator Readiness -->
     <IsAotCompatible Condition="'$(IsTestProject)' != 'true'">true</IsAotCompatible>
+    <EnableRequestDelegateGenerator Condition="'$(IsTestProject)' != 'true'">true</EnableRequestDelegateGenerator>
+    <EnableConfigurationBindingGenerator Condition="'$(IsTestProject)' != 'true'">true</EnableConfigurationBindingGenerator>
   </PropertyGroup>
 </Project>

@@ -10,6 +10,7 @@ using Chatbot.Shared.Infrastructure.Configuration;
 using Chatbot.Shared.Infrastructure.Resilience;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using NodaTime;
 
 namespace Chatbot.Shared;
@@ -25,26 +26,29 @@ public static class SharedExtensions
         services
             .AddOptions<ConnectionStringsOptions>()
             .Bind(configuration.GetSection(ConnectionStringsOptions.SectionName))
-            .ValidateDataAnnotations()
             .ValidateOnStart();
+        services.AddSingleton<
+            IValidateOptions<ConnectionStringsOptions>,
+            ConnectionStringsOptionsValidator
+        >();
 
         services
             .AddOptions<QdrantOptions>()
             .Bind(configuration.GetSection(QdrantOptions.SectionName))
-            .ValidateDataAnnotations()
             .ValidateOnStart();
+        services.AddSingleton<IValidateOptions<QdrantOptions>, QdrantOptionsValidator>();
 
         services
             .AddOptions<AiOptions>()
             .Bind(configuration.GetSection(AiOptions.SectionName))
-            .ValidateDataAnnotations()
             .ValidateOnStart();
+        services.AddSingleton<IValidateOptions<AiOptions>, AiOptionsValidator>();
 
         services
             .AddOptions<ProcessingOptions>()
             .Bind(configuration.GetSection(ProcessingOptions.SectionName))
-            .ValidateDataAnnotations()
             .ValidateOnStart();
+        services.AddSingleton<IValidateOptions<ProcessingOptions>, ProcessingOptionsValidator>();
 
         // NodaTime
         services.AddSingleton<IClock>(SystemClock.Instance);

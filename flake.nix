@@ -32,9 +32,13 @@
         treefmt = {
           projectRootFile = "flake.nix";
           programs.alejandra.enable = true;
-          programs.csharpier.enable = true;
           programs.prettier.enable = false;
           settings.global.excludes = [".agents/**"];
+          settings.formatter.dotnet-format = {
+            command = "dotnet";
+            options = ["format" "--include"];
+            includes = ["*.cs"];
+          };
         };
 
         devshells.default = {
