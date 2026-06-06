@@ -1,13 +1,17 @@
 using Chatbot.Modules.Identity.Models.Users;
+using Chatbot.Shared.Infrastructure.Data;
 using EFCore.NamingConventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Chatbot.Modules.Identity.Brokers.Storage;
 
-public partial class StorageBroker(IConfiguration configuration) : DbContext, IStorageBroker
+public partial class StorageBroker(IConfiguration configuration, AuditInterceptor auditInterceptor)
+    : DbContext,
+        IStorageBroker
 {
     private readonly IConfiguration configuration = configuration;
+    private readonly AuditInterceptor auditInterceptor = auditInterceptor;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -19,12 +23,15 @@ public partial class StorageBroker(IConfiguration configuration) : DbContext, IS
 
         optionsBuilder
             .UseNpgsql(connectionString, x => x.UseNodaTime())
-            .UseSnakeCaseNamingConvention();
+            .UseSnakeCaseNamingConvention()
+            .AddInterceptors(this.auditInterceptor);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.HasDefaultSchema("identity");
 
         // Vogen type conversions would go here if not handled globally
         modelBuilder.Entity<Models.Users.User>(user =>

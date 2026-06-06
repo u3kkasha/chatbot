@@ -36,6 +36,9 @@ public static class SharedExtensions
         services.AddHybridCache();
 #pragma warning restore EXTEXP0018
 
+        // Data Infrastructure
+        services.AddSingleton<Chatbot.Shared.Infrastructure.Data.AuditInterceptor>();
+
         // Brokers
         services.AddTransient<ILoggingBroker, LoggingBroker>();
         services.AddTransient<IDateTimeBroker, DateTimeBroker>();
