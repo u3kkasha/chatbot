@@ -7,7 +7,7 @@ namespace Chatbot.Modules.Identity.Brokers.Storage;
 
 public partial class StorageBroker
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
 
     public async ValueTask<User> InsertUserAsync(User user)
     {

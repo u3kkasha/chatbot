@@ -26,7 +26,7 @@ public class AuditInterceptorTests
             _interceptor = interceptor;
         }
 
-        public DbSet<TestEntity> Entities { get; set; }
+        public DbSet<TestEntity> Entities { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

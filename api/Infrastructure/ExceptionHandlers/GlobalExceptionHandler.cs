@@ -1,3 +1,4 @@
+using Chatbot.Api.Infrastructure.Serialization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,11 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync(
+            problemDetails,
+            AppJsonSerializerContext.Default.ProblemDetails,
+            cancellationToken: cancellationToken
+        );
 
         return true;
     }

@@ -1,3 +1,5 @@
+#pragma warning disable IL2026, IL3050
+
 using Chatbot.Api.Infrastructure.ExceptionHandlers;
 using Chatbot.Api.Infrastructure.Middleware;
 using Chatbot.Api.Infrastructure.Routing;

@@ -1,4 +1,9 @@
 <Project>
+  <!-- Identify test projects first to prevent AOT warnings/errors in tests -->
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('.Tests'))">
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -12,10 +17,5 @@
 
     <!-- Native AOT / Source Generator Readiness -->
     <IsAotCompatible Condition="'$(IsTestProject)' != 'true'">true</IsAotCompatible>
-  </PropertyGroup>
-
-  <!-- Prevent AOT warnings on test projects -->
-  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.Tests.Integration'))">
-    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 </Project>
