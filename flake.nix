@@ -32,7 +32,7 @@
         treefmt = {
           projectRootFile = "flake.nix";
           programs.alejandra.enable = true;
-          programs.prettier.enable = false;
+          programs.prettier.enable = true;
           settings.global.excludes = [".agents/**"];
           settings.formatter.dotnet-format = {
             command = "dotnet";

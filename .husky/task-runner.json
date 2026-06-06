@@ -8,35 +8,36 @@
       "include": ["**/*"]
     },
     {
-      "name": "backend-typecheck",
+      "name": "secret-scanning",
       "group": "pre-commit",
+      "command": "gitleaks",
+      "args": ["protect", "--staged", "--verbose"]
+    },
+    {
+      "name": "frontend-lint",
+      "group": "pre-commit",
+      "command": "bun",
+      "args": ["--cwd", "client", "eslint", "--fix", "${staged}"],
+      "include": ["client/**/*.ts", "client/**/*.vue", "client/**/*.js", "client/**/*.mjs"]
+    },
+    {
+      "name": "backend-typecheck",
+      "group": "pre-push",
       "command": "dotnet",
       "args": ["build", "/p:VerifyNoChanges=true"],
       "include": ["**/*.cs", "**/*.csproj"]
     },
     {
       "name": "frontend-typecheck",
-      "group": "pre-commit",
+      "group": "pre-push",
       "command": "bun",
       "args": ["--cwd", "client", "typecheck"]
     },
     {
       "name": "frontend-knip",
-      "group": "pre-commit",
+      "group": "pre-push",
       "command": "bun",
       "args": ["--cwd", "client", "knip"]
-    },
-    {
-      "name": "frontend-lint",
-      "group": "pre-commit",
-      "command": "bun",
-      "args": ["--cwd", "client", "lint"]
-    },
-    {
-      "name": "backend-lint",
-      "group": "pre-push",
-      "command": "dotnet",
-      "args": ["format", "--verify-no-changes"]
     },
     {
       "name": "backend-tests",
@@ -49,12 +50,6 @@
       "group": "pre-push",
       "command": "bun",
       "args": ["--cwd", "client", "test", "run"]
-    },
-    {
-      "name": "secret-scanning",
-      "group": "pre-push",
-      "command": "gitleaks",
-      "args": ["protect", "--staged", "--verbose"]
     },
     {
       "name": "commit-msg-validation",
