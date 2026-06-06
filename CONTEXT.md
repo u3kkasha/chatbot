@@ -37,23 +37,60 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
   - **Qdrant:** Vector database for RAG/AI capabilities.
   - **Azurite:** Local Azure Storage emulator.
   - **Docling-serve:** Document processing service.
+  - **Garnet:** High-performance Redis-compatible cache.
+  - **Seq:** Log server for diagnostics and structured event visualization.
 
-## Development Workflow
+---
 
-- **Environment:** Nix Flakes + Direnv for a reproducible development shell.
-- **Methodology:** **TDD** following **"The Standard"** patterns.
-  - Tests: **xUnit**, **FluentAssertions**, **NSubstitute**, and **Verify** (Snapshot Testing).
-  - Patterns: **FIRST**, **AAA**, and **Test Pyramid Strategy**.
-- **Governance:** **Architecture Decision Records (ADRs)** and **Architecture Tests**.
-- **Commits:** **Conventional Commits** with **Gitmojis** enforced via **Husky.Net** hooks.
-- **Orchestration:** [Tilt](https://tilt.dev/) for managing microservices locally.
-- **Formatting:** Unified formatting via **treefmt** (Csharpier, Prettier with **Tailwind Plugin**, Alejandra).
-- **Fakes:** **Bogus** for generating realistic test data.
-- **Documentation:** **Living Documentation** using **Mermaid.js** diagrams in markdown.
+## 📁 Directory Topology
 
-## Documentation
+The project is structured to enforce strong logical separation between features before physically splitting them if needed:
 
-- **[Product Requirement Document (PRD)](docs/PRD.md):** Defines the core goals, user personas, and functional requirements.
-- **[Architectural Reference Document (ARD)](docs/ARD.md):** Detailed system topology, multi-tenancy strategy, and database schema.
-- **[Implementation Plan (PLAN)](docs/PLAN.md):** Roadmap for transitioning from mock implementation to full omnichannel support.
-- **[Git Workflow Strategy](docs/GIT_WORKFLOW.md):** Standards for commits, branching, and merging.
+- **[api/](file:///home/ukasha/code/chatbot/api)**: Presentation layer hosting the API web server (`Program.cs`, middleware, endpoint controllers, and OpenApi generation).
+- **[client/](file:///home/ukasha/code/chatbot/client)**: Nuxt 4 frontend operator workspace.
+- **[src/Modules/](file:///home/ukasha/code/chatbot/src/Modules)**: Domain-specific modules enforcing logical Monolith boundaries:
+  - **[src/Modules/Identity/](file:///home/ukasha/code/chatbot/src/Modules/Identity)**: User registration, profiles, and operator authentication.
+  - **[src/Modules/Chat/](file:///home/ukasha/code/chatbot/src/Modules/Chat)**: Chat session lifecycle, routing, real-time message streaming, and agent-assist suggestion endpoints.
+  - **[src/Modules/Knowledge/](file:///home/ukasha/code/chatbot/src/Modules/Knowledge)**: Source file parsing, text chunking, and embedding indexing.
+- **[src/Shared/](file:///home/ukasha/code/chatbot/src/Shared)**: Cross-cutting code, shared database interceptors, and reusable Brokers (`Ai`, `AiUsage`, `Blobs`, `DateTimes`, `Logging`, `Pii`, `Processing`, `Vectors`).
+- **[tests/](file:///home/ukasha/code/chatbot/tests)**: Testing suites categorizing unit, architecture, and integration tests.
+
+---
+
+## ⚡ Infrastructure Port & URL Map
+
+When local Docker services are running (`tilt up` or `docker compose up`), they bind to the following host endpoints:
+
+| Service | Port | Endpoint | Description |
+| :--- | :--- | :--- | :--- |
+| **Nuxt 4 Client** | `3000` | http://localhost:3000 | Operator web interface |
+| **Seq Log Server** | `8081` | http://localhost:8081 | Admin diagnostic dashboard (Log ingestion on `5341`) |
+| **Scalar OpenAPI Docs** | `5136` | http://localhost:5136/scalar/v1 | Interactive API endpoint schema sandbox |
+| **PostgreSQL** | `5432` | localhost:5432 | Relational datastore (`support_platform` DB) |
+| **Qdrant DB** | `6333` | http://localhost:6333 | Vector storage UI/API (gRPC on `6334`) |
+| **Garnet Store** | `6379` | localhost:6379 | Redis-compatible distributed cache and locker |
+| **Docling-serve** | `5001` | http://localhost:5001 | Document extraction microservice |
+| **Azurite Storage** | `10000` | localhost:10000 | Blob storage API (Queue on `10001`, Table on `10002`) |
+| **Tilt Dashboard** | `10350`| http://localhost:10350 | Local developer orchestrator dashboard |
+
+---
+
+## 🔧 Operational Workflow Commands
+
+### Database Migrations
+Always add migrations targeting a specific module since the database uses multiple schemas (e.g. `identity` schema):
+```bash
+snip -- dotnet ef migrations add <MigrationName> --project src/Shared/Chatbot.Shared.csproj --startup-project api/Chatbot.Api.csproj
+```
+
+### Running Tests
+To run tests:
+```bash
+snip -- dotnet test
+```
+
+### Verification
+Run `treefmt` to format the workspace:
+```bash
+snip -- treefmt
+```
