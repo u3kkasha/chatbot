@@ -1,5 +1,6 @@
 using Chatbot.Api.Infrastructure.ExceptionHandlers;
 using Chatbot.Api.Infrastructure.Middleware;
+using Chatbot.Api.Infrastructure.Routing;
 using Chatbot.Api.Infrastructure.Serialization;
 using Chatbot.Modules.Chat;
 using Chatbot.Modules.Identity;
@@ -7,6 +8,7 @@ using Chatbot.Modules.Knowledge;
 using Chatbot.Shared;
 using Chatbot.Shared.Brokers.Ai;
 using Coravel;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.AI;
 using Scalar.AspNetCore;
 using Serilog;
@@ -52,7 +54,12 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(
+        new RouteTokenTransformerConvention(new KebabCaseRouteParameterTransformer())
+    );
+});
 
 // 3. Add Domain Modules
 builder.Services.AddIdentityModule().AddChatModule().AddKnowledgeModule();
