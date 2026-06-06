@@ -34,11 +34,11 @@
     - [x] **Native JSON Mapping** for citations and AI metadata.
 - [x] **Real-time Streaming Foundation:**
   - [x] Scaffold **TypedResults.ServerSentEvents** support for lightweight, unidirectional AI token streaming.
-- [ ] **Secret Management & Startup Validation:**
+- [x] **Secret Management & Startup Validation:**
   - Use **direnv** (`dotenv_if_exists .env.local`) as the single secret delivery mechanism for both .NET and Nuxt — replaces `dotnet user-secrets` and avoids `.env` file sprawl.
   - `.env.local` is gitignored; `.env.local.example` is committed as the living schema of all required secrets.
   - Implement strongly-typed **`IOptions<T>`** classes per config section with **`ValidateDataAnnotations().ValidateOnStart()`** so the API refuses to start if any required secret is absent.
-  - Implement a **Nitro server plugin** on the Nuxt side using **Zod** to validate `runtimeConfig` at startup.
+  - Use **`nuxt-safe-runtime-config`** module with an **ArkType** schema to validate `runtimeConfig` at build-time and startup (auto-generates typed `useRuntimeConfig()` — no custom plugin needed).
 - [ ] **OpenAPI, Observability & Error Handling:**
   - Define initial **DTOs** and **OpenAPI** configuration.
   - Implement **ProblemDetails**, **OpenTelemetry**, and **Health Checks**.

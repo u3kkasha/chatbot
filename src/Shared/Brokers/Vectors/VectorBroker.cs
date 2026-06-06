@@ -1,21 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+using Chatbot.Shared.Infrastructure.Configuration;
+using Microsoft.Extensions.Options;
 using Qdrant.Client;
 using Qdrant.Client.Grpc;
 
 namespace Chatbot.Shared.Brokers.Vectors;
 
-public class VectorBroker(IConfiguration configuration) : IVectorBroker
+public class VectorBroker(IOptions<QdrantOptions> qdrantOptions) : IVectorBroker
 {
-    private readonly string host = configuration["Qdrant:Host"] ?? "localhost";
-    private readonly int port = int.Parse(configuration["Qdrant:Port"] ?? "6334");
-    private readonly bool useHttps = bool.Parse(configuration["Qdrant:UseHttps"] ?? "false");
+    private readonly QdrantOptions options = qdrantOptions.Value;
 
     public async ValueTask CreateCollectionIfNotExistsAsync(string collectionName, int vectorSize)
     {
-        var client = new QdrantClient(this.host, this.port, this.useHttps);
+        var client = new QdrantClient(options.Host, options.Port, options.UseHttps);
         var collections = await client.ListCollectionsAsync();
 
         if (!collections.Contains(collectionName))
@@ -32,7 +31,7 @@ public class VectorBroker(IConfiguration configuration) : IVectorBroker
         IEnumerable<VectorPoint> points
     )
     {
-        var client = new QdrantClient(this.host, this.port, this.useHttps);
+        var client = new QdrantClient(options.Host, options.Port, options.UseHttps);
 
         var pointStructs = points
             .Select(p => new PointStruct
@@ -52,7 +51,7 @@ public class VectorBroker(IConfiguration configuration) : IVectorBroker
         int limit = 10
     )
     {
-        var client = new QdrantClient(this.host, this.port, this.useHttps);
+        var client = new QdrantClient(options.Host, options.Port, options.UseHttps);
 
         var results = await client.SearchAsync(collectionName, vector, limit: (uint)limit);
 

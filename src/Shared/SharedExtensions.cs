@@ -6,6 +6,7 @@ using Chatbot.Shared.Brokers.Logging;
 using Chatbot.Shared.Brokers.Pii;
 using Chatbot.Shared.Brokers.Processing;
 using Chatbot.Shared.Brokers.Vectors;
+using Chatbot.Shared.Infrastructure.Configuration;
 using Chatbot.Shared.Infrastructure.Resilience;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,31 @@ public static class SharedExtensions
         IConfiguration configuration
     )
     {
+        // Options & Secrets Validation
+        services
+            .AddOptions<ConnectionStringsOptions>()
+            .Bind(configuration.GetSection(ConnectionStringsOptions.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services
+            .AddOptions<QdrantOptions>()
+            .Bind(configuration.GetSection(QdrantOptions.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services
+            .AddOptions<AiOptions>()
+            .Bind(configuration.GetSection(AiOptions.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services
+            .AddOptions<ProcessingOptions>()
+            .Bind(configuration.GetSection(ProcessingOptions.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
         // NodaTime
         services.AddSingleton<IClock>(SystemClock.Instance);
 
@@ -29,7 +55,9 @@ public static class SharedExtensions
         // Caching
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = configuration.GetConnectionString("Redis");
+            options.Configuration = configuration.GetSection(ConnectionStringsOptions.SectionName)[
+                "Redis"
+            ];
         });
 
 #pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this since we are in net10.0 and this is a core feature we want to use.

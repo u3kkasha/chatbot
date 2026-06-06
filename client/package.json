@@ -18,9 +18,11 @@
     "@pinia/colada-nuxt": "^1.0.1",
     "@pinia/nuxt": "^0.11.3",
     "ai": "^6.0.195",
+    "arktype": "^2.2.0",
     "nuxt": "^4.4.7",
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-csurf": "^1.6.5",
+    "nuxt-safe-runtime-config": "^0.1.6",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.3.0",
     "zod": "^4.4.3"

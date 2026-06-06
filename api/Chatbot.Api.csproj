@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)</OpenApiDocumentsDirectory>
     <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+    <!-- Host requires secrets to start; regenerate manually with dotnet openapi. -->
+    <OpenApiGenerateDocumentsOnBuild>false</OpenApiGenerateDocumentsOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

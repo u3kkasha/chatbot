@@ -1,15 +1,14 @@
 using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
-using Microsoft.Extensions.Configuration;
+using Chatbot.Shared.Infrastructure.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Chatbot.Shared.Brokers.Blobs;
 
-public class BlobBroker(IConfiguration configuration) : IBlobBroker
+public class BlobBroker(IOptions<ConnectionStringsOptions> connectionStringsOptions) : IBlobBroker
 {
-    private readonly string connectionString =
-        configuration.GetConnectionString("BlobStorage")
-        ?? throw new System.InvalidOperationException("Connection string 'BlobStorage' not found.");
+    private readonly string connectionString = connectionStringsOptions.Value.BlobStorage;
 
     public async ValueTask UploadBlobAsync(string containerName, string blobName, Stream content)
     {

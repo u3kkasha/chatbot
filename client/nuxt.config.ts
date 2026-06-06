@@ -1,3 +1,5 @@
+import { runtimeConfigSchema } from './shared/runtimeConfigSchema'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -7,7 +9,8 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     'nuxt-csurf',
     '@pinia/nuxt',
-    '@pinia/colada-nuxt'
+    '@pinia/colada-nuxt',
+    'nuxt-safe-runtime-config'
   ],
 
   devtools: {
@@ -15,6 +18,19 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+
+  // ── Runtime Config ───────────────────────────────────────────────────────────
+  // Default values are empty strings; real values are injected by direnv via .env.local
+  // using the NUXT_* prefix convention (e.g. NUXT_DATABASE_URL).
+  runtimeConfig: {
+    databaseUrl: '',
+    redisUrl: '',
+    blobStorageConnectionString: '',
+    qdrantApiKey: '',
+    public: {
+      apiBase: 'http://localhost:5136'
+    }
+  },
 
   routeRules: {
     '/api/chat/**': { proxy: 'http://localhost:5136/api/chat/**' },
@@ -47,5 +63,10 @@ export default defineNuxtConfig({
       scan: true,
       includeCustomCollections: true
     }
+  },
+
+  // ── Safe Runtime Config (ArkType schema) ────────────────────────────────────
+  safeRuntimeConfig: {
+    $schema: runtimeConfigSchema
   }
 })
