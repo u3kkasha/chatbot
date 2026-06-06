@@ -1,0 +1,53 @@
+using Chatbot.Modules.Knowledge.Models.Documents;
+using Chatbot.Shared.Infrastructure.Data;
+using EFCore.NamingConventions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+namespace Chatbot.Modules.Knowledge.Brokers.Storage;
+
+public partial class StorageBroker(IConfiguration configuration, AuditInterceptor auditInterceptor)
+    : DbContext,
+        IStorageBroker
+{
+    private readonly IConfiguration configuration = configuration;
+    private readonly AuditInterceptor auditInterceptor = auditInterceptor;
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        string connectionString =
+            configuration.GetConnectionString("DefaultConnection")
+            ?? throw new System.InvalidOperationException(
+                "Connection string 'DefaultConnection' not found."
+            );
+
+        optionsBuilder
+            .UseNpgsql(connectionString, x => x.UseNodaTime())
+            .UseSnakeCaseNamingConvention()
+            .AddInterceptors(this.auditInterceptor);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.HasDefaultSchema("knowledge");
+
+        modelBuilder.Entity<KnowledgeDocument>(document =>
+        {
+            document
+                .Property(d => d.Id)
+                .HasConversion(id => id.Value, value => KnowledgeDocumentId.From(value));
+        });
+
+        modelBuilder.Entity<DocumentChunk>(chunk =>
+        {
+            chunk
+                .Property(c => c.Id)
+                .HasConversion(id => id.Value, value => DocumentChunkId.From(value));
+            chunk
+                .Property(c => c.DocumentId)
+                .HasConversion(id => id.Value, value => KnowledgeDocumentId.From(value));
+        });
+    }
+}

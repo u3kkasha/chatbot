@@ -26,12 +26,12 @@
 - [x] **Native AOT & Performance Scaffolding:**
   - Configure **System.Text.Json** and **DI Source Generators**.
   - Initialize **HybridCache** for high-performance L1/L2 data access.
-- [ ] **DDD & Data Layer:**
+- [x] **DDD & Data Layer:**
   - Define Entities and Value Objects (using **Records**, **Primary Constructors**, **Extension Members**, **StronglyTypedId**, and **Vogen**).
   - Configure EF Core 10:
     - [x] **SnakeCase** naming.
     - [x] **Audit Interceptors** (implemented and unit tested).
-    - [ ] **Native JSON Mapping** for citations and AI metadata.
+    - [x] **Native JSON Mapping** for citations and AI metadata.
 - [ ] **Real-time Streaming Foundation:**
   - [ ] Scaffold **TypedResults.ServerSentEvents** support for lightweight, unidirectional AI token streaming.
 - [ ] **Secret Management:**

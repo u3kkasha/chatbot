@@ -1,0 +1,150 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Chatbot.Modules.Chat.Brokers.Storage;
+using Chatbot.Modules.Chat.Models.Sessions;
+using Microsoft.EntityFrameworkCore;
+using NodaTime;
+using Shouldly;
+using Xunit;
+
+namespace Chatbot.Tests.Integration.Brokers.Storage;
+
+public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
+    : IClassFixture<TestDatabaseFixture>
+{
+    private readonly StorageBroker _storageBroker = new(
+        fixture.Configuration,
+        new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance)
+    );
+
+    [Fact]
+    public void StorageBroker_ShouldUseChatSchema()
+    {
+        // Arrange & Act
+        var sessionEntity = _storageBroker.Model.FindEntityType(typeof(ChatSession));
+        var messageEntity = _storageBroker.Model.FindEntityType(typeof(ChatMessage));
+
+        // Assert
+        sessionEntity?.GetSchema().ShouldBe("chat");
+        messageEntity?.GetSchema().ShouldBe("chat");
+    }
+
+    [Fact]
+    public void StorageBroker_ShouldUseSnakeCaseNamingConvention()
+    {
+        // Arrange
+        var entityType = _storageBroker.Model.FindEntityType(typeof(ChatSession));
+        entityType.ShouldNotBeNull();
+
+        // Act
+        var tableName = entityType!.GetTableName();
+        var idProperty = entityType.FindProperty(nameof(ChatSession.Id));
+        var customerIdProperty = entityType.FindProperty(nameof(ChatSession.CustomerId));
+
+        var storeObject = Microsoft.EntityFrameworkCore.Metadata.StoreObjectIdentifier.Table(
+            tableName!,
+            entityType.GetSchema()
+        );
+        var idColumnName = idProperty?.GetColumnName(storeObject);
+        var customerIdColumnName = customerIdProperty?.GetColumnName(storeObject);
+
+        // Assert
+        tableName.ShouldBe("chat_sessions");
+        idColumnName.ShouldBe("id");
+        customerIdColumnName.ShouldBe("customer_id");
+    }
+
+    [Fact]
+    public async Task InsertChatSessionAsync_ShouldInsertChatSession()
+    {
+        // Arrange
+        await ((DbContext)_storageBroker).Database.EnsureCreatedAsync();
+
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var session = new ChatSession(
+            Id: ChatSessionId.From(Guid.NewGuid()),
+            CustomerId: CustomerId.From(Guid.NewGuid()),
+            OperatorId: OperatorId.From(Guid.NewGuid()),
+            Status: ChatSessionStatus.Active,
+            CreatedDate: now,
+            UpdatedDate: now
+        );
+
+        // Act
+        var insertedSession = await _storageBroker.InsertChatSessionAsync(session);
+
+        // Assert
+        insertedSession.ShouldNotBeNull();
+        insertedSession.Id.ShouldBe(session.Id);
+
+        var selectSession = await _storageBroker.SelectChatSessionByIdAsync(session.Id);
+        selectSession.ShouldNotBeNull();
+        selectSession!.CustomerId.ShouldBe(session.CustomerId);
+    }
+
+    [Fact]
+    public async Task InsertChatMessageAsync_ShouldInsertChatMessageAndMapJson()
+    {
+        // Arrange
+        await ((DbContext)_storageBroker).Database.EnsureCreatedAsync();
+
+        var now = SystemClock.Instance.GetCurrentInstant();
+        var sessionId = ChatSessionId.From(Guid.NewGuid());
+        var messageId = ChatMessageId.From(Guid.NewGuid());
+
+        var citations = new List<Citation>
+        {
+            new(
+                "https://example.com/doc1",
+                "Document 1",
+                "This is the first citation snippet",
+                0.95
+            ),
+            new(
+                "https://example.com/doc2",
+                "Document 2",
+                "This is the second citation snippet",
+                0.88
+            ),
+        };
+
+        var aiMetadata = new AiMetadata(
+            ModelName: "gpt-4o",
+            PromptTokens: 150,
+            CompletionTokens: 300,
+            TotalTokens: 450,
+            LatencyMs: 1200.5
+        );
+
+        var message = new ChatMessage(
+            id: messageId,
+            sessionId: sessionId,
+            sender: MessageSender.Ai,
+            content: "Hello! Here is the answer you requested.",
+            createdDate: now,
+            updatedDate: now
+        )
+        {
+            Citations = citations,
+            AiMetadata = aiMetadata,
+        };
+
+        // Act
+        var insertedMessage = await _storageBroker.InsertChatMessageAsync(message);
+
+        // Assert
+        insertedMessage.ShouldNotBeNull();
+        insertedMessage.Id.ShouldBe(message.Id);
+
+        var selectMessage = await _storageBroker.SelectChatMessageByIdAsync(message.Id);
+        selectMessage.ShouldNotBeNull();
+        selectMessage!.Content.ShouldBe(message.Content);
+        selectMessage.Citations.Count.ShouldBe(2);
+        selectMessage.Citations[0].SourceUrl.ShouldBe("https://example.com/doc1");
+        selectMessage.Citations[1].Snippet.ShouldBe("This is the second citation snippet");
+        selectMessage.AiMetadata.ShouldNotBeNull();
+        selectMessage.AiMetadata!.ModelName.ShouldBe("gpt-4o");
+        selectMessage.AiMetadata.TotalTokens.ShouldBe(450);
+    }
+}
