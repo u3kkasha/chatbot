@@ -20,7 +20,7 @@ jobs:
         uses: determinateSystems/nix-installer-action@v4
 
       - name: Magic Nix Cache
-        uses: determinateSystems/magic-nix-cache-action@v4
+        uses: determinateSystems/magic-nix-cache-action@v14
 
       - name: Install Frontend Dependencies
         run: nix develop --command bun install --cwd client
