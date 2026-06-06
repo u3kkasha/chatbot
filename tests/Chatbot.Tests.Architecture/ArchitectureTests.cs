@@ -39,17 +39,21 @@ public class ArchitectureTests
     }
 
     [Fact]
-    public void Api_ShouldHaveControllers()
+    public void Api_ShouldNotHaveControllers()
     {
         // Arrange
         var result = Types
             .InAssembly(ApiAssembly)
             .That()
-            .ResideInNamespace("Chatbot.Api.Controllers")
+            .HaveNameEndingWith("Controller")
             .GetTypes();
 
         // Assert
-        result.Should().NotBeEmpty("The API host should have controllers.");
+        result
+            .Should()
+            .BeEmpty(
+                "The API host should not use reflection-based MVC controllers to maintain Native AOT compatibility."
+            );
     }
 
     [Fact]
