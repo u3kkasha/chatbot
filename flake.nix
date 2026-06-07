@@ -34,9 +34,14 @@
           programs.alejandra.enable = true;
           programs.prettier.enable = true;
           settings.global.excludes = [".agents/**"];
-          settings.formatter.dotnet-format = {
+          settings.formatter.dotnet-format-whitespace = {
             command = "dotnet";
-            options = ["format" "--include"];
+            options = ["format" "whitespace" "--include"];
+            includes = ["*.cs"];
+          };
+          settings.formatter.dotnet-format-style = {
+            command = "dotnet";
+            options = ["format" "style" "--include"];
             includes = ["*.cs"];
           };
         };
