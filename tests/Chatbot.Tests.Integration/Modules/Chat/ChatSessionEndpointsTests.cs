@@ -107,7 +107,8 @@ public class ChatSessionEndpointsTests
         problem.ShouldNotBeNull();
         problem.Status.ShouldBe(400);
         problem.Errors.ShouldNotBeEmpty();
-        problem.Errors.ContainsKey("TenantId").ShouldBeTrue();
+        problem.Errors.ContainsKey("tenant_id").ShouldBeTrue();
+        problem.Errors.ContainsKey("customer_identifier").ShouldBeTrue();
     }
 
     [Fact]
