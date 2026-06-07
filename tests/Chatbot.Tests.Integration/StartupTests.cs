@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Json;
 using Chatbot.Tests.Integration.Brokers.Storage;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -36,8 +37,29 @@ public class StartupTests
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var content = await response.Content.ReadAsStringAsync();
-        content.ShouldContain("Healthy");
+        var responseData = await response.Content.ReadFromJsonAsync<Chatbot.Api.Infrastructure.Serialization.HealthCheckResponse>();
+        responseData.ShouldNotBeNull();
+        responseData.Status.ShouldBe("Healthy");
+    }
+
+    [Fact]
+    public async Task OpenApiDocument_ContainsExpectedMetadata()
+    {
+        // Arrange & Act
+        var response = await _httpClient.GetAsync("/openapi/v1.json");
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var json = await response.Content.ReadFromJsonAsync<System.Text.Json.Nodes.JsonNode>();
+        json.ShouldNotBeNull();
+
+        var info = json["info"];
+        info.ShouldNotBeNull();
+
+        info["title"]?.ToString().ShouldBe("Omnichannel Chatbot API");
+        info["version"]?.ToString().ShouldBe("v1");
+        info["description"]?.ToString().ShouldBe("API for the Omnichannel Customer Support Operator Platform.");
     }
 
     [Fact]

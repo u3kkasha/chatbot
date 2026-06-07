@@ -1,3 +1,4 @@
+using Chatbot.Api.Infrastructure.Diagnostics;
 using Chatbot.Api.Infrastructure.ExceptionHandlers;
 using Chatbot.Api.Infrastructure.Middleware;
 using Chatbot.Api.Infrastructure.Serialization;
@@ -23,7 +24,17 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 // 2. Add Infrastructure Services
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info.Title = "Omnichannel Chatbot API";
+        document.Info.Version = "v1";
+        document.Info.Description = "API for the Omnichannel Customer Support Operator Platform.";
+        return Task.CompletedTask;
+    });
+});
+builder.Services.AddDiagnostics(builder.Configuration);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
@@ -83,7 +94,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-app.MapGet("/health", () => Results.Ok(new HealthCheckResponse("Healthy", DateTime.UtcNow)));
+app.MapDiagnosticsEndpoints();
 
 // 5. Map Module Endpoints
 app.MapChatModule();

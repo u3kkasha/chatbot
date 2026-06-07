@@ -39,7 +39,7 @@
   - `.env.local` is gitignored; `.env.local.example` is committed as the living schema of all required secrets.
   - Implement strongly-typed **`IOptions<T>`** classes per config section with **`ValidateDataAnnotations().ValidateOnStart()`** so the API refuses to start if any required secret is absent.
   - Use **`nuxt-safe-runtime-config`** module with an **ArkType** schema to validate `runtimeConfig` at build-time and startup (auto-generates typed `useRuntimeConfig()` — no custom plugin needed).
-- [ ] **OpenAPI, Observability & Error Handling:**
+- [x] **OpenAPI, Observability & Error Handling:**
   - Define initial **DTOs** and **OpenAPI** configuration.
   - Implement **ProblemDetails**, **OpenTelemetry**, and **Health Checks**.
 - [x] **Architecture Testing:**
