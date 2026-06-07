@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Chatbot.Modules.Identity.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Identity.Models.Users;
 using Chatbot.Shared.Models;
@@ -5,12 +6,11 @@ using Chatbot.Shared.Infrastructure.Data;
 using EFCore.NamingConventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Chatbot.Modules.Identity.Brokers.Storage;
 
-[RequiresDynamicCode()]
-[RequiresUnreferencedCode()]
+[RequiresDynamicCode("EF Core storage brokers use compiled models for AOT compatibility.")]
+[RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
 public partial class StorageBroker(DbContextOptions<StorageBroker> options)
     : DbContext(options),
         IStorageBroker

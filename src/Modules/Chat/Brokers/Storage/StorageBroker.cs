@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chatbot.Modules.Chat.Brokers.Storage;
 
-[RequiresDynamicCode()]
-[RequiresUnreferencedCode()]
+[RequiresDynamicCode("EF Core storage brokers use compiled models for AOT compatibility.")]
+[RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
 public partial class StorageBroker(DbContextOptions<StorageBroker> options)
     : DbContext(options),
         IStorageBroker
