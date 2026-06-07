@@ -4,11 +4,14 @@ using Chatbot.Api.Infrastructure.Middleware;
 using Chatbot.Api.Infrastructure.MultiTenancy;
 using Chatbot.Api.Infrastructure.Serialization;
 using Chatbot.Modules.Chat;
+using Chatbot.Modules.Chat.Features.Realtime;
+using Chatbot.Modules.Chat.Features.Sessions.Jobs;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
 using Chatbot.Shared;
 using Chatbot.Shared.Brokers.Ai;
 using Chatbot.Shared.Models;
+using Chatbot.Api.Infrastructure.EventDrivenArchitecture;
 using Coravel;
 using Microsoft.Extensions.AI;
 using Scalar.AspNetCore;
@@ -42,6 +45,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<ITenantProvider, HttpContextTenantProvider>();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
+builder.Services.AddEventDrivenArchitecture();
+builder.Services.AddSignalR();
 
 // 2.1 Add Coravel
 builder.Services.AddScheduler();
@@ -103,6 +108,12 @@ app.MapDiagnosticsEndpoints();
 
 // 5. Map Module Endpoints
 app.MapChatModule();
+app.MapHub<ChatHub>("/hubs/chat");
+
+app.Services.UseScheduler(scheduler =>
+{
+    scheduler.Schedule<ChatSessionCleanupJob>().EveryMinute();
+});
 
 app.Run();
 

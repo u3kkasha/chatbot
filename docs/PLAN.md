@@ -96,23 +96,23 @@
 
 ## Phase 3: Orchestration & Domain Events (MassTransit)
 
-- [ ] **MassTransit & EDA Foundation:**
+- [x] **MassTransit & EDA Foundation:**
   - Implement **MassTransit (In-Memory)** for the internal bus.
   - Configure the **Transactional Outbox** with EF Core 10.
-- [ ] **Reactive Domain Events:**
+- [x] **Reactive Domain Events:**
   - Implement decoupled system behavior using MassTransit Pub/Sub.
-- [ ] **Concurrency & Safety:**
+- [x] **Concurrency & Safety:**
   - Implement **Distributed Locking** in orchestration services.
-- [ ] **Orchestration Services:**
+- [x] **Orchestration Services:**
   - Coordinate multi-broker/multi-service flows.
-- [ ] **SignalR Hubs:**
+- [x] **SignalR Hubs:**
   - Real-time communication grouped by Tenant ID for state synchronization.
 - [x] **PostgreSQL RLS Session Interceptor:**
   - **Postgres RLS (Row Level Security) is the primary tenant isolation mechanism** — policies are defined directly on each tenant-scoped table (`ENABLE ROW LEVEL SECURITY`, `CREATE POLICY ... USING (tenant_id = current_setting('app.current_tenant_id')::uuid)`) so isolation is enforced at the database engine level for all queries, including raw SQL and MassTransit Outbox.
   - [x] Implement an EF Core `IDbCommandInterceptor` that issues `SET LOCAL app.current_tenant_id = @tid` before every command, injecting the active tenant's ID from the current `IHttpContextAccessor`/ambient context into the Postgres session.
   - **Migrations** must include `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` and `CREATE POLICY` statements per tenant-scoped table across all three schemas (`chat`, `identity`, `knowledge`).
   - [x] Coordinate with `AddDbContextPool` — pooled connections must reset the session variable on every command (handled by the interceptor above). (Note: DbContext pooling was skipped, but the interceptor is implemented and connection-safe).
-- [ ] **Background Processing (Coravel):**
+- [x] **Background Processing (Coravel):**
   - Use **Coravel** for scheduling and simple background jobs.
   - Refactor ingestion flows to use **Coravel** jobs or **MassTransit** consumers where appropriate.
 

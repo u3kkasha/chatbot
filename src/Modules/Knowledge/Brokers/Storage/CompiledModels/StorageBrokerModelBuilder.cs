@@ -12,7 +12,7 @@ namespace Chatbot.Modules.Knowledge.Brokers.Storage.CompiledModels
     public partial class StorageBrokerModel
     {
         private StorageBrokerModel()
-            : base(skipDetectChanges: false, modelId: new Guid("66eb9b80-6ce4-43e2-9995-f2ab4d73e4e1"), entityTypeCount: 2)
+            : base(skipDetectChanges: false, modelId: new Guid("73feacd7-4f60-44d5-b895-8944df22ec72"), entityTypeCount: 5)
         {
         }
 
@@ -20,9 +20,18 @@ namespace Chatbot.Modules.Knowledge.Brokers.Storage.CompiledModels
         {
             var documentChunk = DocumentChunkEntityType.Create(this);
             var knowledgeDocument = KnowledgeDocumentEntityType.Create(this);
+            var inboxState = InboxStateEntityType.Create(this);
+            var outboxMessage = OutboxMessageEntityType.Create(this);
+            var outboxState = OutboxStateEntityType.Create(this);
+
+            OutboxMessageEntityType.CreateForeignKey1(outboxMessage, outboxState);
+            OutboxMessageEntityType.CreateForeignKey2(outboxMessage, inboxState);
 
             DocumentChunkEntityType.CreateAnnotations(documentChunk);
             KnowledgeDocumentEntityType.CreateAnnotations(knowledgeDocument);
+            InboxStateEntityType.CreateAnnotations(inboxState);
+            OutboxMessageEntityType.CreateAnnotations(outboxMessage);
+            OutboxStateEntityType.CreateAnnotations(outboxState);
 
             AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
             AddAnnotation("ProductVersion", "10.0.8");

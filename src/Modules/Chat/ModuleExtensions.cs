@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Chatbot.Modules.Chat.Brokers.Storage;
 using Chatbot.Modules.Chat.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Chat.Features.Messages;
 using Chatbot.Modules.Chat.Features.Sessions;
+using Chatbot.Modules.Chat.Features.Sessions.Jobs;
 using Chatbot.Modules.Chat.Features.StreamCompletion;
 using Chatbot.Shared.Infrastructure.Data;
 using Microsoft.AspNetCore.Routing;
@@ -13,6 +15,7 @@ namespace Chatbot.Modules.Chat;
 
 public static class ModuleExtensions
 {
+    [RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
     public static IServiceCollection AddChatModule(this IServiceCollection services)
     {
         services.AddDbContextPool<IStorageBroker, StorageBroker>((sp, options) =>
@@ -37,10 +40,12 @@ public static class ModuleExtensions
         services.AddScoped<IStreamCompletionService, StreamCompletionService>();
         services.AddScoped<IChatSessionService, ChatSessionService>();
         services.AddScoped<IChatMessageService, ChatMessageService>();
+        services.AddTransient<ChatSessionCleanupJob>();
 
         return services;
     }
 
+    [RequiresUnreferencedCode()]
     public static IEndpointRouteBuilder MapChatModule(this IEndpointRouteBuilder routes)
     {
         routes.MapStreamCompletion();

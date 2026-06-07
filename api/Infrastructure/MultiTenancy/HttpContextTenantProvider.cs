@@ -21,6 +21,12 @@ public sealed class HttpContextTenantProvider(IHttpContextAccessor httpContextAc
             return tenantIdGuid;
         }
 
+        if (context.Request.Query.TryGetValue("tenantId", out var tenantIdQuery) &&
+            Guid.TryParse(tenantIdQuery, out var tenantIdQueryGuid))
+        {
+            return tenantIdQueryGuid;
+        }
+
         return null;
     }
 }

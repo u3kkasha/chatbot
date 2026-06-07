@@ -7,6 +7,8 @@ using Chatbot.Modules.Chat.Features.Messages;
 using Chatbot.Modules.Chat.Models.Sessions;
 using Chatbot.Modules.Chat.Models.Sessions.Exceptions;
 using Chatbot.Shared.Infrastructure.Errors;
+using Chatbot.Shared.Brokers.Events;
+using Chatbot.Shared.Events;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -19,12 +21,14 @@ namespace Chatbot.Tests.Unit.Modules.Chat.Messages;
 public class ChatMessageServiceTests
 {
     private readonly IStorageBroker _storageBrokerMock;
+    private readonly IEventBroker _eventBrokerMock;
     private readonly IChatMessageService _sut;
 
     public ChatMessageServiceTests()
     {
         _storageBrokerMock = Substitute.For<IStorageBroker>();
-        _sut = new ChatMessageService(_storageBrokerMock);
+        _eventBrokerMock = Substitute.For<IEventBroker>();
+        _sut = new ChatMessageService(_storageBrokerMock, _eventBrokerMock);
     }
 
     private static ChatMessage CreateRandomChatMessage() =>
@@ -56,6 +60,7 @@ public class ChatMessageServiceTests
         result.IsT0.ShouldBeTrue();
         result.AsT0.ShouldBe(expectedMessage);
         await _storageBrokerMock.Received(1).InsertChatMessageAsync(inputMessage);
+        await _eventBrokerMock.Received(1).PublishAsync(Arg.Any<ChatMessageAddedEvent>());
     }
 
     [Fact]

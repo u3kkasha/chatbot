@@ -12,15 +12,24 @@ namespace Chatbot.Modules.Identity.Brokers.Storage.CompiledModels
     public partial class StorageBrokerModel
     {
         private StorageBrokerModel()
-            : base(skipDetectChanges: false, modelId: new Guid("1cbc71d9-b133-40b8-bdc9-6da5c8371166"), entityTypeCount: 1)
+            : base(skipDetectChanges: false, modelId: new Guid("bc049a0a-fa3f-404c-b461-e79bf1577f21"), entityTypeCount: 4)
         {
         }
 
         partial void Initialize()
         {
             var user = UserEntityType.Create(this);
+            var inboxState = InboxStateEntityType.Create(this);
+            var outboxMessage = OutboxMessageEntityType.Create(this);
+            var outboxState = OutboxStateEntityType.Create(this);
+
+            OutboxMessageEntityType.CreateForeignKey1(outboxMessage, outboxState);
+            OutboxMessageEntityType.CreateForeignKey2(outboxMessage, inboxState);
 
             UserEntityType.CreateAnnotations(user);
+            InboxStateEntityType.CreateAnnotations(inboxState);
+            OutboxMessageEntityType.CreateAnnotations(outboxMessage);
+            OutboxStateEntityType.CreateAnnotations(outboxState);
 
             AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
             AddAnnotation("ProductVersion", "10.0.8");

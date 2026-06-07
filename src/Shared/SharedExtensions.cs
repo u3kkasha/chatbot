@@ -2,10 +2,13 @@ using Chatbot.Shared.Brokers.Ai;
 using Chatbot.Shared.Brokers.AiUsage;
 using Chatbot.Shared.Brokers.Blobs;
 using Chatbot.Shared.Brokers.DateTimes;
+using Chatbot.Shared.Brokers.DistributedLock;
+using Chatbot.Shared.Brokers.Events;
 using Chatbot.Shared.Brokers.Logging;
 using Chatbot.Shared.Brokers.Pii;
 using Chatbot.Shared.Brokers.Processing;
 using Chatbot.Shared.Brokers.Vectors;
+using StackExchange.Redis;
 using Chatbot.Shared.Infrastructure.Configuration;
 using Chatbot.Shared.Infrastructure.Data;
 using Chatbot.Shared.Infrastructure.Resilience;
@@ -71,12 +74,15 @@ public static class SharedExtensions
         // Resilience
         services.AddStandardResilience();
 
-        // Caching
+        // Caching & Redis Connection
+        var redisConnectionString = configuration.GetSection(ConnectionStringsOptions.SectionName)["Redis"]
+            ?? throw new InvalidOperationException("Redis connection string not configured.");
+
+        services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(redisConnectionString));
+
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = configuration.GetSection(ConnectionStringsOptions.SectionName)[
-                "Redis"
-            ];
+            options.Configuration = redisConnectionString;
         });
 
 #pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this since we are in net10.0 and this is a core feature we want to use.
@@ -96,6 +102,8 @@ public static class SharedExtensions
         services.AddTransient<IVectorBroker, VectorBroker>();
         services.AddTransient<IAiBroker, AiBroker>();
         services.AddTransient<IProcessingBroker, ProcessingBroker>();
+        services.AddTransient<IEventBroker, EventBroker>();
+        services.AddTransient<IDistributedLockBroker, DistributedLockBroker>();
 
         return services;
     }

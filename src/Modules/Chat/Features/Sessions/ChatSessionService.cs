@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using Chatbot.Modules.Chat.Brokers.Storage;
 using Chatbot.Modules.Chat.Models.Sessions;
 using Chatbot.Modules.Chat.Models.Sessions.Exceptions;
+using Chatbot.Shared.Brokers.Events;
+using Chatbot.Shared.Events;
 using Chatbot.Shared.Infrastructure.Errors;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 
 namespace Chatbot.Modules.Chat.Features.Sessions;
 
-public class ChatSessionService(IStorageBroker storageBroker) : IChatSessionService
+public class ChatSessionService(IStorageBroker storageBroker, IEventBroker eventBroker) : IChatSessionService
 {
     private readonly IStorageBroker storageBroker = storageBroker;
+    private readonly IEventBroker eventBroker = eventBroker;
 
     public async ValueTask<OneOf<ChatSession, ValidationError>> AddChatSessionAsync(ChatSession chatSession)
     {
@@ -136,7 +139,25 @@ public class ChatSessionService(IStorageBroker storageBroker) : IChatSessionServ
                 return new NotFoundError($"Chat session with id '{chatSession.Id.Value}' was not found.");
             }
 
-            return await this.storageBroker.UpdateChatSessionAsync(chatSession);
+            var statusChanged = existingSession.Status != chatSession.Status;
+            var oldStatus = existingSession.Status;
+
+            var updatedSession = await this.storageBroker.UpdateChatSessionAsync(chatSession);
+
+            if (statusChanged)
+            {
+                var @event = new ChatSessionStatusChangedEvent(
+                    updatedSession.Id.Value,
+                    updatedSession.TenantId,
+                    oldStatus.ToString(),
+                    updatedSession.Status.ToString(),
+                    updatedSession.UpdatedDate
+                );
+
+                await this.eventBroker.PublishAsync(@event);
+            }
+
+            return updatedSession;
         }
         catch (DbUpdateException dbUpdateException)
         {

@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using Chatbot.Modules.Chat.Brokers.Storage;
 using Chatbot.Modules.Chat.Models.Sessions;
 using Chatbot.Modules.Chat.Models.Sessions.Exceptions;
+using Chatbot.Shared.Brokers.Events;
+using Chatbot.Shared.Events;
 using Chatbot.Shared.Infrastructure.Errors;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 
 namespace Chatbot.Modules.Chat.Features.Messages;
 
-public class ChatMessageService(IStorageBroker storageBroker) : IChatMessageService
+public class ChatMessageService(IStorageBroker storageBroker, IEventBroker eventBroker) : IChatMessageService
 {
     private readonly IStorageBroker storageBroker = storageBroker;
+    private readonly IEventBroker eventBroker = eventBroker;
 
     public async ValueTask<OneOf<ChatMessage, ValidationError>> AddChatMessageAsync(ChatMessage chatMessage)
     {
@@ -48,7 +51,21 @@ public class ChatMessageService(IStorageBroker storageBroker) : IChatMessageServ
                 return new ValidationError("Chat message validation failed.", errors);
             }
 
-            return await this.storageBroker.InsertChatMessageAsync(chatMessage);
+            var insertedMessage = await this.storageBroker.InsertChatMessageAsync(chatMessage);
+
+            var messageAddedEvent = new ChatMessageAddedEvent(
+                insertedMessage.Id.Value,
+                insertedMessage.SessionId.Value,
+                insertedMessage.TenantId,
+                insertedMessage.Sender.ToString(),
+                insertedMessage.Content,
+                insertedMessage.IsAiGenerated,
+                insertedMessage.CreatedDate
+            );
+
+            await this.eventBroker.PublishAsync(messageAddedEvent);
+
+            return insertedMessage;
         }
         catch (DbUpdateException dbUpdateException)
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Chatbot.Modules.Chat.Models.Sessions;
@@ -56,6 +57,7 @@ public record ChatMessageResponse(
 
 public static class ChatMessageEndpoints
 {
+    [RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
     public static IEndpointRouteBuilder MapChatMessageEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/chat/messages");
