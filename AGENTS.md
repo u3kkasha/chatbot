@@ -25,6 +25,10 @@ This file provides foundational mandates for AI agents (like Gemini CLI) operati
   - Do not edit `.csproj` or `package.json` manually to manage package dependencies.
   - Backend: Use `snip -- dotnet add package <PackageName>`
   - Frontend: Use `snip -- bun add <PackageName>`
+- **Configuration & Options (AOT & Test Compatibility):**
+  - Do not read from `IConfiguration` eagerly to validate or throw exceptions during service registration (startup).
+  - Use the Options pattern (`IOptions<T>`) combined with source-generated validators (`[OptionsValidator]`).
+  - Keep configuration processing and instance instantiation lazy by using DI factory lambdas (e.g., `services.AddSingleton<TService>(sp => ...)`) or implementing `IConfigureOptions<TOptions>`, preventing startup validation/connection crashes during OpenAPI generation or integration tests where services are registered but never resolved.
 
 ---
 

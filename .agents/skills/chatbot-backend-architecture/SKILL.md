@@ -93,3 +93,28 @@ builder.Property(x => x.Id)
 - Use **Records** for DTOs and immutable domain events.
 - Use **Collection Expressions** `[...]` instead of `new List<T>()` or `new[]`.
 - Use expression-bodied members and pattern matching where it improves readability.
+
+---
+
+## ⚙️ Configuration & Options (AOT & Test Compatibility)
+
+To support Native AOT and prevent eager configuration errors in integration tests and OpenAPI doc generation, follow these rules for binding and validating configurations:
+
+1. **Avoid Eager Configuration Reads:** Never use `configuration.GetSection(...)[...]` directly during DI registration (e.g. at startup in `AddSharedInfrastructure` or module extensions) to check values or throw exceptions.
+2. **Standard Options Binding:** Bind configuration sections using `AddOptions<T>()`:
+   ```csharp
+   services.AddOptions<QdrantOptions>()
+       .Bind(configuration.GetSection(QdrantOptions.SectionName));
+   ```
+3. **Lazy Dependency Configuration:** If a service registration or option depends on other settings, configure them lazily via DI factory lambdas or `IConfigureOptions<T>`:
+   ```csharp
+   services.AddTransient<IConfigureOptions<RedisCacheOptions>, ConfigureRedisCacheOptions>();
+   ```
+4. **Bypassing Validation at Startup:** Register source-generated options validators (`[OptionsValidator]`) and call `ValidateOnStart()` inside a check for OpenAPI generation mode:
+   ```csharp
+   if (!isGeneratingOpenApi)
+   {
+       builder.ValidateOnStart();
+   }
+   ```
+   This ensures that missing configurations in isolated environments (such as CI workflows generating documentation or running integration tests) do not trigger startup crashes since services are registered but never resolved.
