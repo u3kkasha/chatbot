@@ -75,8 +75,18 @@ public static class SharedExtensions
         services.AddStandardResilience();
 
         // Caching & Redis Connection
-        var redisConnectionString = configuration.GetSection(ConnectionStringsOptions.SectionName)["Redis"]
-            ?? throw new InvalidOperationException("Redis connection string not configured.");
+        var redisConnectionString = configuration.GetSection(ConnectionStringsOptions.SectionName)["Redis"];
+        if (string.IsNullOrEmpty(redisConnectionString))
+        {
+            if (isGeneratingOpenApi)
+            {
+                redisConnectionString = "localhost,abortConnect=false";
+            }
+            else
+            {
+                throw new InvalidOperationException("Redis connection string not configured.");
+            }
+        }
 
         services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(redisConnectionString));
 
