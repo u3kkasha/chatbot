@@ -5,6 +5,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Chatbot.Tests.Unit" />
+    <InternalsVisibleTo Include="Chatbot.Tests.Integration" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" />
     <PackageReference Include="Coravel" />
     <PackageReference Include="EFCore.NamingConventions" />

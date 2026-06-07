@@ -10,7 +10,8 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
 {
     private readonly StorageBroker _storageBroker = new(
         fixture.Configuration,
-        new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance)
+        new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance),
+        new Chatbot.Shared.Infrastructure.Data.RlsInterceptor(NSubstitute.Substitute.For<ITenantProvider>())
     );
 
     [Fact]
