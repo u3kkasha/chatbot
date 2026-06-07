@@ -20,7 +20,7 @@ public partial class StorageBroker
     public IQueryable<User> SelectAllUsers() => this.Set<User>();
 
     public async ValueTask<User?> SelectUserByIdAsync(UserId userId) =>
-        await this.Set<User>().FindAsync(userId);
+        await this.Set<User>().FirstOrDefaultAsync(user => user.Id == userId);
 
     public async ValueTask<User> UpdateUserAsync(User user)
     {
@@ -32,8 +32,9 @@ public partial class StorageBroker
 
     public async ValueTask<User> DeleteUserAsync(User user)
     {
-        this.Entry(user).State = EntityState.Deleted;
-        await this.SaveChangesAsync();
+        await this.Users
+            .Where(u => u.Id == user.Id)
+            .ExecuteDeleteAsync();
 
         return user;
     }

@@ -58,9 +58,11 @@ public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<Tes
         var now = SystemClock.Instance.GetCurrentInstant();
         var user = new User(
             Id: UserId.From(Guid.NewGuid()),
+            TenantId: TenantId.From(Guid.NewGuid()),
             Username: "testuser",
             Email: "test@example.com",
             PasswordHash: "hash",
+            Role: "Agent",
             CreatedDate: now,
             UpdatedDate: now
         );

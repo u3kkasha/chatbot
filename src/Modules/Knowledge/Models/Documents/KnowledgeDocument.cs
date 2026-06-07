@@ -4,6 +4,7 @@ namespace Chatbot.Modules.Knowledge.Models.Documents;
 
 public record KnowledgeDocument(
     KnowledgeDocumentId Id,
+    TenantId TenantId,
     string Title,
     string FileName,
     string BlobPath,

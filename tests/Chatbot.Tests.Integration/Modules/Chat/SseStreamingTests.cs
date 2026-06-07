@@ -86,7 +86,7 @@ public class SseStreamingTests
         var options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         };
 
         SseItemParser<SseToken?> itemParser = (_, data) =>

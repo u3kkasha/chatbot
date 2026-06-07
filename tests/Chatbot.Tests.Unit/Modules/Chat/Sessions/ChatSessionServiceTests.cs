@@ -27,17 +27,18 @@ public class ChatSessionServiceTests
         _sut = new ChatSessionService(_storageBrokerMock);
     }
 
-    private static ChatSession CreateRandomChatSession()
-    {
-        return new ChatSession(
+    private static ChatSession CreateRandomChatSession() =>
+        new(
             Id: ChatSessionId.From(Guid.NewGuid()),
-            CustomerId: CustomerId.From(Guid.NewGuid()),
+            TenantId: TenantId.From(Guid.NewGuid()),
+            ChannelProvider: ChannelProvider.WebWidget,
+            ExternalReferenceId: null,
+            CustomerIdentifier: "customer@example.com",
             OperatorId: OperatorId.From(Guid.NewGuid()),
-            Status: ChatSessionStatus.Created,
+            Status: ChatSessionStatus.Open,
             CreatedDate: Instant.FromUnixTimeSeconds(1000),
             UpdatedDate: Instant.FromUnixTimeSeconds(1000)
         );
-    }
 
     [Fact]
     public async Task ShouldAddChatSessionAsync()
@@ -94,7 +95,7 @@ public class ChatSessionServiceTests
     {
         // given
         var existingSession = CreateRandomChatSession();
-        var modifiedSession = existingSession with { Status = ChatSessionStatus.Active };
+        var modifiedSession = existingSession with { Status = ChatSessionStatus.Pending };
         _storageBrokerMock.SelectChatSessionByIdAsync(existingSession.Id).Returns(existingSession);
         _storageBrokerMock.UpdateChatSessionAsync(modifiedSession).Returns(modifiedSession);
 
@@ -151,9 +152,12 @@ public class ChatSessionServiceTests
         // given
         var invalidSession = new ChatSession(
             Id: ChatSessionId.From(Guid.Empty),
-            CustomerId: CustomerId.From(Guid.NewGuid()),
+            TenantId: TenantId.From(Guid.NewGuid()),
+            ChannelProvider: ChannelProvider.WebWidget,
+            ExternalReferenceId: null,
+            CustomerIdentifier: "customer@example.com",
             OperatorId: null,
-            Status: ChatSessionStatus.Created,
+            Status: ChatSessionStatus.Open,
             CreatedDate: default,
             UpdatedDate: default
         );
@@ -168,14 +172,17 @@ public class ChatSessionServiceTests
     }
 
     [Fact]
-    public async Task ShouldReturnValidationErrorOnAdd_WhenCustomerIdIsInvalid()
+    public async Task ShouldReturnValidationErrorOnAdd_WhenTenantIdIsInvalid()
     {
         // given
         var invalidSession = new ChatSession(
             Id: ChatSessionId.From(Guid.NewGuid()),
-            CustomerId: CustomerId.From(Guid.Empty),
+            TenantId: TenantId.From(Guid.Empty),
+            ChannelProvider: ChannelProvider.WebWidget,
+            ExternalReferenceId: null,
+            CustomerIdentifier: "customer@example.com",
             OperatorId: null,
-            Status: ChatSessionStatus.Created,
+            Status: ChatSessionStatus.Open,
             CreatedDate: default,
             UpdatedDate: default
         );
@@ -186,7 +193,35 @@ public class ChatSessionServiceTests
         // then
         result.IsT1.ShouldBeTrue();
         result.AsT1.Errors.ShouldNotBeNull();
-        result.AsT1.Errors.ContainsKey(nameof(ChatSession.CustomerId)).ShouldBeTrue();
+        result.AsT1.Errors.ContainsKey(nameof(ChatSession.TenantId)).ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public async Task ShouldReturnValidationErrorOnAdd_WhenCustomerIdentifierIsInvalid(string? identifier)
+    {
+        // given
+        var invalidSession = new ChatSession(
+            Id: ChatSessionId.From(Guid.NewGuid()),
+            TenantId: TenantId.From(Guid.NewGuid()),
+            ChannelProvider: ChannelProvider.WebWidget,
+            ExternalReferenceId: null,
+            CustomerIdentifier: identifier!,
+            OperatorId: null,
+            Status: ChatSessionStatus.Open,
+            CreatedDate: default,
+            UpdatedDate: default
+        );
+
+        // when
+        var result = await _sut.AddChatSessionAsync(invalidSession);
+
+        // then
+        result.IsT1.ShouldBeTrue();
+        result.AsT1.Errors.ShouldNotBeNull();
+        result.AsT1.Errors.ContainsKey(nameof(ChatSession.CustomerIdentifier)).ShouldBeTrue();
     }
 
     [Fact]
@@ -195,9 +230,12 @@ public class ChatSessionServiceTests
         // given
         var invalidSession = new ChatSession(
             Id: ChatSessionId.From(Guid.NewGuid()),
-            CustomerId: CustomerId.From(Guid.NewGuid()),
+            TenantId: TenantId.From(Guid.NewGuid()),
+            ChannelProvider: ChannelProvider.WebWidget,
+            ExternalReferenceId: null,
+            CustomerIdentifier: "customer@example.com",
             OperatorId: OperatorId.From(Guid.Empty),
-            Status: ChatSessionStatus.Created,
+            Status: ChatSessionStatus.Open,
             CreatedDate: default,
             UpdatedDate: default
         );

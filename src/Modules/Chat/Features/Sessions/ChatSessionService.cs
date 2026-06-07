@@ -30,9 +30,13 @@ public class ChatSessionService(IStorageBroker storageBroker) : IChatSessionServ
             {
                 AddError(errors, nameof(ChatSession.Id), "Id is invalid.");
             }
-            if (chatSession.CustomerId.Value == Guid.Empty)
+            if (chatSession.TenantId.Value == Guid.Empty)
             {
-                AddError(errors, nameof(ChatSession.CustomerId), "CustomerId is invalid.");
+                AddError(errors, nameof(ChatSession.TenantId), "TenantId is invalid.");
+            }
+            if (string.IsNullOrWhiteSpace(chatSession.CustomerIdentifier))
+            {
+                AddError(errors, nameof(ChatSession.CustomerIdentifier), "CustomerIdentifier is required.");
             }
             if (chatSession.OperatorId?.Value == Guid.Empty)
             {
@@ -108,9 +112,13 @@ public class ChatSessionService(IStorageBroker storageBroker) : IChatSessionServ
             {
                 AddError(errors, nameof(ChatSession.Id), "Id is invalid.");
             }
-            if (chatSession.CustomerId.Value == Guid.Empty)
+            if (chatSession.TenantId.Value == Guid.Empty)
             {
-                AddError(errors, nameof(ChatSession.CustomerId), "CustomerId is invalid.");
+                AddError(errors, nameof(ChatSession.TenantId), "TenantId is invalid.");
+            }
+            if (string.IsNullOrWhiteSpace(chatSession.CustomerIdentifier))
+            {
+                AddError(errors, nameof(ChatSession.CustomerIdentifier), "CustomerIdentifier is required.");
             }
             if (chatSession.OperatorId?.Value == Guid.Empty)
             {

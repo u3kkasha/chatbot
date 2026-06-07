@@ -24,7 +24,7 @@ public partial class StorageBroker
 
     public async ValueTask<KnowledgeDocument?> SelectKnowledgeDocumentByIdAsync(
         KnowledgeDocumentId knowledgeDocumentId
-    ) => await this.Set<KnowledgeDocument>().FindAsync(knowledgeDocumentId);
+    ) => await this.Set<KnowledgeDocument>().FirstOrDefaultAsync(d => d.Id == knowledgeDocumentId);
 
     public async ValueTask<KnowledgeDocument> UpdateKnowledgeDocumentAsync(
         KnowledgeDocument knowledgeDocument
@@ -40,8 +40,9 @@ public partial class StorageBroker
         KnowledgeDocument knowledgeDocument
     )
     {
-        this.Entry(knowledgeDocument).State = EntityState.Deleted;
-        await this.SaveChangesAsync();
+        await this.KnowledgeDocuments
+            .Where(d => d.Id == knowledgeDocument.Id)
+            .ExecuteDeleteAsync();
 
         return knowledgeDocument;
     }

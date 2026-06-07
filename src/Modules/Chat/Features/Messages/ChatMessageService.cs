@@ -34,6 +34,10 @@ public class ChatMessageService(IStorageBroker storageBroker) : IChatMessageServ
             {
                 AddError(errors, nameof(ChatMessage.SessionId), "SessionId is invalid.");
             }
+            if (chatMessage.TenantId.Value == Guid.Empty)
+            {
+                AddError(errors, nameof(ChatMessage.TenantId), "TenantId is invalid.");
+            }
             if (string.IsNullOrWhiteSpace(chatMessage.Content))
             {
                 AddError(errors, nameof(ChatMessage.Content), "Content is invalid.");
@@ -111,6 +115,10 @@ public class ChatMessageService(IStorageBroker storageBroker) : IChatMessageServ
             if (chatMessage.SessionId.Value == Guid.Empty)
             {
                 AddError(errors, nameof(ChatMessage.SessionId), "SessionId is invalid.");
+            }
+            if (chatMessage.TenantId.Value == Guid.Empty)
+            {
+                AddError(errors, nameof(ChatMessage.TenantId), "TenantId is invalid.");
             }
             if (string.IsNullOrWhiteSpace(chatMessage.Content))
             {

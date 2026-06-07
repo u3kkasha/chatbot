@@ -17,13 +17,22 @@ public partial class StorageBroker
         return chatSession;
     }
 
-    public IQueryable<ChatSession> SelectAllChatSessions() => this.Set<ChatSession>();
+    public IQueryable<ChatSession> SelectAllChatSessions() => this.Set<ChatSession>().AsNoTracking();
 
     public async ValueTask<ChatSession?> SelectChatSessionByIdAsync(ChatSessionId chatSessionId) =>
         await this.Set<ChatSession>().FindAsync(chatSessionId);
 
     public async ValueTask<ChatSession> UpdateChatSessionAsync(ChatSession chatSession)
     {
+        var local = this.Set<ChatSession>()
+            .Local
+            .FirstOrDefault(entry => entry.Id == chatSession.Id);
+
+        if (local != null)
+        {
+            this.Entry(local).State = EntityState.Detached;
+        }
+
         this.Entry(chatSession).State = EntityState.Modified;
         await this.SaveChangesAsync();
 
@@ -32,8 +41,9 @@ public partial class StorageBroker
 
     public async ValueTask<ChatSession> DeleteChatSessionAsync(ChatSession chatSession)
     {
-        this.Entry(chatSession).State = EntityState.Deleted;
-        await this.SaveChangesAsync();
+        await this.ChatSessions
+            .Where(s => s.Id == chatSession.Id)
+            .ExecuteDeleteAsync();
 
         return chatSession;
     }

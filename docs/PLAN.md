@@ -32,6 +32,9 @@
     - [x] **SnakeCase** naming.
     - [x] **Audit Interceptors** (implemented and unit tested).
     - [x] **Native JSON Mapping** for citations and AI metadata.
+    - [x] **`NoTracking` & `ExecuteDeleteAsync`:** `NoTracking` globally on Identity/Knowledge brokers; per-query `AsNoTracking()` on Chat list queries; `ExecuteDeleteAsync` on all Delete methods for zero-allocation single-roundtrip deletes.
+    - [ ] **Compiled Models:** Run `dotnet ef dbcontext optimize` per DbContext to eliminate reflection startup overhead and achieve full Native AOT compliance.
+    - [ ] **DbContext Pooling (`AddDbContextPool`):** Switch from `AddDbContext` to `AddDbContextPool` on all three StorageBrokers. Requires a connection-level EF Core interceptor to issue `SET LOCAL app.current_tenant_id = @tid` at the start of each command/transaction so pooled connections always carry the correct RLS session variable — coordinate with the RLS Interceptor below.
 - [x] **Real-time Streaming Foundation:**
   - [x] Scaffold **TypedResults.ServerSentEvents** support for lightweight, unidirectional AI token streaming.
 - [x] **Secret Management & Startup Validation:**
@@ -81,9 +84,15 @@
 - [x] **Foundation Services (TDD):**
   - Use **NSubstitute**, **OneOf**, and **Verify**.
   - Apply **Modern C# Pattern Matching** for result handling.
-- [ ] **Acceptance Tests (TDD):** Implement E2E API tests for each feature (Identity, Chat).
+- [x] **Acceptance Tests (TDD):** Implement E2E API tests for each feature (Identity, Chat).
+- [ ] **Schema Alignment (ARD §4.1):** Enrich EF Core entities to match the full ARD schema blueprint — prerequisite for RLS and multi-tenancy:
+  - Add `TenantId` (Vogen strongly-typed) to `ChatSession`, `ChatMessage`, `User`, `KnowledgeDocument`, `DocumentChunk`.
+  - Add `ChannelProvider` (enum), `ExternalReferenceId`, `CustomerIdentifier` to `ChatSession`.
+  - Add `Status`, `IsAiGenerated`, `ApprovedBy` to `ChatMessage`.
+  - Add EF Core migrations for all new columns + indexes (`idx_sessions_channel`, `idx_messages_session`).
 - [ ] **Session State Machine:**
   - Implement **Stateless** configuration for status transitions.
+  - Use **`ExecuteUpdateAsync`** for bulk status-transition writes (e.g., bulk-cancel open sessions on operator logout) — single SQL `UPDATE` with no entity load or tracking.
 
 ## Phase 3: Orchestration & Domain Events (MassTransit)
 
@@ -98,6 +107,11 @@
   - Coordinate multi-broker/multi-service flows.
 - [ ] **SignalR Hubs:**
   - Real-time communication grouped by Tenant ID for state synchronization.
+- [ ] **PostgreSQL RLS Session Interceptor:**
+  - **Postgres RLS (Row Level Security) is the primary tenant isolation mechanism** — policies are defined directly on each tenant-scoped table (`ENABLE ROW LEVEL SECURITY`, `CREATE POLICY ... USING (tenant_id = current_setting('app.current_tenant_id')::uuid)`) so isolation is enforced at the database engine level for all queries, including raw SQL and MassTransit Outbox.
+  - Implement an EF Core `IDbCommandInterceptor` that issues `SET LOCAL app.current_tenant_id = @tid` before every command, injecting the active tenant's ID from the current `IHttpContextAccessor`/ambient context into the Postgres session.
+  - **Migrations** must include `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` and `CREATE POLICY` statements per tenant-scoped table across all three schemas (`chat`, `identity`, `knowledge`).
+  - Coordinate with `AddDbContextPool` — pooled connections must reset the session variable on every command (handled by the interceptor above).
 - [ ] **Background Processing (Coravel):**
   - Use **Coravel** for scheduling and simple background jobs.
   - Refactor ingestion flows to use **Coravel** jobs or **MassTransit** consumers where appropriate.
@@ -108,6 +122,8 @@
   - RAG pipeline (Embed -> Search -> Prompt -> Complete).
   - **AI Plugins:** Design API endpoints as **AI Tools** for Semantic Kernel.
   - **Feature Toggles:** Wrap AI flows in **Microsoft.FeatureManagement**.
+- [ ] **HybridCache Query Caching (EF Core 10):**
+  - Write EF Core interceptors to cache frequent read-only queries (e.g. operator profiles, session list indexes) directly in Garnet/Redis via `HybridCache`. Leverages EF Core 10's native `HybridCache` integration hooks.
 - [ ] **AI Streaming Implementation:**
   - [ ] Use **TypedResults.ServerSentEvents** to stream LLM completion tokens to the client.
 - [ ] **Ingestion Orchestration:**

@@ -27,17 +27,19 @@ public class ChatMessageServiceTests
         _sut = new ChatMessageService(_storageBrokerMock);
     }
 
-    private static ChatMessage CreateRandomChatMessage()
-    {
-        return new ChatMessage(
+    private static ChatMessage CreateRandomChatMessage() =>
+        new(
             id: ChatMessageId.From(Guid.NewGuid()),
             sessionId: ChatSessionId.From(Guid.NewGuid()),
+            tenantId: TenantId.From(Guid.NewGuid()),
             sender: MessageSender.Customer,
             content: "Hello, this is a test message.",
+            status: MessageStatus.Sent,
+            isAiGenerated: false,
+            approvedBy: null,
             createdDate: Instant.FromUnixTimeSeconds(1000),
             updatedDate: Instant.FromUnixTimeSeconds(1000)
         );
-    }
 
     [Fact]
     public async Task ShouldAddChatMessageAsync()
@@ -152,8 +154,12 @@ public class ChatMessageServiceTests
         var invalidMessage = new ChatMessage(
             id: ChatMessageId.From(Guid.Empty),
             sessionId: ChatSessionId.From(Guid.NewGuid()),
+            tenantId: TenantId.From(Guid.NewGuid()),
             sender: MessageSender.Customer,
             content: "Hello",
+            status: MessageStatus.Sent,
+            isAiGenerated: false,
+            approvedBy: null,
             createdDate: default,
             updatedDate: default
         );
@@ -174,8 +180,12 @@ public class ChatMessageServiceTests
         var invalidMessage = new ChatMessage(
             id: ChatMessageId.From(Guid.NewGuid()),
             sessionId: ChatSessionId.From(Guid.Empty),
+            tenantId: TenantId.From(Guid.NewGuid()),
             sender: MessageSender.Customer,
             content: "Hello",
+            status: MessageStatus.Sent,
+            isAiGenerated: false,
+            approvedBy: null,
             createdDate: default,
             updatedDate: default
         );
@@ -189,6 +199,32 @@ public class ChatMessageServiceTests
         result.AsT1.Errors.ContainsKey(nameof(ChatMessage.SessionId)).ShouldBeTrue();
     }
 
+    [Fact]
+    public async Task ShouldReturnValidationErrorOnAdd_WhenTenantIdIsInvalid()
+    {
+        // given
+        var invalidMessage = new ChatMessage(
+            id: ChatMessageId.From(Guid.NewGuid()),
+            sessionId: ChatSessionId.From(Guid.NewGuid()),
+            tenantId: TenantId.From(Guid.Empty),
+            sender: MessageSender.Customer,
+            content: "Hello",
+            status: MessageStatus.Sent,
+            isAiGenerated: false,
+            approvedBy: null,
+            createdDate: default,
+            updatedDate: default
+        );
+
+        // when
+        var result = await _sut.AddChatMessageAsync(invalidMessage);
+
+        // then
+        result.IsT1.ShouldBeTrue();
+        result.AsT1.Errors.ShouldNotBeNull();
+        result.AsT1.Errors.ContainsKey(nameof(ChatMessage.TenantId)).ShouldBeTrue();
+    }
+
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -199,8 +235,12 @@ public class ChatMessageServiceTests
         var invalidMessage = new ChatMessage(
             id: ChatMessageId.From(Guid.NewGuid()),
             sessionId: ChatSessionId.From(Guid.NewGuid()),
+            tenantId: TenantId.From(Guid.NewGuid()),
             sender: MessageSender.Customer,
-            content: invalidContent,
+            content: invalidContent!,
+            status: MessageStatus.Sent,
+            isAiGenerated: false,
+            approvedBy: null,
             createdDate: default,
             updatedDate: default
         );

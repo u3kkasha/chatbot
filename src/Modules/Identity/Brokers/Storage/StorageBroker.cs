@@ -24,6 +24,7 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
         optionsBuilder
             .UseNpgsql(connectionString, x => x.UseNodaTime())
             .UseSnakeCaseNamingConvention()
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
             .AddInterceptors(this.auditInterceptor);
     }
 
@@ -33,10 +34,11 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
 
         modelBuilder.HasDefaultSchema("identity");
 
-        // Vogen type conversions would go here if not handled globally
         modelBuilder.Entity<Models.Users.User>(user =>
         {
             user.Property(u => u.Id).HasConversion(id => id.Value, value => UserId.From(value));
+            user.Property(u => u.TenantId).HasConversion(id => id.Value, value => TenantId.From(value));
         });
     }
 }
+

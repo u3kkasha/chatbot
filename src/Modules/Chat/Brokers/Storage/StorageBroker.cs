@@ -39,15 +39,20 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
                 .Property(s => s.Id)
                 .HasConversion(id => id.Value, value => ChatSessionId.From(value));
             session
-                .Property(s => s.CustomerId)
-                .HasConversion(id => id.Value, value => CustomerId.From(value));
-
+                .Property(s => s.TenantId)
+                .HasConversion(id => id.Value, value => TenantId.From(value));
             session
                 .Property(s => s.OperatorId)
                 .HasConversion(
                     id => id.HasValue ? id.Value.Value : default(Guid?),
                     value => value.HasValue ? OperatorId.From(value.Value) : default(OperatorId?)
                 );
+            session
+                .Property(s => s.ChannelProvider)
+                .HasConversion<string>();
+
+            session.HasIndex(s => new { s.ChannelProvider, s.ExternalReferenceId })
+                .HasDatabaseName("idx_sessions_channel");
         });
 
         modelBuilder.Entity<ChatMessage>(message =>
@@ -58,6 +63,15 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
             message
                 .Property(m => m.SessionId)
                 .HasConversion(id => id.Value, value => ChatSessionId.From(value));
+            message
+                .Property(m => m.TenantId)
+                .HasConversion(id => id.Value, value => TenantId.From(value));
+            message
+                .Property(m => m.Status)
+                .HasConversion<string>();
+
+            message.HasIndex(m => m.SessionId)
+                .HasDatabaseName("idx_messages_session");
 
             // Native JSON Mapping for citations and AI metadata
             message.OwnsMany(
@@ -77,3 +91,4 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
         });
     }
 }
+

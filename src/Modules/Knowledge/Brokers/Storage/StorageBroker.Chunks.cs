@@ -21,7 +21,7 @@ public partial class StorageBroker
 
     public async ValueTask<DocumentChunk?> SelectDocumentChunkByIdAsync(
         DocumentChunkId documentChunkId
-    ) => await this.Set<DocumentChunk>().FindAsync(documentChunkId);
+    ) => await this.Set<DocumentChunk>().FirstOrDefaultAsync(c => c.Id == documentChunkId);
 
     public async ValueTask<DocumentChunk> UpdateDocumentChunkAsync(DocumentChunk documentChunk)
     {
@@ -33,8 +33,9 @@ public partial class StorageBroker
 
     public async ValueTask<DocumentChunk> DeleteDocumentChunkAsync(DocumentChunk documentChunk)
     {
-        this.Entry(documentChunk).State = EntityState.Deleted;
-        await this.SaveChangesAsync();
+        await this.DocumentChunks
+            .Where(c => c.Id == documentChunk.Id)
+            .ExecuteDeleteAsync();
 
         return documentChunk;
     }

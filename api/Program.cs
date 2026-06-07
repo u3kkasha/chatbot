@@ -60,6 +60,8 @@ builder.Services.AddSingleton<IChatClient, NoopChatClient>();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
+    options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower;
+    options.SerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower;
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
 });
 

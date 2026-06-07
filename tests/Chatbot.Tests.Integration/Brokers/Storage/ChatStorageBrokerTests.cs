@@ -40,19 +40,19 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
         // Act
         var tableName = entityType!.GetTableName();
         var idProperty = entityType.FindProperty(nameof(ChatSession.Id));
-        var customerIdProperty = entityType.FindProperty(nameof(ChatSession.CustomerId));
+        var tenantIdProperty = entityType.FindProperty(nameof(ChatSession.TenantId));
 
         var storeObject = Microsoft.EntityFrameworkCore.Metadata.StoreObjectIdentifier.Table(
             tableName!,
             entityType.GetSchema()
         );
         var idColumnName = idProperty?.GetColumnName(storeObject);
-        var customerIdColumnName = customerIdProperty?.GetColumnName(storeObject);
+        var tenantIdColumnName = tenantIdProperty?.GetColumnName(storeObject);
 
         // Assert
         tableName.ShouldBe("chat_sessions");
         idColumnName.ShouldBe("id");
-        customerIdColumnName.ShouldBe("customer_id");
+        tenantIdColumnName.ShouldBe("tenant_id");
     }
 
     [Fact]
@@ -64,9 +64,12 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
         var now = SystemClock.Instance.GetCurrentInstant();
         var session = new ChatSession(
             Id: ChatSessionId.From(Guid.NewGuid()),
-            CustomerId: CustomerId.From(Guid.NewGuid()),
+            TenantId: TenantId.From(Guid.NewGuid()),
+            ChannelProvider: ChannelProvider.WebWidget,
+            ExternalReferenceId: null,
+            CustomerIdentifier: "customer@example.com",
             OperatorId: OperatorId.From(Guid.NewGuid()),
-            Status: ChatSessionStatus.Active,
+            Status: ChatSessionStatus.Open,
             CreatedDate: now,
             UpdatedDate: now
         );
@@ -80,7 +83,8 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
 
         var selectSession = await _storageBroker.SelectChatSessionByIdAsync(session.Id);
         selectSession.ShouldNotBeNull();
-        selectSession!.CustomerId.ShouldBe(session.CustomerId);
+        selectSession!.CustomerIdentifier.ShouldBe(session.CustomerIdentifier);
+        selectSession.TenantId.ShouldBe(session.TenantId);
     }
 
     [Fact]
@@ -120,8 +124,12 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
         var message = new ChatMessage(
             id: messageId,
             sessionId: sessionId,
+            tenantId: TenantId.From(Guid.NewGuid()),
             sender: MessageSender.Ai,
             content: "Hello! Here is the answer you requested.",
+            status: MessageStatus.Sent,
+            isAiGenerated: true,
+            approvedBy: null,
             createdDate: now,
             updatedDate: now
         )
@@ -140,6 +148,7 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
         var selectMessage = await _storageBroker.SelectChatMessageByIdAsync(message.Id);
         selectMessage.ShouldNotBeNull();
         selectMessage!.Content.ShouldBe(message.Content);
+        selectMessage.IsAiGenerated.ShouldBeTrue();
         selectMessage.Citations.Count.ShouldBe(2);
         selectMessage.Citations[0].SourceUrl.ShouldBe("https://example.com/doc1");
         selectMessage.Citations[1].Snippet.ShouldBe("This is the second citation snippet");

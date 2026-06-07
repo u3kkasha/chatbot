@@ -55,10 +55,649 @@
           }
         }
       }
+    },
+    "/api/chat/sessions": {
+      "post": {
+        "tags": ["ChatSessionEndpoints"],
+        "summary": "Create a new chat session.",
+        "operationId": "CreateChatSession",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChatSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["ChatSessionEndpoints"],
+        "summary": "Retrieve all chat sessions.",
+        "operationId": "GetAllChatSessions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatSessionResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat/sessions/{id}": {
+      "get": {
+        "tags": ["ChatSessionEndpoints"],
+        "summary": "Retrieve a chat session by ID.",
+        "operationId": "GetChatSessionById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["ChatSessionEndpoints"],
+        "summary": "Update a chat session.",
+        "operationId": "UpdateChatSession",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChatSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["ChatSessionEndpoints"],
+        "summary": "Delete a chat session.",
+        "operationId": "DeleteChatSession",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat/messages": {
+      "post": {
+        "tags": ["ChatMessageEndpoints"],
+        "summary": "Create a new chat message.",
+        "operationId": "CreateChatMessage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatMessageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["ChatMessageEndpoints"],
+        "summary": "Retrieve all chat messages.",
+        "operationId": "GetAllChatMessages",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatMessageResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat/messages/{id}": {
+      "get": {
+        "tags": ["ChatMessageEndpoints"],
+        "summary": "Retrieve a chat message by ID.",
+        "operationId": "GetChatMessageById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatMessageResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["ChatMessageEndpoints"],
+        "summary": "Update a chat message.",
+        "operationId": "UpdateChatMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChatMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatMessageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["ChatMessageEndpoints"],
+        "summary": "Delete a chat message.",
+        "operationId": "DeleteChatMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatMessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AiMetadataDto": {
+        "required": [
+          "model_name",
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens",
+          "latency_ms"
+        ],
+        "type": "object",
+        "properties": {
+          "model_name": {
+            "type": "string"
+          },
+          "prompt_tokens": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": ["integer", "string"],
+            "format": "int32"
+          },
+          "completion_tokens": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": ["integer", "string"],
+            "format": "int32"
+          },
+          "total_tokens": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": ["integer", "string"],
+            "format": "int32"
+          },
+          "latency_ms": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+            "type": ["number", "string"],
+            "format": "double"
+          }
+        }
+      },
+      "ChatMessageResponse": {
+        "required": [
+          "id",
+          "session_id",
+          "tenant_id",
+          "sender",
+          "content",
+          "status",
+          "is_ai_generated",
+          "approved_by",
+          "citations",
+          "ai_metadata",
+          "created_date",
+          "updated_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sender": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "is_ai_generated": {
+            "type": "boolean"
+          },
+          "approved_by": {
+            "type": ["null", "string"],
+            "format": "uuid"
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CitationDto"
+            }
+          },
+          "ai_metadata": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/AiMetadataDto"
+              }
+            ]
+          },
+          "created_date": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "updated_date": {
+            "$ref": "#/components/schemas/Instant"
+          }
+        }
+      },
+      "ChatSessionResponse": {
+        "required": [
+          "id",
+          "tenant_id",
+          "channel_provider",
+          "external_reference_id",
+          "customer_identifier",
+          "operator_id",
+          "status",
+          "created_date",
+          "updated_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "channel_provider": {
+            "type": "string"
+          },
+          "external_reference_id": {
+            "type": ["null", "string"]
+          },
+          "customer_identifier": {
+            "type": "string"
+          },
+          "operator_id": {
+            "type": ["null", "string"],
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string"
+          },
+          "created_date": {
+            "$ref": "#/components/schemas/Instant"
+          },
+          "updated_date": {
+            "$ref": "#/components/schemas/Instant"
+          }
+        }
+      },
+      "CitationDto": {
+        "required": ["source_url", "title", "snippet", "score"],
+        "type": "object",
+        "properties": {
+          "source_url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "snippet": {
+            "type": "string"
+          },
+          "score": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+            "type": ["number", "string"],
+            "format": "double"
+          }
+        }
+      },
+      "CreateChatMessageRequest": {
+        "required": [
+          "session_id",
+          "tenant_id",
+          "sender",
+          "content",
+          "status",
+          "is_ai_generated",
+          "approved_by",
+          "citations",
+          "ai_metadata"
+        ],
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sender": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "is_ai_generated": {
+            "type": "boolean"
+          },
+          "approved_by": {
+            "type": ["null", "string"],
+            "format": "uuid"
+          },
+          "citations": {
+            "type": ["null", "array"],
+            "items": {
+              "$ref": "#/components/schemas/CitationDto"
+            }
+          },
+          "ai_metadata": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/AiMetadataDto"
+              }
+            ]
+          }
+        }
+      },
+      "CreateChatSessionRequest": {
+        "required": [
+          "tenant_id",
+          "channel_provider",
+          "external_reference_id",
+          "customer_identifier",
+          "operator_id"
+        ],
+        "type": "object",
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "channel_provider": {
+            "type": "string"
+          },
+          "external_reference_id": {
+            "type": ["null", "string"]
+          },
+          "customer_identifier": {
+            "type": "string"
+          },
+          "operator_id": {
+            "type": ["null", "string"],
+            "format": "uuid"
+          }
+        }
+      },
+      "HttpValidationProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": ["null", "string"]
+          },
+          "title": {
+            "type": ["null", "string"]
+          },
+          "status": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": ["null", "integer", "string"],
+            "format": "int32"
+          },
+          "detail": {
+            "type": ["null", "string"]
+          },
+          "instance": {
+            "type": ["null", "string"]
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Instant": {
+        "type": "object"
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -80,6 +719,95 @@
             "type": ["null", "string"]
           }
         }
+      },
+      "UpdateChatMessageRequest": {
+        "required": [
+          "session_id",
+          "tenant_id",
+          "sender",
+          "content",
+          "status",
+          "is_ai_generated",
+          "approved_by",
+          "citations",
+          "ai_metadata"
+        ],
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sender": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "is_ai_generated": {
+            "type": "boolean"
+          },
+          "approved_by": {
+            "type": ["null", "string"],
+            "format": "uuid"
+          },
+          "citations": {
+            "type": ["null", "array"],
+            "items": {
+              "$ref": "#/components/schemas/CitationDto"
+            }
+          },
+          "ai_metadata": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/AiMetadataDto"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateChatSessionRequest": {
+        "required": [
+          "tenant_id",
+          "channel_provider",
+          "external_reference_id",
+          "customer_identifier",
+          "operator_id",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "channel_provider": {
+            "type": "string"
+          },
+          "external_reference_id": {
+            "type": ["null", "string"]
+          },
+          "customer_identifier": {
+            "type": "string"
+          },
+          "operator_id": {
+            "type": ["null", "string"],
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
       }
     }
   },
@@ -89,6 +817,12 @@
     },
     {
       "name": "Chat"
+    },
+    {
+      "name": "ChatSessionEndpoints"
+    },
+    {
+      "name": "ChatMessageEndpoints"
     }
   ]
 }

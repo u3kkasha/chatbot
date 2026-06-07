@@ -24,6 +24,7 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
         optionsBuilder
             .UseNpgsql(connectionString, x => x.UseNodaTime())
             .UseSnakeCaseNamingConvention()
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
             .AddInterceptors(this.auditInterceptor);
     }
 
@@ -38,6 +39,9 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
             document
                 .Property(d => d.Id)
                 .HasConversion(id => id.Value, value => KnowledgeDocumentId.From(value));
+            document
+                .Property(d => d.TenantId)
+                .HasConversion(id => id.Value, value => TenantId.From(value));
         });
 
         modelBuilder.Entity<DocumentChunk>(chunk =>
@@ -48,6 +52,10 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
             chunk
                 .Property(c => c.DocumentId)
                 .HasConversion(id => id.Value, value => KnowledgeDocumentId.From(value));
+            chunk
+                .Property(c => c.TenantId)
+                .HasConversion(id => id.Value, value => TenantId.From(value));
         });
     }
 }
+

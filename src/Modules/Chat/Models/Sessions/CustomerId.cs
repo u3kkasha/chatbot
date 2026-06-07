@@ -1,6 +1,1 @@
-using Vogen;
-
-namespace Chatbot.Modules.Chat.Models.Sessions;
-
-[ValueObject<Guid>]
-public partial struct CustomerId { }
+// This file is intentionally empty. CustomerId has been replaced by CustomerIdentifier (string) on ChatSession.

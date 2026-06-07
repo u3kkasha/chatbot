@@ -22,6 +22,8 @@ public static class ModuleExtensions
     public static IEndpointRouteBuilder MapChatModule(this IEndpointRouteBuilder routes)
     {
         routes.MapStreamCompletion();
+        routes.MapChatSessionEndpoints();
+        routes.MapChatMessageEndpoints();
 
         return routes;
     }

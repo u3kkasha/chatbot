@@ -63,6 +63,7 @@ public class KnowledgeStorageBrokerTests(TestDatabaseFixture fixture)
         var now = SystemClock.Instance.GetCurrentInstant();
         var document = new KnowledgeDocument(
             Id: KnowledgeDocumentId.From(Guid.NewGuid()),
+            TenantId: TenantId.From(Guid.NewGuid()),
             Title: "User Guide",
             FileName: "user_guide.pdf",
             BlobPath: "uploads/user_guide.pdf",
@@ -98,6 +99,7 @@ public class KnowledgeStorageBrokerTests(TestDatabaseFixture fixture)
         var chunk = new DocumentChunk(
             Id: chunkId,
             DocumentId: docId,
+            TenantId: TenantId.From(Guid.NewGuid()),
             Index: 0,
             Content: "This is a section from the user guide...",
             VectorId: vectorId,
