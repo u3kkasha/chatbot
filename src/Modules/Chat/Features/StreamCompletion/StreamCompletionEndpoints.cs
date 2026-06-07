@@ -14,7 +14,6 @@ namespace Chatbot.Modules.Chat.Features.StreamCompletion;
 /// </summary>
 internal static class StreamCompletionEndpoints
 {
-    [RequiresUnreferencedCode("Calls Microsoft.AspNetCore.Builder.EndpointRouteBuilderExtensions.MapGet(String, Delegate)")]
     internal static IEndpointRouteBuilder MapStreamCompletion(this IEndpointRouteBuilder routes)
     {
         routes

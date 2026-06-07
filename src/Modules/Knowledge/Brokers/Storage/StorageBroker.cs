@@ -9,8 +9,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chatbot.Modules.Knowledge.Brokers.Storage;
 
-[RequiresDynamicCode("EF Core storage brokers use compiled models for AOT compatibility.")]
-[RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
+[SuppressMessage("Trimming", "IL2026", Justification = "EF Core storage brokers use compiled models for AOT compatibility.")]
+[SuppressMessage("AOT", "IL3050", Justification = "EF Core storage brokers use compiled models for AOT compatibility.")]
 public partial class StorageBroker(DbContextOptions<StorageBroker> options)
     : DbContext(options),
         IStorageBroker

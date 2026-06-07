@@ -15,7 +15,6 @@ namespace Chatbot.Modules.Chat;
 
 public static class ModuleExtensions
 {
-    [RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
     public static IServiceCollection AddChatModule(this IServiceCollection services)
     {
         services.AddDbContextPool<IStorageBroker, StorageBroker>((sp, options) =>
@@ -45,7 +44,6 @@ public static class ModuleExtensions
         return services;
     }
 
-    [RequiresUnreferencedCode()]
     public static IEndpointRouteBuilder MapChatModule(this IEndpointRouteBuilder routes)
     {
         routes.MapStreamCompletion();

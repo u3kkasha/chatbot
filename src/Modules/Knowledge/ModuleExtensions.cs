@@ -10,7 +10,6 @@ namespace Chatbot.Modules.Knowledge;
 
 public static class ModuleExtensions
 {
-    [RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
     public static IServiceCollection AddKnowledgeModule(this IServiceCollection services)
     {
         services.AddDbContextPool<IStorageBroker, StorageBroker>((sp, options) =>

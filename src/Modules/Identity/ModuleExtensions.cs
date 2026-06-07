@@ -10,7 +10,6 @@ namespace Chatbot.Modules.Identity;
 
 public static class ModuleExtensions
 {
-    [RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
     public static IServiceCollection AddIdentityModule(this IServiceCollection services)
     {
         services.AddDbContextPool<IStorageBroker, StorageBroker>((sp, options) =>

@@ -44,7 +44,6 @@ public record ChatSessionResponse(
 
 public static class ChatSessionEndpoints
 {
-    [RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
     public static IEndpointRouteBuilder MapChatSessionEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/chat/sessions");

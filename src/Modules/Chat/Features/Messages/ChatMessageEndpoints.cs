@@ -57,7 +57,6 @@ public record ChatMessageResponse(
 
 public static class ChatMessageEndpoints
 {
-    [RequiresUnreferencedCode("EF Core storage brokers use compiled models for AOT compatibility.")]
     public static IEndpointRouteBuilder MapChatMessageEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/chat/messages");
