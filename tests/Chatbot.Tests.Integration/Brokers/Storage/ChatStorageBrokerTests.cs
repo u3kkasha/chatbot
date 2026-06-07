@@ -64,12 +64,12 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
 
         var now = SystemClock.Instance.GetCurrentInstant();
         var session = new ChatSession(
-            Id: ChatSessionId.From(Guid.NewGuid()),
-            TenantId: TenantId.From(Guid.NewGuid()),
+            Id: new ChatSessionId(Guid.NewGuid()),
+            TenantId: new TenantId(Guid.NewGuid()),
             ChannelProvider: ChannelProvider.WebWidget,
             ExternalReferenceId: null,
             CustomerIdentifier: "customer@example.com",
-            OperatorId: OperatorId.From(Guid.NewGuid()),
+            OperatorId: new OperatorId(Guid.NewGuid()),
             Status: ChatSessionStatus.Open,
             CreatedDate: now,
             UpdatedDate: now
@@ -95,8 +95,8 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
         await ((DbContext)_storageBroker).Database.EnsureCreatedAsync();
 
         var now = SystemClock.Instance.GetCurrentInstant();
-        var sessionId = ChatSessionId.From(Guid.NewGuid());
-        var messageId = ChatMessageId.From(Guid.NewGuid());
+        var sessionId = new ChatSessionId(Guid.NewGuid());
+        var messageId = new ChatMessageId(Guid.NewGuid());
 
         var citations = new List<Citation>
         {
@@ -125,7 +125,7 @@ public class ChatStorageBrokerTests(TestDatabaseFixture fixture)
         var message = new ChatMessage(
             id: messageId,
             sessionId: sessionId,
-            tenantId: TenantId.From(Guid.NewGuid()),
+            tenantId: new TenantId(Guid.NewGuid()),
             sender: MessageSender.Ai,
             content: "Hello! Here is the answer you requested.",
             status: MessageStatus.Sent,

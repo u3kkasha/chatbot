@@ -100,9 +100,9 @@ public static class ChatMessageEndpoints
             return TypedResults.ValidationProblem(validationErrors);
 
         var message = new ChatMessage(
-            id: ChatMessageId.From(Guid.NewGuid()),
-            sessionId: ChatSessionId.From(request.SessionId),
-            tenantId: TenantId.From(request.TenantId),
+            id: new ChatMessageId(Guid.NewGuid()),
+            sessionId: new ChatSessionId(request.SessionId),
+            tenantId: new TenantId(request.TenantId),
             sender: sender,
             content: request.Content,
             status: status,
@@ -158,7 +158,7 @@ public static class ChatMessageEndpoints
         IChatMessageService service
     )
     {
-        var result = await service.RetrieveChatMessageByIdAsync(ChatMessageId.From(id));
+        var result = await service.RetrieveChatMessageByIdAsync(new ChatMessageId(id));
 
         return result.Match<Results<Ok<ChatMessageResponse>, ProblemHttpResult>>(
             success => TypedResults.Ok(MapToResponse(success)),
@@ -184,9 +184,9 @@ public static class ChatMessageEndpoints
             return TypedResults.ValidationProblem(validationErrors);
 
         var message = new ChatMessage(
-            id: ChatMessageId.From(id),
-            sessionId: ChatSessionId.From(request.SessionId),
-            tenantId: TenantId.From(request.TenantId),
+            id: new ChatMessageId(id),
+            sessionId: new ChatSessionId(request.SessionId),
+            tenantId: new TenantId(request.TenantId),
             sender: sender,
             content: request.Content,
             status: status,
@@ -228,7 +228,7 @@ public static class ChatMessageEndpoints
         IChatMessageService service
     )
     {
-        var result = await service.RemoveChatMessageByIdAsync(ChatMessageId.From(id));
+        var result = await service.RemoveChatMessageByIdAsync(new ChatMessageId(id));
 
         return result.Match<Results<Ok<ChatMessageResponse>, ProblemHttpResult>>(
             success => TypedResults.Ok(MapToResponse(success)),

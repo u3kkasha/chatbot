@@ -43,7 +43,7 @@
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.Seq" />
-    <PackageReference Include="Vogen" />
+    <PackageReference Include="StronglyTypedId" />
   </ItemGroup>
 
   <ItemGroup>

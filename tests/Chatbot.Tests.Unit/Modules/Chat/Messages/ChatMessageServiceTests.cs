@@ -29,9 +29,9 @@ public class ChatMessageServiceTests
 
     private static ChatMessage CreateRandomChatMessage() =>
         new(
-            id: ChatMessageId.From(Guid.NewGuid()),
-            sessionId: ChatSessionId.From(Guid.NewGuid()),
-            tenantId: TenantId.From(Guid.NewGuid()),
+            id: new ChatMessageId(Guid.NewGuid()),
+            sessionId: new ChatSessionId(Guid.NewGuid()),
+            tenantId: new TenantId(Guid.NewGuid()),
             sender: MessageSender.Customer,
             content: "Hello, this is a test message.",
             status: MessageStatus.Sent,
@@ -152,9 +152,9 @@ public class ChatMessageServiceTests
     {
         // given
         var invalidMessage = new ChatMessage(
-            id: ChatMessageId.From(Guid.Empty),
-            sessionId: ChatSessionId.From(Guid.NewGuid()),
-            tenantId: TenantId.From(Guid.NewGuid()),
+            id: new ChatMessageId(Guid.Empty),
+            sessionId: new ChatSessionId(Guid.NewGuid()),
+            tenantId: new TenantId(Guid.NewGuid()),
             sender: MessageSender.Customer,
             content: "Hello",
             status: MessageStatus.Sent,
@@ -178,9 +178,9 @@ public class ChatMessageServiceTests
     {
         // given
         var invalidMessage = new ChatMessage(
-            id: ChatMessageId.From(Guid.NewGuid()),
-            sessionId: ChatSessionId.From(Guid.Empty),
-            tenantId: TenantId.From(Guid.NewGuid()),
+            id: new ChatMessageId(Guid.NewGuid()),
+            sessionId: new ChatSessionId(Guid.Empty),
+            tenantId: new TenantId(Guid.NewGuid()),
             sender: MessageSender.Customer,
             content: "Hello",
             status: MessageStatus.Sent,
@@ -204,9 +204,9 @@ public class ChatMessageServiceTests
     {
         // given
         var invalidMessage = new ChatMessage(
-            id: ChatMessageId.From(Guid.NewGuid()),
-            sessionId: ChatSessionId.From(Guid.NewGuid()),
-            tenantId: TenantId.From(Guid.Empty),
+            id: new ChatMessageId(Guid.NewGuid()),
+            sessionId: new ChatSessionId(Guid.NewGuid()),
+            tenantId: new TenantId(Guid.Empty),
             sender: MessageSender.Customer,
             content: "Hello",
             status: MessageStatus.Sent,
@@ -233,9 +233,9 @@ public class ChatMessageServiceTests
     {
         // given
         var invalidMessage = new ChatMessage(
-            id: ChatMessageId.From(Guid.NewGuid()),
-            sessionId: ChatSessionId.From(Guid.NewGuid()),
-            tenantId: TenantId.From(Guid.NewGuid()),
+            id: new ChatMessageId(Guid.NewGuid()),
+            sessionId: new ChatSessionId(Guid.NewGuid()),
+            tenantId: new TenantId(Guid.NewGuid()),
             sender: MessageSender.Customer,
             content: invalidContent!,
             status: MessageStatus.Sent,
@@ -262,7 +262,7 @@ public class ChatMessageServiceTests
     public async Task ShouldReturnNotFoundErrorOnRetrieveById_WhenMessageDoesNotExist()
     {
         // given
-        var messageId = ChatMessageId.From(Guid.NewGuid());
+        var messageId = new ChatMessageId(Guid.NewGuid());
         _storageBrokerMock.SelectChatMessageByIdAsync(messageId).Returns((ChatMessage?)null);
 
         // when
@@ -292,7 +292,7 @@ public class ChatMessageServiceTests
     public async Task ShouldReturnNotFoundErrorOnRemove_WhenMessageDoesNotExist()
     {
         // given
-        var messageId = ChatMessageId.From(Guid.NewGuid());
+        var messageId = new ChatMessageId(Guid.NewGuid());
         _storageBrokerMock.SelectChatMessageByIdAsync(messageId).Returns((ChatMessage?)null);
 
         // when
@@ -325,7 +325,7 @@ public class ChatMessageServiceTests
     public async Task ShouldThrowDependencyExceptionOnRetrieveById_WhenDbExceptionOccurs()
     {
         // given
-        var messageId = ChatMessageId.From(Guid.NewGuid());
+        var messageId = new ChatMessageId(Guid.NewGuid());
         var dbException = new DbUpdateException("Database error");
         _storageBrokerMock.SelectChatMessageByIdAsync(messageId).Throws(dbException);
 

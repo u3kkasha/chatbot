@@ -63,8 +63,8 @@ public class KnowledgeStorageBrokerTests(TestDatabaseFixture fixture)
 
         var now = SystemClock.Instance.GetCurrentInstant();
         var document = new KnowledgeDocument(
-            Id: KnowledgeDocumentId.From(Guid.NewGuid()),
-            TenantId: TenantId.From(Guid.NewGuid()),
+            Id: new KnowledgeDocumentId(Guid.NewGuid()),
+            TenantId: new TenantId(Guid.NewGuid()),
             Title: "User Guide",
             FileName: "user_guide.pdf",
             BlobPath: "uploads/user_guide.pdf",
@@ -93,14 +93,14 @@ public class KnowledgeStorageBrokerTests(TestDatabaseFixture fixture)
         await ((DbContext)_storageBroker).Database.EnsureCreatedAsync();
 
         var now = SystemClock.Instance.GetCurrentInstant();
-        var docId = KnowledgeDocumentId.From(Guid.NewGuid());
-        var chunkId = DocumentChunkId.From(Guid.NewGuid());
+        var docId = new KnowledgeDocumentId(Guid.NewGuid());
+        var chunkId = new DocumentChunkId(Guid.NewGuid());
         var vectorId = Guid.NewGuid();
 
         var chunk = new DocumentChunk(
             Id: chunkId,
             DocumentId: docId,
-            TenantId: TenantId.From(Guid.NewGuid()),
+            TenantId: new TenantId(Guid.NewGuid()),
             Index: 0,
             Content: "This is a section from the user guide...",
             VectorId: vectorId,

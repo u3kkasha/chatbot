@@ -1,3 +1,4 @@
+using Chatbot.Modules.Knowledge.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Knowledge.Models.Documents;
 using Chatbot.Shared.Infrastructure.Data;
 using EFCore.NamingConventions;
@@ -27,6 +28,7 @@ public partial class StorageBroker(
 
         optionsBuilder
             .UseNpgsql(connectionString, x => x.UseNodaTime())
+            .UseModel(StorageBrokerModel.Instance)
             .UseSnakeCaseNamingConvention()
             .AddInterceptors(this.auditInterceptor, this.rlsInterceptor);
     }
@@ -41,23 +43,23 @@ public partial class StorageBroker(
         {
             document
                 .Property(d => d.Id)
-                .HasConversion(id => id.Value, value => KnowledgeDocumentId.From(value));
+                .HasConversion(id => id.Value, value => new KnowledgeDocumentId(value));
             document
                 .Property(d => d.TenantId)
-                .HasConversion(id => id.Value, value => TenantId.From(value));
+                .HasConversion(id => id.Value, value => new TenantId(value));
         });
 
         modelBuilder.Entity<DocumentChunk>(chunk =>
         {
             chunk
                 .Property(c => c.Id)
-                .HasConversion(id => id.Value, value => DocumentChunkId.From(value));
+                .HasConversion(id => id.Value, value => new DocumentChunkId(value));
             chunk
                 .Property(c => c.DocumentId)
-                .HasConversion(id => id.Value, value => KnowledgeDocumentId.From(value));
+                .HasConversion(id => id.Value, value => new KnowledgeDocumentId(value));
             chunk
                 .Property(c => c.TenantId)
-                .HasConversion(id => id.Value, value => TenantId.From(value));
+                .HasConversion(id => id.Value, value => new TenantId(value));
         });
     }
 }

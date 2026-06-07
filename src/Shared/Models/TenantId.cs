@@ -1,6 +1,6 @@
-using Vogen;
+using StronglyTypedIds;
 
 namespace Chatbot.Shared.Models;
 
-[ValueObject<Guid>]
-public partial struct TenantId { }
+[StronglyTypedId(Template.Guid)]
+public readonly partial struct TenantId { }

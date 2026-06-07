@@ -10,8 +10,8 @@ public class UserTests
     public void ShouldCreateUserRecord()
     {
         // Arrange
-        var userId = UserId.From(Guid.NewGuid());
-        var tenantId = TenantId.From(Guid.NewGuid());
+        var userId = new UserId(Guid.NewGuid());
+        var tenantId = new TenantId(Guid.NewGuid());
         var now = Instant.FromUnixTimeSeconds(1000);
 
         // Act

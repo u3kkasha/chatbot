@@ -65,7 +65,7 @@ public sealed class RlsInterceptor(ITenantProvider tenantProvider) : DbCommandIn
         return base.ScalarExecutingAsync(command, eventData, result, cancellationToken);
     }
 
-    private void SetTenantId(DbCommand command)
+    internal void SetTenantId(DbCommand command)
     {
         var tenantId = this.tenantProvider.GetTenantId();
 

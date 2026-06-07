@@ -1,6 +1,6 @@
-using Vogen;
+using StronglyTypedIds;
 
 namespace Chatbot.Modules.Knowledge.Models.Documents;
 
-[ValueObject<Guid>]
-public partial struct DocumentChunkId { }
+[StronglyTypedId(Template.Guid)]
+public readonly partial struct DocumentChunkId { }

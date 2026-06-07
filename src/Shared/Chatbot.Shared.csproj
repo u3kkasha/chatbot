@@ -33,6 +33,6 @@
     </PackageReference>
     <PackageReference Include="Polly" />
     <PackageReference Include="Qdrant.Client" />
-    <PackageReference Include="Vogen" />
+    <PackageReference Include="StronglyTypedId" />
   </ItemGroup>
 </Project>

@@ -72,16 +72,16 @@ We restrict exceptions to truly unexpected technical or transport failures (e.g.
 
 ## 🔒 Domain-Driven Design (DDD) & C# 14 Conventions
 
-### 1. Strongly-Typed IDs (Vogen)
-- Every entity ID must be represented as a strongly-typed value object using **Vogen**:
+### 1. Strongly-Typed IDs (StronglyTypedId)
+- Every entity ID must be represented as a strongly-typed value object using **StronglyTypedId** (for Native AOT compatibility):
 ```csharp
-[ValueObject<Guid>]
+[StronglyTypedId(Template.Guid)]
 public readonly partial struct ChatSessionId;
 ```
 - In EF Core entity configurations, always map these value objects:
 ```csharp
 builder.Property(x => x.Id)
-    .HasConversion(id => id.Value, value => ChatSessionId.From(value));
+    .HasConversion(id => id.Value, value => new ChatSessionId(value));
 ```
 
 ### 2. Manual Mapping

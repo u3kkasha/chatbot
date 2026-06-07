@@ -29,12 +29,12 @@ public class ChatSessionServiceTests
 
     private static ChatSession CreateRandomChatSession() =>
         new(
-            Id: ChatSessionId.From(Guid.NewGuid()),
-            TenantId: TenantId.From(Guid.NewGuid()),
+            Id: new ChatSessionId(Guid.NewGuid()),
+            TenantId: new TenantId(Guid.NewGuid()),
             ChannelProvider: ChannelProvider.WebWidget,
             ExternalReferenceId: null,
             CustomerIdentifier: "customer@example.com",
-            OperatorId: OperatorId.From(Guid.NewGuid()),
+            OperatorId: new OperatorId(Guid.NewGuid()),
             Status: ChatSessionStatus.Open,
             CreatedDate: Instant.FromUnixTimeSeconds(1000),
             UpdatedDate: Instant.FromUnixTimeSeconds(1000)
@@ -151,8 +151,8 @@ public class ChatSessionServiceTests
     {
         // given
         var invalidSession = new ChatSession(
-            Id: ChatSessionId.From(Guid.Empty),
-            TenantId: TenantId.From(Guid.NewGuid()),
+            Id: new ChatSessionId(Guid.Empty),
+            TenantId: new TenantId(Guid.NewGuid()),
             ChannelProvider: ChannelProvider.WebWidget,
             ExternalReferenceId: null,
             CustomerIdentifier: "customer@example.com",
@@ -176,8 +176,8 @@ public class ChatSessionServiceTests
     {
         // given
         var invalidSession = new ChatSession(
-            Id: ChatSessionId.From(Guid.NewGuid()),
-            TenantId: TenantId.From(Guid.Empty),
+            Id: new ChatSessionId(Guid.NewGuid()),
+            TenantId: new TenantId(Guid.Empty),
             ChannelProvider: ChannelProvider.WebWidget,
             ExternalReferenceId: null,
             CustomerIdentifier: "customer@example.com",
@@ -204,8 +204,8 @@ public class ChatSessionServiceTests
     {
         // given
         var invalidSession = new ChatSession(
-            Id: ChatSessionId.From(Guid.NewGuid()),
-            TenantId: TenantId.From(Guid.NewGuid()),
+            Id: new ChatSessionId(Guid.NewGuid()),
+            TenantId: new TenantId(Guid.NewGuid()),
             ChannelProvider: ChannelProvider.WebWidget,
             ExternalReferenceId: null,
             CustomerIdentifier: identifier!,
@@ -229,12 +229,12 @@ public class ChatSessionServiceTests
     {
         // given
         var invalidSession = new ChatSession(
-            Id: ChatSessionId.From(Guid.NewGuid()),
-            TenantId: TenantId.From(Guid.NewGuid()),
+            Id: new ChatSessionId(Guid.NewGuid()),
+            TenantId: new TenantId(Guid.NewGuid()),
             ChannelProvider: ChannelProvider.WebWidget,
             ExternalReferenceId: null,
             CustomerIdentifier: "customer@example.com",
-            OperatorId: OperatorId.From(Guid.Empty),
+            OperatorId: new OperatorId(Guid.Empty),
             Status: ChatSessionStatus.Open,
             CreatedDate: default,
             UpdatedDate: default
@@ -257,7 +257,7 @@ public class ChatSessionServiceTests
     public async Task ShouldReturnNotFoundErrorOnRetrieveById_WhenSessionDoesNotExist()
     {
         // given
-        var sessionId = ChatSessionId.From(Guid.NewGuid());
+        var sessionId = new ChatSessionId(Guid.NewGuid());
         _storageBrokerMock.SelectChatSessionByIdAsync(sessionId).Returns((ChatSession?)null);
 
         // when
@@ -287,7 +287,7 @@ public class ChatSessionServiceTests
     public async Task ShouldReturnNotFoundErrorOnRemove_WhenSessionDoesNotExist()
     {
         // given
-        var sessionId = ChatSessionId.From(Guid.NewGuid());
+        var sessionId = new ChatSessionId(Guid.NewGuid());
         _storageBrokerMock.SelectChatSessionByIdAsync(sessionId).Returns((ChatSession?)null);
 
         // when
@@ -320,7 +320,7 @@ public class ChatSessionServiceTests
     public async Task ShouldThrowDependencyExceptionOnRetrieveById_WhenDbExceptionOccurs()
     {
         // given
-        var sessionId = ChatSessionId.From(Guid.NewGuid());
+        var sessionId = new ChatSessionId(Guid.NewGuid());
         var dbException = new DbUpdateException("Database error");
         _storageBrokerMock.SelectChatSessionByIdAsync(sessionId).Throws(dbException);
 

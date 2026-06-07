@@ -27,11 +27,12 @@
   - Configure **System.Text.Json** and **DI Source Generators**.
   - Initialize **HybridCache** for high-performance L1/L2 data access.
 - [x] **DDD & Data Layer:**
-  - Define Entities and Value Objects (using **Records**, **Primary Constructors**, **Extension Members**, **StronglyTypedId**, and **Vogen**).
+  - Define Entities and Value Objects (using **Records**, **Primary Constructors**, **Extension Members**, and **StronglyTypedId**).
   - Configure EF Core 10:
     - [x] **SnakeCase** naming.
     - [x] **Audit Interceptors** (implemented and unit tested).
     - [x] **Native JSON Mapping** for citations and AI metadata.
+    - [x] **Compiled Models (`dotnet ef dbcontext optimize`):** Generated and integrated compiled models for Chat, Identity, and Knowledge brokers to eliminate reflection and achieve full Native AOT compliance.
     - [x] **`NoTracking` & `ExecuteDeleteAsync`:** `NoTracking` globally on Identity/Knowledge brokers; per-query `AsNoTracking()` on Chat list queries; `ExecuteDeleteAsync` on all Delete methods for zero-allocation single-roundtrip deletes.
     - [ ] **DbContext Pooling (`AddDbContextPool`):** Switch from `AddDbContext` to `AddDbContextPool` on all three StorageBrokers. Requires a connection-level EF Core interceptor to issue `SET LOCAL app.current_tenant_id = @tid` at the start of each command/transaction so pooled connections always carry the correct RLS session variable — coordinate with the RLS Interceptor below.
 - [x] **Real-time Streaming Foundation:**

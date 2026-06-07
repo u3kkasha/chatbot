@@ -1,3 +1,4 @@
+using Chatbot.Modules.Identity.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Identity.Models.Users;
 using Chatbot.Shared.Models;
 using Chatbot.Shared.Infrastructure.Data;
@@ -28,6 +29,7 @@ public partial class StorageBroker(
 
         optionsBuilder
             .UseNpgsql(connectionString, x => x.UseNodaTime())
+            .UseModel(StorageBrokerModel.Instance)
             .UseSnakeCaseNamingConvention()
             .AddInterceptors(this.auditInterceptor, this.rlsInterceptor);
     }
@@ -40,8 +42,8 @@ public partial class StorageBroker(
 
         modelBuilder.Entity<Models.Users.User>(user =>
         {
-            user.Property(u => u.Id).HasConversion(id => id.Value, value => UserId.From(value));
-            user.Property(u => u.TenantId).HasConversion(id => id.Value, value => TenantId.From(value));
+            user.Property(u => u.Id).HasConversion(id => id.Value, value => new UserId(value));
+            user.Property(u => u.TenantId).HasConversion(id => id.Value, value => new TenantId(value));
         });
     }
 }

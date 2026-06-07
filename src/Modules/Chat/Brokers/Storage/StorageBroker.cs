@@ -1,3 +1,4 @@
+using Chatbot.Modules.Chat.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Chat.Models.Sessions;
 using Chatbot.Shared.Infrastructure.Data;
 using EFCore.NamingConventions;
@@ -27,6 +28,7 @@ public partial class StorageBroker(
 
         optionsBuilder
             .UseNpgsql(connectionString, x => x.UseNodaTime())
+            .UseModel(StorageBrokerModel.Instance)
             .UseSnakeCaseNamingConvention()
             .AddInterceptors(this.auditInterceptor, this.rlsInterceptor);
     }
@@ -41,15 +43,15 @@ public partial class StorageBroker(
         {
             session
                 .Property(s => s.Id)
-                .HasConversion(id => id.Value, value => ChatSessionId.From(value));
+                .HasConversion(id => id.Value, value => new ChatSessionId(value));
             session
                 .Property(s => s.TenantId)
-                .HasConversion(id => id.Value, value => TenantId.From(value));
+                .HasConversion(id => id.Value, value => new TenantId(value));
             session
                 .Property(s => s.OperatorId)
                 .HasConversion(
                     id => id.HasValue ? id.Value.Value : default(Guid?),
-                    value => value.HasValue ? OperatorId.From(value.Value) : default(OperatorId?)
+                    value => value.HasValue ? new OperatorId(value.Value) : default(OperatorId?)
                 );
             session
                 .Property(s => s.ChannelProvider)
@@ -63,13 +65,13 @@ public partial class StorageBroker(
         {
             message
                 .Property(m => m.Id)
-                .HasConversion(id => id.Value, value => ChatMessageId.From(value));
+                .HasConversion(id => id.Value, value => new ChatMessageId(value));
             message
                 .Property(m => m.SessionId)
-                .HasConversion(id => id.Value, value => ChatSessionId.From(value));
+                .HasConversion(id => id.Value, value => new ChatSessionId(value));
             message
                 .Property(m => m.TenantId)
-                .HasConversion(id => id.Value, value => TenantId.From(value));
+                .HasConversion(id => id.Value, value => new TenantId(value));
             message
                 .Property(m => m.Status)
                 .HasConversion<string>();

@@ -85,12 +85,12 @@ public static class ChatSessionEndpoints
         }
 
         var session = new ChatSession(
-            Id: ChatSessionId.From(Guid.NewGuid()),
-            TenantId: TenantId.From(request.TenantId),
+            Id: new ChatSessionId(Guid.NewGuid()),
+            TenantId: new TenantId(request.TenantId),
             ChannelProvider: channelProvider,
             ExternalReferenceId: request.ExternalReferenceId,
             CustomerIdentifier: request.CustomerIdentifier,
-            OperatorId: request.OperatorId.HasValue ? OperatorId.From(request.OperatorId.Value) : null,
+            OperatorId: request.OperatorId.HasValue ? new OperatorId(request.OperatorId.Value) : null,
             Status: ChatSessionStatus.Open,
             CreatedDate: default,
             UpdatedDate: default
@@ -127,7 +127,7 @@ public static class ChatSessionEndpoints
         IChatSessionService service
     )
     {
-        var result = await service.RetrieveChatSessionByIdAsync(ChatSessionId.From(id));
+        var result = await service.RetrieveChatSessionByIdAsync(new ChatSessionId(id));
 
         return result.Match<Results<Ok<ChatSessionResponse>, ProblemHttpResult>>(
             success => TypedResults.Ok(MapToResponse(success)),
@@ -160,12 +160,12 @@ public static class ChatSessionEndpoints
         }
 
         var session = new ChatSession(
-            Id: ChatSessionId.From(id),
-            TenantId: TenantId.From(request.TenantId),
+            Id: new ChatSessionId(id),
+            TenantId: new TenantId(request.TenantId),
             ChannelProvider: channelProvider,
             ExternalReferenceId: request.ExternalReferenceId,
             CustomerIdentifier: request.CustomerIdentifier,
-            OperatorId: request.OperatorId.HasValue ? OperatorId.From(request.OperatorId.Value) : null,
+            OperatorId: request.OperatorId.HasValue ? new OperatorId(request.OperatorId.Value) : null,
             Status: status,
             CreatedDate: default,
             UpdatedDate: default
@@ -188,7 +188,7 @@ public static class ChatSessionEndpoints
         IChatSessionService service
     )
     {
-        var result = await service.RemoveChatSessionByIdAsync(ChatSessionId.From(id));
+        var result = await service.RemoveChatSessionByIdAsync(new ChatSessionId(id));
 
         return result.Match<Results<Ok<ChatSessionResponse>, ProblemHttpResult>>(
             success => TypedResults.Ok(MapToResponse(success)),
