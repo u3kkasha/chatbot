@@ -15,6 +15,7 @@ using Chatbot.Shared.Infrastructure.Resilience;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using NodaTime;
 
 namespace Chatbot.Shared;
@@ -75,25 +76,18 @@ public static class SharedExtensions
         services.AddStandardResilience();
 
         // Caching & Redis Connection
-        var redisConnectionString = configuration.GetSection(ConnectionStringsOptions.SectionName)["Redis"];
-        if (string.IsNullOrEmpty(redisConnectionString))
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
-            if (isGeneratingOpenApi)
-            {
-                redisConnectionString = "localhost,abortConnect=false";
-            }
-            else
+            var connectionStrings = sp.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
+            if (string.IsNullOrEmpty(connectionStrings.Redis))
             {
                 throw new InvalidOperationException("Redis connection string not configured.");
             }
-        }
-
-        services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(redisConnectionString));
-
-        services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = redisConnectionString;
+            return ConnectionMultiplexer.Connect(connectionStrings.Redis);
         });
+
+        services.AddStackExchangeRedisCache(options => { });
+        services.AddTransient<IConfigureOptions<RedisCacheOptions>, ConfigureRedisCacheOptions>();
 
 #pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this since we are in net10.0 and this is a core feature we want to use.
         services.AddHybridCache();
@@ -125,5 +119,18 @@ public static class SharedExtensions
 
         return entryAssembly.StartsWith("GetDocument", StringComparison.OrdinalIgnoreCase) ||
                entryAssembly.StartsWith("dotnet-getdocument", StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+public class ConfigureRedisCacheOptions(IOptions<ConnectionStringsOptions> connectionStrings)
+    : IConfigureOptions<RedisCacheOptions>
+{
+    public void Configure(RedisCacheOptions options)
+    {
+        if (string.IsNullOrEmpty(connectionStrings.Value.Redis))
+        {
+            throw new InvalidOperationException("Redis connection string not configured.");
+        }
+        options.Configuration = connectionStrings.Value.Redis;
     }
 }
