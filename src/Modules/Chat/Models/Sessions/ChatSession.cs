@@ -1,3 +1,4 @@
+using Chatbot.Shared.Models;
 using NodaTime;
 
 namespace Chatbot.Modules.Chat.Models.Sessions;

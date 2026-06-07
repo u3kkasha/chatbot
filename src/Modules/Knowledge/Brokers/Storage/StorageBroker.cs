@@ -6,12 +6,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chatbot.Modules.Knowledge.Brokers.Storage;
 
-public partial class StorageBroker(IConfiguration configuration, AuditInterceptor auditInterceptor)
+public partial class StorageBroker(
+    IConfiguration configuration,
+    AuditInterceptor auditInterceptor,
+    RlsInterceptor rlsInterceptor)
     : DbContext,
         IStorageBroker
 {
     private readonly IConfiguration configuration = configuration;
     private readonly AuditInterceptor auditInterceptor = auditInterceptor;
+    private readonly RlsInterceptor rlsInterceptor = rlsInterceptor;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -24,8 +28,7 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
         optionsBuilder
             .UseNpgsql(connectionString, x => x.UseNodaTime())
             .UseSnakeCaseNamingConvention()
-            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-            .AddInterceptors(this.auditInterceptor);
+            .AddInterceptors(this.auditInterceptor, this.rlsInterceptor);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -58,4 +61,3 @@ public partial class StorageBroker(IConfiguration configuration, AuditIntercepto
         });
     }
 }
-

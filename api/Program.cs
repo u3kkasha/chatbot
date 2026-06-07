@@ -1,12 +1,14 @@
 using Chatbot.Api.Infrastructure.Diagnostics;
 using Chatbot.Api.Infrastructure.ExceptionHandlers;
 using Chatbot.Api.Infrastructure.Middleware;
+using Chatbot.Api.Infrastructure.MultiTenancy;
 using Chatbot.Api.Infrastructure.Serialization;
 using Chatbot.Modules.Chat;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
 using Chatbot.Shared;
 using Chatbot.Shared.Brokers.Ai;
+using Chatbot.Shared.Models;
 using Coravel;
 using Microsoft.Extensions.AI;
 using Scalar.AspNetCore;
@@ -38,6 +40,7 @@ builder.Services.AddDiagnostics(builder.Configuration);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ITenantProvider, HttpContextTenantProvider>();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
 // 2.1 Add Coravel

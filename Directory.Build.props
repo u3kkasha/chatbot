@@ -20,4 +20,8 @@
     <EnableRequestDelegateGenerator Condition="'$(IsTestProject)' != 'true'">true</EnableRequestDelegateGenerator>
     <EnableConfigurationBindingGenerator Condition="'$(IsTestProject)' != 'true'">true</EnableConfigurationBindingGenerator>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="Chatbot.Shared.Models" />
+  </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ using Chatbot.Shared.Brokers.Pii;
 using Chatbot.Shared.Brokers.Processing;
 using Chatbot.Shared.Brokers.Vectors;
 using Chatbot.Shared.Infrastructure.Configuration;
+using Chatbot.Shared.Infrastructure.Data;
 using Chatbot.Shared.Infrastructure.Resilience;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,7 +84,8 @@ public static class SharedExtensions
 #pragma warning restore EXTEXP0018
 
         // Data Infrastructure
-        services.AddSingleton<Chatbot.Shared.Infrastructure.Data.AuditInterceptor>();
+        services.AddSingleton<AuditInterceptor>();
+        services.AddScoped<RlsInterceptor>();
 
         // Brokers
         services.AddTransient<ILoggingBroker, LoggingBroker>();
