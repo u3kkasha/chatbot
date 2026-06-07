@@ -85,11 +85,11 @@
   - Use **NSubstitute**, **OneOf**, and **Verify**.
   - Apply **Modern C# Pattern Matching** for result handling.
 - [x] **Acceptance Tests (TDD):** Implement E2E API tests for each feature (Identity, Chat).
-- [ ] **Schema Alignment (ARD §4.1):** Enrich EF Core entities to match the full ARD schema blueprint — prerequisite for RLS and multi-tenancy:
+- [x] **Schema Alignment (ARD §4.1):** Enrich EF Core entities to match the full ARD schema blueprint — prerequisite for RLS and multi-tenancy:
   - Add `TenantId` (Vogen strongly-typed) to `ChatSession`, `ChatMessage`, `User`, `KnowledgeDocument`, `DocumentChunk`.
   - Add `ChannelProvider` (enum), `ExternalReferenceId`, `CustomerIdentifier` to `ChatSession`.
   - Add `Status`, `IsAiGenerated`, `ApprovedBy` to `ChatMessage`.
-  - Add EF Core migrations for all new columns + indexes (`idx_sessions_channel`, `idx_messages_session`).
+  - Add EF Core indexes (`idx_sessions_channel`, `idx_messages_session`).
 - [ ] **Session State Machine:**
   - Implement **Stateless** configuration for status transitions.
   - Use **`ExecuteUpdateAsync`** for bulk status-transition writes (e.g., bulk-cancel open sessions on operator logout) — single SQL `UPDATE` with no entity load or tracking.

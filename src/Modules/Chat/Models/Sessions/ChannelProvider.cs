@@ -4,5 +4,7 @@ public enum ChannelProvider
 {
     WebWidget,
     Email,
-    Twilio,
+    TikTok,
+    WhatsApp,
+    Facebook
 }
