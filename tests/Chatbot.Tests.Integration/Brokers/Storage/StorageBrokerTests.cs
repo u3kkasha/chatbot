@@ -1,6 +1,9 @@
 using Chatbot.Modules.Identity.Brokers.Storage;
+using Chatbot.Modules.Identity.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Identity.Models.Users;
+using Chatbot.Shared.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NodaTime;
 using Shouldly;
 
@@ -9,9 +12,15 @@ namespace Chatbot.Tests.Integration.Brokers.Storage;
 public class StorageBrokerTests(TestDatabaseFixture fixture) : IClassFixture<TestDatabaseFixture>
 {
     private readonly StorageBroker _storageBroker = new(
-        fixture.Configuration,
-        new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance),
-        new Chatbot.Shared.Infrastructure.Data.RlsInterceptor(NSubstitute.Substitute.For<ITenantProvider>())
+        new DbContextOptionsBuilder<StorageBroker>()
+            .UseNpgsql(fixture.Configuration.GetConnectionString("DefaultConnection"), x => x.UseNodaTime())
+            .UseModel(StorageBrokerModel.Instance)
+            .UseSnakeCaseNamingConvention()
+            .AddInterceptors(
+                new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance),
+                new Chatbot.Shared.Infrastructure.Data.RlsInterceptor(NSubstitute.Substitute.For<ITenantProvider>())
+            )
+            .Options
     );
 
     [Fact]

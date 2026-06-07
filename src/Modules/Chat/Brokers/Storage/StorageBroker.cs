@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Chatbot.Modules.Chat.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Chat.Models.Sessions;
 using Chatbot.Shared.Infrastructure.Data;
@@ -7,32 +8,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace Chatbot.Modules.Chat.Brokers.Storage;
 
-public partial class StorageBroker(
-    IConfiguration configuration,
-    AuditInterceptor auditInterceptor,
-    RlsInterceptor rlsInterceptor)
-    : DbContext,
+[RequiresDynamicCode()]
+[RequiresUnreferencedCode()]
+public partial class StorageBroker(DbContextOptions<StorageBroker> options)
+    : DbContext(options),
         IStorageBroker
 {
-    private readonly IConfiguration configuration = configuration;
-    private readonly AuditInterceptor auditInterceptor = auditInterceptor;
-    private readonly RlsInterceptor rlsInterceptor = rlsInterceptor;
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        string connectionString =
-            configuration.GetConnectionString("DefaultConnection")
-            ?? throw new System.InvalidOperationException(
-                "Connection string 'DefaultConnection' not found."
-            );
-
-        optionsBuilder
-            .UseNpgsql(connectionString, x => x.UseNodaTime())
-            .UseModel(StorageBrokerModel.Instance)
-            .UseSnakeCaseNamingConvention()
-            .AddInterceptors(this.auditInterceptor, this.rlsInterceptor);
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

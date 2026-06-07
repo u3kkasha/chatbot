@@ -40,7 +40,7 @@ builder.Services.AddDiagnostics(builder.Configuration);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ITenantProvider, HttpContextTenantProvider>();
+builder.Services.AddSingleton<ITenantProvider, HttpContextTenantProvider>();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
 // 2.1 Add Coravel

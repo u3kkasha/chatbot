@@ -1,8 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Chatbot.Modules.Knowledge.Brokers.Storage;
+using Chatbot.Modules.Knowledge.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Knowledge.Models.Documents;
+using Chatbot.Shared.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NodaTime;
 using Shouldly;
 using Xunit;
@@ -13,9 +16,15 @@ public class KnowledgeStorageBrokerTests(TestDatabaseFixture fixture)
     : IClassFixture<TestDatabaseFixture>
 {
     private readonly StorageBroker _storageBroker = new(
-        fixture.Configuration,
-        new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance),
-        new Chatbot.Shared.Infrastructure.Data.RlsInterceptor(NSubstitute.Substitute.For<ITenantProvider>())
+        new DbContextOptionsBuilder<StorageBroker>()
+            .UseNpgsql(fixture.Configuration.GetConnectionString("DefaultConnection"), x => x.UseNodaTime())
+            .UseModel(StorageBrokerModel.Instance)
+            .UseSnakeCaseNamingConvention()
+            .AddInterceptors(
+                new Chatbot.Shared.Infrastructure.Data.AuditInterceptor(SystemClock.Instance),
+                new Chatbot.Shared.Infrastructure.Data.RlsInterceptor(NSubstitute.Substitute.For<ITenantProvider>())
+            )
+            .Options
     );
 
     [Fact]

@@ -85,7 +85,7 @@ public static class SharedExtensions
 
         // Data Infrastructure
         services.AddSingleton<AuditInterceptor>();
-        services.AddScoped<RlsInterceptor>();
+        services.AddSingleton<RlsInterceptor>();
 
         // Brokers
         services.AddTransient<ILoggingBroker, LoggingBroker>();
