@@ -39,6 +39,16 @@ public partial class StorageBroker
         return chatSession;
     }
 
+    public async ValueTask<int> UpdateChatSessionsStatusByOperatorAsync(
+        OperatorId operatorId,
+        ChatSessionStatus fromStatus,
+        ChatSessionStatus toStatus)
+    {
+        return await this.ChatSessions
+            .Where(s => s.OperatorId == operatorId && s.Status == fromStatus)
+            .ExecuteUpdateAsync(s => s.SetProperty(p => p.Status, toStatus));
+    }
+
     public async ValueTask<ChatSession> DeleteChatSessionAsync(ChatSession chatSession)
     {
         await this.ChatSessions

@@ -10,6 +10,7 @@ public interface IStorageBroker
     IQueryable<ChatSession> SelectAllChatSessions();
     ValueTask<ChatSession?> SelectChatSessionByIdAsync(ChatSessionId chatSessionId);
     ValueTask<ChatSession> UpdateChatSessionAsync(ChatSession chatSession);
+    ValueTask<int> UpdateChatSessionsStatusByOperatorAsync(OperatorId operatorId, ChatSessionStatus fromStatus, ChatSessionStatus toStatus);
     ValueTask<ChatSession> DeleteChatSessionAsync(ChatSession chatSession);
 
     ValueTask<ChatMessage> InsertChatMessageAsync(ChatMessage chatMessage);

@@ -12,5 +12,6 @@ public interface IChatSessionService
     OneOf<IQueryable<ChatSession>, ValidationError> RetrieveAllChatSessions();
     ValueTask<OneOf<ChatSession, NotFoundError>> RetrieveChatSessionByIdAsync(ChatSessionId chatSessionId);
     ValueTask<OneOf<ChatSession, ValidationError, NotFoundError>> ModifyChatSessionAsync(ChatSession chatSession);
+    ValueTask<int> BulkUpdateSessionsStatusAsync(OperatorId operatorId, ChatSessionStatus fromStatus, ChatSessionStatus toStatus);
     ValueTask<OneOf<ChatSession, NotFoundError>> RemoveChatSessionByIdAsync(ChatSessionId chatSessionId);
 }

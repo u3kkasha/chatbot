@@ -34,7 +34,7 @@
     - [x] **Native JSON Mapping** for citations and AI metadata.
     - [x] **Compiled Models (`dotnet ef dbcontext optimize`):** Generated and integrated compiled models for Chat, Identity, and Knowledge brokers to eliminate reflection and achieve full Native AOT compliance.
     - [x] **`NoTracking` & `ExecuteDeleteAsync`:** `NoTracking` globally on Identity/Knowledge brokers; per-query `AsNoTracking()` on Chat list queries; `ExecuteDeleteAsync` on all Delete methods for zero-allocation single-roundtrip deletes.
-    - [ ] **DbContext Pooling (`AddDbContextPool`):** Switch from `AddDbContext` to `AddDbContextPool` on all three StorageBrokers. Requires a connection-level EF Core interceptor to issue `SET LOCAL app.current_tenant_id = @tid` at the start of each command/transaction so pooled connections always carry the correct RLS session variable — coordinate with the RLS Interceptor below.
+    - [x] **DbContext Pooling (`AddDbContextPool`):** Switch from `AddDbContext` to `AddDbContextPool` on all three StorageBrokers. Requires a connection-level EF Core interceptor to issue `SET LOCAL app.current_tenant_id = @tid` at the start of each command/transaction so pooled connections always carry the correct RLS session variable — coordinate with the RLS Interceptor below.
 - [x] **Real-time Streaming Foundation:**
   - [x] Scaffold **TypedResults.ServerSentEvents** support for lightweight, unidirectional AI token streaming.
 - [x] **Secret Management & Startup Validation:**
@@ -90,9 +90,9 @@
   - Add `ChannelProvider` (enum), `ExternalReferenceId`, `CustomerIdentifier` to `ChatSession`.
   - Add `Status`, `IsAiGenerated`, `ApprovedBy` to `ChatMessage`.
   - Add EF Core indexes (`idx_sessions_channel`, `idx_messages_session`).
-- [ ] **Session State Machine:**
-  - Implement **Stateless** configuration for status transitions.
-  - Use **`ExecuteUpdateAsync`** for bulk status-transition writes (e.g., bulk-cancel open sessions on operator logout) — single SQL `UPDATE` with no entity load or tracking.
+- [x] **Session State Machine:**
+  - [x] Implement **Stateless** configuration for status transitions.
+  - [x] Use **`ExecuteUpdateAsync`** for bulk status-transition writes (e.g., bulk-cancel open sessions on operator logout) — single SQL `UPDATE` with no entity load or tracking.
 
 ## Phase 3: Orchestration & Domain Events (MassTransit)
 

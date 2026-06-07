@@ -128,6 +128,26 @@ public class ChatSessionServiceTests
         await _storageBrokerMock.Received(1).DeleteChatSessionAsync(existingSession);
     }
 
+    [Fact]
+    public async Task ShouldBulkUpdateSessionsStatusAsync()
+    {
+        // given
+        var operatorId = new OperatorId(Guid.NewGuid());
+        var fromStatus = ChatSessionStatus.Pending;
+        var toStatus = ChatSessionStatus.Resolved;
+        var expectedCount = 5;
+
+        _storageBrokerMock.UpdateChatSessionsStatusByOperatorAsync(operatorId, fromStatus, toStatus)
+            .Returns(expectedCount);
+
+        // when
+        var result = await _sut.BulkUpdateSessionsStatusAsync(operatorId, fromStatus, toStatus);
+
+        // then
+        result.ShouldBe(expectedCount);
+        await _storageBrokerMock.Received(1).UpdateChatSessionsStatusByOperatorAsync(operatorId, fromStatus, toStatus);
+    }
+
     // ──────────────────────────────────────────────
     // Validation Errors
     // ──────────────────────────────────────────────

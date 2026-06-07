@@ -148,6 +148,25 @@ public class ChatSessionService(IStorageBroker storageBroker) : IChatSessionServ
         }
     }
 
+    public async ValueTask<int> BulkUpdateSessionsStatusAsync(
+        OperatorId operatorId,
+        ChatSessionStatus fromStatus,
+        ChatSessionStatus toStatus)
+    {
+        try
+        {
+            return await this.storageBroker.UpdateChatSessionsStatusByOperatorAsync(operatorId, fromStatus, toStatus);
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            throw new ChatSessionDependencyException(dbUpdateException);
+        }
+        catch (Exception exception)
+        {
+            throw new ChatSessionServiceException(exception);
+        }
+    }
+
     public async ValueTask<OneOf<ChatSession, NotFoundError>> RemoveChatSessionByIdAsync(ChatSessionId chatSessionId)
     {
         try
