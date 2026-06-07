@@ -11,6 +11,7 @@
     "#components": ["./.nuxt/components.d.ts"],
     "#imports": ["./.nuxt/imports.d.ts"]
   },
+  "ignore": ["app/api-client/**"],
   "nuxt": {
     "entry": [
       "nuxt.config.ts",
