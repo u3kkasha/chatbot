@@ -51,4 +51,3 @@ logs/
 
 # OpenAPI Build Artifacts
 api/Chatbot.Api.json
-openapi.json

@@ -23,31 +23,45 @@ public static class SharedExtensions
     )
     {
         // Options & Secrets Validation
-        services
+        bool isGeneratingOpenApi = IsGeneratingOpenApi();
+
+        var connectionStringsBuilder = services
             .AddOptions<ConnectionStringsOptions>()
-            .Bind(configuration.GetSection(ConnectionStringsOptions.SectionName))
-            .ValidateOnStart();
+            .Bind(configuration.GetSection(ConnectionStringsOptions.SectionName));
+        if (!isGeneratingOpenApi)
+        {
+            connectionStringsBuilder.ValidateOnStart();
+        }
         services.AddSingleton<
             IValidateOptions<ConnectionStringsOptions>,
             ConnectionStringsOptionsValidator
         >();
 
-        services
+        var qdrantBuilder = services
             .AddOptions<QdrantOptions>()
-            .Bind(configuration.GetSection(QdrantOptions.SectionName))
-            .ValidateOnStart();
+            .Bind(configuration.GetSection(QdrantOptions.SectionName));
+        if (!isGeneratingOpenApi)
+        {
+            qdrantBuilder.ValidateOnStart();
+        }
         services.AddSingleton<IValidateOptions<QdrantOptions>, QdrantOptionsValidator>();
 
-        services
+        var aiBuilder = services
             .AddOptions<AiOptions>()
-            .Bind(configuration.GetSection(AiOptions.SectionName))
-            .ValidateOnStart();
+            .Bind(configuration.GetSection(AiOptions.SectionName));
+        if (!isGeneratingOpenApi)
+        {
+            aiBuilder.ValidateOnStart();
+        }
         services.AddSingleton<IValidateOptions<AiOptions>, AiOptionsValidator>();
 
-        services
+        var processingBuilder = services
             .AddOptions<ProcessingOptions>()
-            .Bind(configuration.GetSection(ProcessingOptions.SectionName))
-            .ValidateOnStart();
+            .Bind(configuration.GetSection(ProcessingOptions.SectionName));
+        if (!isGeneratingOpenApi)
+        {
+            processingBuilder.ValidateOnStart();
+        }
         services.AddSingleton<IValidateOptions<ProcessingOptions>, ProcessingOptionsValidator>();
 
         // NodaTime
@@ -82,5 +96,14 @@ public static class SharedExtensions
         services.AddTransient<IProcessingBroker, ProcessingBroker>();
 
         return services;
+    }
+
+    private static bool IsGeneratingOpenApi()
+    {
+        var entryAssembly = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name;
+        if (entryAssembly == null) return false;
+
+        return entryAssembly.StartsWith("GetDocument", StringComparison.OrdinalIgnoreCase) ||
+               entryAssembly.StartsWith("dotnet-getdocument", StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -44,7 +44,7 @@
   - Implement **ProblemDetails**, **OpenTelemetry**, and **Health Checks**.
 - [x] **Architecture Testing:**
   - Implement **NetArchTest** suite (enforcing "Manual Mapping Only" and "Module Isolation" rules).
-- [ ] **Automated Type & Schema Generation:**
+- [x] **Automated Type & Schema Generation:**
   - Auto-generate **TypeScript Types** AND **Valibot Schemas** from OpenAPI JSON usign @hey-api tool.
   - Configuration (`openapi-ts.config.ts`):
 

@@ -4,6 +4,9 @@ import eslintConfigPrettier from "eslint-config-prettier";
 
 export default withNuxt(
   {
+    ignores: ["app/api-client/**"],
+  },
+  {
     rules: {
       "vue/multi-word-component-names": "off",
       "vue/max-attributes-per-line": ["error", { singleline: 3 }],

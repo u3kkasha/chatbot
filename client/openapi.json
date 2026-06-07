@@ -1,0 +1,94 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Omnichannel Chatbot API",
+    "description": "API for the Omnichannel Customer Support Operator Platform.",
+    "version": "v1"
+  },
+  "paths": {
+    "/identity": {
+      "get": {
+        "tags": ["Chatbot.Api"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat/completions/stream": {
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Stream AI completion tokens via Server-Sent Events.",
+        "description": "Opens an SSE connection and emits individual AI token chunks as they are produced by the language model. Each event carries a JSON-serialized SseToken payload. A final event with IsFinal=true signals stream completion.",
+        "operationId": "StreamCompletion",
+        "parameters": [
+          {
+            "name": "prompt",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": ["null", "string"]
+          },
+          "title": {
+            "type": ["null", "string"]
+          },
+          "status": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": ["null", "integer", "string"],
+            "format": "int32"
+          },
+          "detail": {
+            "type": ["null", "string"]
+          },
+          "instance": {
+            "type": ["null", "string"]
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Chatbot.Api"
+    },
+    {
+      "name": "Chat"
+    }
+  ]
+}

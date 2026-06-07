@@ -10,7 +10,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "knip": "knip",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "openapi:generate": "openapi-ts"
   },
   "dependencies": {
     "@comark/nuxt": "0.4.0",
@@ -25,9 +26,11 @@
     "nuxt-safe-runtime-config": "^0.1.6",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.3.0",
+    "valibot": "^1.4.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.98.1",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/test-utils": "^4.0.3",
     "@types/node": "25.9.2",

@@ -5,8 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)</OpenApiDocumentsDirectory>
     <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
-    <!-- Host requires secrets to start; regenerate manually with dotnet openapi. -->
-    <OpenApiGenerateDocumentsOnBuild>false</OpenApiGenerateDocumentsOnBuild>
+    <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -52,4 +51,8 @@
     <ProjectReference Include="..\src\Modules\Chat\Chatbot.Modules.Chat.csproj" />
     <ProjectReference Include="..\src\Modules\Knowledge\Chatbot.Modules.Knowledge.csproj" />
   </ItemGroup>
+
+  <Target Name="CopyOpenApiDocument" AfterTargets="GenerateOpenApiDocuments">
+    <Copy SourceFiles="$(OpenApiDocumentsDirectory)/Chatbot.Api.json" DestinationFiles="$(MSBuildProjectDirectory)/../client/openapi.json" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
