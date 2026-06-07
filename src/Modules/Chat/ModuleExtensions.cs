@@ -1,4 +1,6 @@
 using Chatbot.Modules.Chat.Brokers.Storage;
+using Chatbot.Modules.Chat.Features.Messages;
+using Chatbot.Modules.Chat.Features.Sessions;
 using Chatbot.Modules.Chat.Features.StreamCompletion;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,8 @@ public static class ModuleExtensions
     {
         services.AddDbContext<IStorageBroker, StorageBroker>();
         services.AddScoped<IStreamCompletionService, StreamCompletionService>();
+        services.AddScoped<IChatSessionService, ChatSessionService>();
+        services.AddScoped<IChatMessageService, ChatMessageService>();
 
         return services;
     }

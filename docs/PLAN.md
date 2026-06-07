@@ -78,7 +78,7 @@
 
 ## Phase 2: Foundation & Processing Services
 
-- [ ] **Foundation Services (TDD):**
+- [x] **Foundation Services (TDD):**
   - Use **NSubstitute**, **OneOf**, and **Verify**.
   - Apply **Modern C# Pattern Matching** for result handling.
 - [ ] **Acceptance Tests (TDD):** Implement E2E API tests for each feature (Identity, Chat).
