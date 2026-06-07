@@ -58,6 +58,7 @@
             docker
             docker-compose
             gitleaks
+            openspec
             xdg-utils
             config.treefmt.build.wrapper
           ];
