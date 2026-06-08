@@ -58,6 +58,7 @@
 
           packages = with pkgs; [
             bun
+            cue
             dotnet-sdk_10
             tilt
             docker

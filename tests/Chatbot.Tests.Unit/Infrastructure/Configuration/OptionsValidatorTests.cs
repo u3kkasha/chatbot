@@ -147,18 +147,15 @@ public class OptionsValidatorTests
         result.Failed.ShouldBeFalse();
     }
 
-    [Theory]
-    [InlineData("OpenAI_API_KEY")]
-    [InlineData("OPENAI_API_KEY")]
-    public void AiOptions_ShouldUseOpenAiApiKey_AndIgnoreAiApiKey(string keyName)
+    [Fact]
+    public void AiOptions_ShouldBindFromConfigurationSection()
     {
         // given
         var inMemorySettings = new Dictionary<string, string>
         {
             { "AI:Endpoint", "https://api.openai.com/v1" },
             { "AI:ModelId", "gpt-4o" },
-            { "AI:ApiKey", "ignored-api-key" },
-            { keyName, "expected-api-key" }
+            { "AI:ApiKey", "expected-api-key" }
         };
 
         var configuration = new ConfigurationBuilder()
@@ -170,13 +167,7 @@ public class OptionsValidatorTests
         // when
         var aiBuilder = services
             .AddOptions<AiOptions>()
-            .Bind(configuration.GetSection(AiOptions.SectionName))
-            .Configure(options =>
-            {
-                options.ApiKey = configuration["OpenAI_API_KEY"]
-                                 ?? configuration["OPENAI_API_KEY"]
-                                 ?? string.Empty;
-            });
+            .Bind(configuration.GetSection(AiOptions.SectionName));
 
         services.AddSingleton<IValidateOptions<AiOptions>, AiOptionsValidator>();
 
