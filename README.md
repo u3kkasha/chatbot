@@ -26,7 +26,13 @@ This project supports secret delivery via **Infisical** (primary) and `.env.loca
 
 #### Option A: Infisical (Primary)
 
-Ensure you have the Infisical CLI installed and configured. Secrets will be automatically exported when entering the directory via `direnv` or you can manually run:
+Ensure you have the Infisical CLI installed. First, authenticate the CLI by running:
+
+```bash
+infisical login
+```
+
+Once authenticated, secrets will be automatically exported when entering the directory via `direnv` (if configured), or you can manually export them using:
 
 ```bash
 eval $(infisical export --format=dotenv-export --silent)
