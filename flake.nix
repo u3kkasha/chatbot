@@ -65,6 +65,7 @@
             gitleaks
             openspec
             xdg-utils
+            infisical
             config.treefmt.build.wrapper
           ];
 

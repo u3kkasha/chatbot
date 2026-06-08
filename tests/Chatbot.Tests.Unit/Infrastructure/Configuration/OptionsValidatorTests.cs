@@ -1,6 +1,10 @@
 using Chatbot.Shared.Infrastructure.Configuration;
 using Shouldly;
 using Xunit;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Chatbot.Tests.Unit.Infrastructure.Configuration;
 
@@ -142,4 +146,45 @@ public class OptionsValidatorTests
         // then
         result.Failed.ShouldBeFalse();
     }
+
+    [Theory]
+    [InlineData("OpenAI_API_KEY")]
+    [InlineData("OPENAI_API_KEY")]
+    public void AiOptions_ShouldUseOpenAiApiKey_AndIgnoreAiApiKey(string keyName)
+    {
+        // given
+        var inMemorySettings = new Dictionary<string, string>
+        {
+            { "AI:Endpoint", "https://api.openai.com/v1" },
+            { "AI:ModelId", "gpt-4o" },
+            { "AI:ApiKey", "ignored-api-key" },
+            { keyName, "expected-api-key" }
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(inMemorySettings)
+            .Build();
+
+        var services = new ServiceCollection();
+
+        // when
+        var aiBuilder = services
+            .AddOptions<AiOptions>()
+            .Bind(configuration.GetSection(AiOptions.SectionName))
+            .Configure(options =>
+            {
+                options.ApiKey = configuration["OpenAI_API_KEY"]
+                                 ?? configuration["OPENAI_API_KEY"]
+                                 ?? string.Empty;
+            });
+
+        services.AddSingleton<IValidateOptions<AiOptions>, AiOptionsValidator>();
+
+        var serviceProvider = services.BuildServiceProvider();
+        var options = serviceProvider.GetRequiredService<IOptions<AiOptions>>().Value;
+
+        // then
+        options.ApiKey.ShouldBe("expected-api-key");
+    }
 }
+

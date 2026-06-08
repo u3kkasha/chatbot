@@ -53,7 +53,13 @@ public static class SharedExtensions
 
         var aiBuilder = services
             .AddOptions<AiOptions>()
-            .Bind(configuration.GetSection(AiOptions.SectionName));
+            .Bind(configuration.GetSection(AiOptions.SectionName))
+            .Configure(options =>
+            {
+                options.ApiKey = configuration["OpenAI_API_KEY"]
+                                 ?? configuration["OPENAI_API_KEY"]
+                                 ?? string.Empty;
+            });
         if (!isGeneratingOpenApi)
         {
             aiBuilder.ValidateOnStart();

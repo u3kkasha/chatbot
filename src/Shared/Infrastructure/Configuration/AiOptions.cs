@@ -10,7 +10,7 @@ public sealed class AiOptions
     public string Endpoint { get; init; } = string.Empty;
 
     [Required]
-    public string ApiKey { get; init; } = string.Empty;
+    public string ApiKey { get; set; } = string.Empty;
 
     [Required]
     public string ModelId { get; init; } = string.Empty;

@@ -46,9 +46,44 @@ A commit is ready only if:
 
 ## Merging and History
 
-- **Branching:** Use descriptive branch names: `<type>/<short-description>` (e.g., `feat/chat-persistence`).
+- **Branching & Worktrees:** We use the sibling git worktrees method for development. Use descriptive branch names: `<type>/<short-description>` (e.g., `feat/chat-persistence`).
 - **Rebase Policy:** Always rebase your feature branch on top of `main` before merging to maintain a linear history.
 - **Squash on Merge:** When merging into `main`, squash your development commits into high-quality, atomic commits that represent the "completed" unit of work.
+
+## Sibling Git Worktrees Strategy
+
+The repository is structured as a bare repository at the root directory, with the `main` branch checked out in `main/`. All development branches must be created as sibling git worktrees instead of checking out different branches directly inside the `main/` directory.
+
+### Benefits of Sibling Worktrees
+
+1. **Pristine Main:** Keeps the `main/` directory pristine and free from build artifacts or dependencies of active feature branches.
+2. **Isolation:** Isolates build artifacts (`bin`, `obj`), packages, and environment configurations between branches.
+3. **Concurrency:** Allows developers or agents to work on multiple features or tasks simultaneously in isolated directories.
+
+### Creating a Worktree
+
+To create a new sibling worktree for a branch:
+
+```bash
+# Run from within the main directory:
+git worktree add ../<folder-name> -b <type>/<branch-name>
+```
+
+Example:
+
+```bash
+git worktree add ../chat-persistence -b feat/chat-persistence
+```
+
+### Removing a Worktree
+
+To clean up and remove a sibling worktree after your branch is merged:
+
+```bash
+# Run from within the main directory:
+git worktree remove ../chat-persistence
+git worktree prune
+```
 
 ## AI-Specific Merging Procedures
 

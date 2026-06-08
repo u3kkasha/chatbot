@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
 
   // ── Runtime Config ───────────────────────────────────────────────────────────
-  // Default values are empty strings; real values are injected by direnv via .env.local
+  // Default values are empty strings; real values are injected by direnv via Infisical / .env.local
   // using the NUXT_* prefix convention (e.g. NUXT_DATABASE_URL).
   runtimeConfig: {
     databaseUrl: "",
