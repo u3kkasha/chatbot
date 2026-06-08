@@ -19,6 +19,12 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Kestrel options to disable Server header
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.AddServerHeader = false;
+});
+
 // 1. Configure Serilog
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
@@ -94,6 +100,7 @@ var app = builder.Build();
 // 4. Configure Middleware Pipeline
 app.UseExceptionHandler();
 app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<SecurityHeadersMiddleware>();
 app.MapGet("/identity", () => TypedResults.Ok(nameof(IdentityModule)));
 
 if (app.Environment.IsDevelopment())

@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Chatbot.Tests.Integration.Brokers.Storage;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -69,6 +70,51 @@ public class MiddlewareTests
         response.Headers.Contains("X-Correlation-Id").ShouldBeTrue();
         var correlationId = response.Headers.GetValues("X-Correlation-Id").FirstOrDefault();
         correlationId.ShouldBe(customCorrelationId);
+    }
+
+    private class HeaderAddingStartupFilter : IStartupFilter
+    {
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        {
+            return app =>
+            {
+                app.Use(async (context, nextMiddleware) =>
+                {
+                    context.Response.Headers.Append("Server", "TestServer");
+                    context.Response.Headers.Append("X-Powered-By", "TestPower");
+                    await nextMiddleware();
+                });
+                next(app);
+            };
+        }
+    }
+
+    [Fact]
+    public async Task SecurityHeadersMiddleware_ShouldRemoveSensitiveHeaders()
+    {
+        // Arrange
+        var client = _factory
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureAppConfiguration(
+                    (context, config) =>
+                    {
+                        config.AddConfiguration(_fixture.Configuration);
+                    }
+                );
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddTransient<IStartupFilter, HeaderAddingStartupFilter>();
+                });
+            })
+            .CreateClient();
+
+        // Act
+        var response = await client.GetAsync("/health");
+
+        // Assert
+        response.Headers.Contains("Server").ShouldBeFalse();
+        response.Headers.Contains("X-Powered-By").ShouldBeFalse();
     }
 
     private class ExceptionThrowingStartupFilter : IStartupFilter
