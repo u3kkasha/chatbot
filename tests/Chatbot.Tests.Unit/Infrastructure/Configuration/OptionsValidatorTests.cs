@@ -153,7 +153,7 @@ public class OptionsValidatorTests
     public void AiOptions_ShouldBindFromConfigurationSection()
     {
         // given
-        var inMemorySettings = new Dictionary<string, string>
+        var inMemorySettings = new Dictionary<string, string?>
         {
             { "AI:Endpoint", "https://api.openai.com/v1" },
             { "AI:ModelId", "gpt-4o" },
