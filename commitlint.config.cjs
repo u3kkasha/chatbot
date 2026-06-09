@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@commitlint/config-conventional'],
+  extends: ["@commitlint/config-conventional"],
   parserPreset: {
     parserOpts: {
       // Allows an optional prefix (like an emoji) followed by a space, then the conventional commit header.
@@ -9,12 +9,16 @@ module.exports = {
       // Group 4: Optional Breaking Change indicator (!)
       // Group 5: Subject
       headerPattern: /^(?:.*?\s+)?(\w+)(?:\(([\w\$\.\-\* ]+)\))?(!?): (.*)$/,
-      headerCorrespondence: ['type', 'scope', 'breaking', 'subject']
-    }
+      headerCorrespondence: ["type", "scope", "breaking", "subject"],
+    },
   },
   rules: {
-    'type-enum': [2, 'always', ['feat', 'fix', 'perf', 'refactor', 'test', 'docs', 'style', 'chore']],
-    'subject-empty': [2, 'never'],
-    'type-empty': [2, 'never'],
-  }
+    "type-enum": [
+      2,
+      "always",
+      ["feat", "fix", "perf", "refactor", "test", "docs", "style", "chore"],
+    ],
+    "subject-empty": [2, "never"],
+    "type-empty": [2, "never"],
+  },
 };
