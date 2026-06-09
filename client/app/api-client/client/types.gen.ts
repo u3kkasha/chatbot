@@ -3,8 +3,8 @@
 import type {
   FetchOptions as OfetchOptions,
   ResponseType as OfetchResponseType,
-  ofetch,
 } from "ofetch";
+import type { ofetch } from "ofetch";
 
 import type { Auth } from "../core/auth.gen";
 import type {
@@ -237,6 +237,7 @@ type MethodFn = <
 
 type SseFn = <
   TData = unknown,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _TError = unknown,
   ThrowOnError extends boolean = false,
   TResponseStyle extends ResponseStyle = "fields",

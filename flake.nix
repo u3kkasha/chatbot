@@ -33,7 +33,7 @@
           projectRootFile = "flake.nix";
           programs.alejandra.enable = true;
           programs.prettier.enable = true;
-          settings.global.excludes = [".agents/**"];
+          settings.global.excludes = [".agents/**" "**/openapi.json" "client/app/api-client/**"];
           settings.formatter.dotnet-format-whitespace = {
             command = "dotnet";
             options = ["format" "whitespace" "--include"];
@@ -73,7 +73,7 @@
 
           commands = [
             {
-              name = "start";
+              name = "run";
               command = "tilt up";
               help = "Start the Tilt development environment";
             }

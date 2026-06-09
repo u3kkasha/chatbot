@@ -4,12 +4,110 @@ export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AiMetadataDto = {
+  model_name: string;
+  prompt_tokens: number | string;
+  completion_tokens: number | string;
+  total_tokens: number | string;
+  latency_ms: number | string;
+};
+
+export type ChatMessageResponse = {
+  id: string;
+  session_id: string;
+  tenant_id: string;
+  sender: string;
+  content: string;
+  status: string;
+  is_ai_generated: boolean;
+  approved_by: null | string;
+  citations: Array<CitationDto>;
+  ai_metadata: null | AiMetadataDto;
+  created_date: Instant;
+  updated_date: Instant;
+};
+
+export type ChatSessionResponse = {
+  id: string;
+  tenant_id: string;
+  channel_provider: string;
+  external_reference_id: null | string;
+  customer_identifier: string;
+  operator_id: null | string;
+  status: string;
+  created_date: Instant;
+  updated_date: Instant;
+};
+
+export type CitationDto = {
+  source_url: string;
+  title: string;
+  snippet: string;
+  score: number | string;
+};
+
+export type CreateChatMessageRequest = {
+  session_id: string;
+  tenant_id: string;
+  sender: string;
+  content: string;
+  status: string;
+  is_ai_generated: boolean;
+  approved_by: null | string;
+  citations: null | Array<CitationDto>;
+  ai_metadata: null | AiMetadataDto;
+};
+
+export type CreateChatSessionRequest = {
+  tenant_id: string;
+  channel_provider: string;
+  external_reference_id: null | string;
+  customer_identifier: string;
+  operator_id: null | string;
+};
+
+export type HttpValidationProblemDetails = {
+  type?: null | string;
+  title?: null | string;
+  status?: null | number | string;
+  detail?: null | string;
+  instance?: null | string;
+  errors?: {
+    [key: string]: Array<string>;
+  };
+};
+
+export type Instant = {
+  [key: string]: unknown;
+};
+
 export type ProblemDetails = {
   type?: null | string;
   title?: null | string;
   status?: null | number | string;
   detail?: null | string;
   instance?: null | string;
+};
+
+export type UpdateChatMessageRequest = {
+  session_id: string;
+  tenant_id: string;
+  sender: string;
+  content: string;
+  status: string;
+  is_ai_generated: boolean;
+  approved_by: null | string;
+  citations: null | Array<CitationDto>;
+  ai_metadata: null | AiMetadataDto;
+};
+
+export type UpdateChatSessionRequest = {
+  tenant_id: string;
+  channel_provider: string;
+  external_reference_id: null | string;
+  customer_identifier: string;
+  operator_id: null | string;
+  status: string;
 };
 
 export type GetIdentityData = {
@@ -54,3 +152,245 @@ export type StreamCompletionResponses = {
    */
   200: unknown;
 };
+
+export type GetAllChatSessionsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/chat/sessions";
+};
+
+export type GetAllChatSessionsErrors = {
+  /**
+   * Bad Request
+   */
+  400: HttpValidationProblemDetails;
+};
+
+export type GetAllChatSessionsError =
+  GetAllChatSessionsErrors[keyof GetAllChatSessionsErrors];
+
+export type GetAllChatSessionsResponses = {
+  /**
+   * OK
+   */
+  200: Array<ChatSessionResponse>;
+};
+
+export type GetAllChatSessionsResponse =
+  GetAllChatSessionsResponses[keyof GetAllChatSessionsResponses];
+
+export type CreateChatSessionData = {
+  body: CreateChatSessionRequest;
+  path?: never;
+  query?: never;
+  url: "/api/chat/sessions";
+};
+
+export type CreateChatSessionErrors = {
+  /**
+   * Bad Request
+   */
+  400: HttpValidationProblemDetails;
+};
+
+export type CreateChatSessionError =
+  CreateChatSessionErrors[keyof CreateChatSessionErrors];
+
+export type CreateChatSessionResponses = {
+  /**
+   * Created
+   */
+  201: ChatSessionResponse;
+};
+
+export type CreateChatSessionResponse =
+  CreateChatSessionResponses[keyof CreateChatSessionResponses];
+
+export type DeleteChatSessionData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/api/chat/sessions/{id}";
+};
+
+export type DeleteChatSessionResponses = {
+  /**
+   * OK
+   */
+  200: ChatSessionResponse;
+};
+
+export type DeleteChatSessionResponse =
+  DeleteChatSessionResponses[keyof DeleteChatSessionResponses];
+
+export type GetChatSessionByIdData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/api/chat/sessions/{id}";
+};
+
+export type GetChatSessionByIdResponses = {
+  /**
+   * OK
+   */
+  200: ChatSessionResponse;
+};
+
+export type GetChatSessionByIdResponse =
+  GetChatSessionByIdResponses[keyof GetChatSessionByIdResponses];
+
+export type UpdateChatSessionData = {
+  body: UpdateChatSessionRequest;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/api/chat/sessions/{id}";
+};
+
+export type UpdateChatSessionErrors = {
+  /**
+   * Bad Request
+   */
+  400: HttpValidationProblemDetails;
+};
+
+export type UpdateChatSessionError =
+  UpdateChatSessionErrors[keyof UpdateChatSessionErrors];
+
+export type UpdateChatSessionResponses = {
+  /**
+   * OK
+   */
+  200: ChatSessionResponse;
+};
+
+export type UpdateChatSessionResponse =
+  UpdateChatSessionResponses[keyof UpdateChatSessionResponses];
+
+export type GetAllChatMessagesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/chat/messages";
+};
+
+export type GetAllChatMessagesErrors = {
+  /**
+   * Bad Request
+   */
+  400: HttpValidationProblemDetails;
+};
+
+export type GetAllChatMessagesError =
+  GetAllChatMessagesErrors[keyof GetAllChatMessagesErrors];
+
+export type GetAllChatMessagesResponses = {
+  /**
+   * OK
+   */
+  200: Array<ChatMessageResponse>;
+};
+
+export type GetAllChatMessagesResponse =
+  GetAllChatMessagesResponses[keyof GetAllChatMessagesResponses];
+
+export type CreateChatMessageData = {
+  body: CreateChatMessageRequest;
+  path?: never;
+  query?: never;
+  url: "/api/chat/messages";
+};
+
+export type CreateChatMessageErrors = {
+  /**
+   * Bad Request
+   */
+  400: HttpValidationProblemDetails;
+};
+
+export type CreateChatMessageError =
+  CreateChatMessageErrors[keyof CreateChatMessageErrors];
+
+export type CreateChatMessageResponses = {
+  /**
+   * Created
+   */
+  201: ChatMessageResponse;
+};
+
+export type CreateChatMessageResponse =
+  CreateChatMessageResponses[keyof CreateChatMessageResponses];
+
+export type DeleteChatMessageData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/api/chat/messages/{id}";
+};
+
+export type DeleteChatMessageResponses = {
+  /**
+   * OK
+   */
+  200: ChatMessageResponse;
+};
+
+export type DeleteChatMessageResponse =
+  DeleteChatMessageResponses[keyof DeleteChatMessageResponses];
+
+export type GetChatMessageByIdData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/api/chat/messages/{id}";
+};
+
+export type GetChatMessageByIdResponses = {
+  /**
+   * OK
+   */
+  200: ChatMessageResponse;
+};
+
+export type GetChatMessageByIdResponse =
+  GetChatMessageByIdResponses[keyof GetChatMessageByIdResponses];
+
+export type UpdateChatMessageData = {
+  body: UpdateChatMessageRequest;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/api/chat/messages/{id}";
+};
+
+export type UpdateChatMessageErrors = {
+  /**
+   * Bad Request
+   */
+  400: HttpValidationProblemDetails;
+};
+
+export type UpdateChatMessageError =
+  UpdateChatMessageErrors[keyof UpdateChatMessageErrors];
+
+export type UpdateChatMessageResponses = {
+  /**
+   * OK
+   */
+  200: ChatMessageResponse;
+};
+
+export type UpdateChatMessageResponse =
+  UpdateChatMessageResponses[keyof UpdateChatMessageResponses];

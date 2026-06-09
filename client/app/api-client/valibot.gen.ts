@@ -2,6 +2,149 @@
 
 import * as v from "valibot";
 
+export const vAiMetadataDto = v.object({
+  model_name: v.string(),
+  prompt_tokens: v.union([
+    v.pipe(
+      v.number(),
+      v.integer(),
+      v.minValue(
+        -2147483648,
+        "Invalid value: Expected int32 to be >= -2147483648",
+      ),
+      v.maxValue(
+        2147483647,
+        "Invalid value: Expected int32 to be <= 2147483647",
+      ),
+    ),
+    v.pipe(v.string(), v.regex(/^-?(?:0|[1-9]\d*)$/)),
+  ]),
+  completion_tokens: v.union([
+    v.pipe(
+      v.number(),
+      v.integer(),
+      v.minValue(
+        -2147483648,
+        "Invalid value: Expected int32 to be >= -2147483648",
+      ),
+      v.maxValue(
+        2147483647,
+        "Invalid value: Expected int32 to be <= 2147483647",
+      ),
+    ),
+    v.pipe(v.string(), v.regex(/^-?(?:0|[1-9]\d*)$/)),
+  ]),
+  total_tokens: v.union([
+    v.pipe(
+      v.number(),
+      v.integer(),
+      v.minValue(
+        -2147483648,
+        "Invalid value: Expected int32 to be >= -2147483648",
+      ),
+      v.maxValue(
+        2147483647,
+        "Invalid value: Expected int32 to be <= 2147483647",
+      ),
+    ),
+    v.pipe(v.string(), v.regex(/^-?(?:0|[1-9]\d*)$/)),
+  ]),
+  latency_ms: v.union([
+    v.number(),
+    v.pipe(
+      v.string(),
+      v.regex(/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/),
+    ),
+  ]),
+});
+
+export const vCitationDto = v.object({
+  source_url: v.string(),
+  title: v.string(),
+  snippet: v.string(),
+  score: v.union([
+    v.number(),
+    v.pipe(
+      v.string(),
+      v.regex(/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/),
+    ),
+  ]),
+});
+
+export const vCreateChatMessageRequest = v.object({
+  session_id: v.pipe(v.string(), v.uuid()),
+  tenant_id: v.pipe(v.string(), v.uuid()),
+  sender: v.string(),
+  content: v.string(),
+  status: v.string(),
+  is_ai_generated: v.boolean(),
+  approved_by: v.nullable(v.pipe(v.string(), v.uuid())),
+  citations: v.nullable(v.array(vCitationDto)),
+  ai_metadata: v.nullable(vAiMetadataDto),
+});
+
+export const vCreateChatSessionRequest = v.object({
+  tenant_id: v.pipe(v.string(), v.uuid()),
+  channel_provider: v.string(),
+  external_reference_id: v.nullable(v.string()),
+  customer_identifier: v.string(),
+  operator_id: v.nullable(v.pipe(v.string(), v.uuid())),
+});
+
+export const vHttpValidationProblemDetails = v.object({
+  type: v.nullish(v.string()),
+  title: v.nullish(v.string()),
+  status: v.nullish(
+    v.union([
+      v.pipe(
+        v.number(),
+        v.integer(),
+        v.minValue(
+          -2147483648,
+          "Invalid value: Expected int32 to be >= -2147483648",
+        ),
+        v.maxValue(
+          2147483647,
+          "Invalid value: Expected int32 to be <= 2147483647",
+        ),
+      ),
+      v.pipe(v.string(), v.regex(/^-?(?:0|[1-9]\d*)$/)),
+    ]),
+  ),
+  detail: v.nullish(v.string()),
+  instance: v.nullish(v.string()),
+  errors: v.optional(v.record(v.string(), v.array(v.string()))),
+});
+
+export const vInstant = v.record(v.string(), v.unknown());
+
+export const vChatMessageResponse = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+  session_id: v.pipe(v.string(), v.uuid()),
+  tenant_id: v.pipe(v.string(), v.uuid()),
+  sender: v.string(),
+  content: v.string(),
+  status: v.string(),
+  is_ai_generated: v.boolean(),
+  approved_by: v.nullable(v.pipe(v.string(), v.uuid())),
+  citations: v.array(vCitationDto),
+  ai_metadata: v.nullable(vAiMetadataDto),
+  created_date: vInstant,
+  updated_date: vInstant,
+});
+
+export const vChatSessionResponse = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+  tenant_id: v.pipe(v.string(), v.uuid()),
+  channel_provider: v.string(),
+  external_reference_id: v.nullable(v.string()),
+  customer_identifier: v.string(),
+  operator_id: v.nullable(v.pipe(v.string(), v.uuid())),
+  status: v.string(),
+  created_date: vInstant,
+  updated_date: vInstant,
+});
+
 export const vProblemDetails = v.object({
   type: v.nullish(v.string()),
   title: v.nullish(v.string()),
@@ -26,6 +169,27 @@ export const vProblemDetails = v.object({
   instance: v.nullish(v.string()),
 });
 
+export const vUpdateChatMessageRequest = v.object({
+  session_id: v.pipe(v.string(), v.uuid()),
+  tenant_id: v.pipe(v.string(), v.uuid()),
+  sender: v.string(),
+  content: v.string(),
+  status: v.string(),
+  is_ai_generated: v.boolean(),
+  approved_by: v.nullable(v.pipe(v.string(), v.uuid())),
+  citations: v.nullable(v.array(vCitationDto)),
+  ai_metadata: v.nullable(vAiMetadataDto),
+});
+
+export const vUpdateChatSessionRequest = v.object({
+  tenant_id: v.pipe(v.string(), v.uuid()),
+  channel_provider: v.string(),
+  external_reference_id: v.nullable(v.string()),
+  customer_identifier: v.string(),
+  operator_id: v.nullable(v.pipe(v.string(), v.uuid())),
+  status: v.string(),
+});
+
 /**
  * OK
  */
@@ -34,3 +198,85 @@ export const vGetIdentityResponse = v.string();
 export const vStreamCompletionQuery = v.object({
   prompt: v.string(),
 });
+
+/**
+ * OK
+ */
+export const vGetAllChatSessionsResponse = v.array(vChatSessionResponse);
+
+export const vCreateChatSessionBody = vCreateChatSessionRequest;
+
+/**
+ * Created
+ */
+export const vCreateChatSessionResponse = vChatSessionResponse;
+
+export const vDeleteChatSessionPath = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+});
+
+/**
+ * OK
+ */
+export const vDeleteChatSessionResponse = vChatSessionResponse;
+
+export const vGetChatSessionByIdPath = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+});
+
+/**
+ * OK
+ */
+export const vGetChatSessionByIdResponse = vChatSessionResponse;
+
+export const vUpdateChatSessionBody = vUpdateChatSessionRequest;
+
+export const vUpdateChatSessionPath = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+});
+
+/**
+ * OK
+ */
+export const vUpdateChatSessionResponse = vChatSessionResponse;
+
+/**
+ * OK
+ */
+export const vGetAllChatMessagesResponse = v.array(vChatMessageResponse);
+
+export const vCreateChatMessageBody = vCreateChatMessageRequest;
+
+/**
+ * Created
+ */
+export const vCreateChatMessageResponse = vChatMessageResponse;
+
+export const vDeleteChatMessagePath = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+});
+
+/**
+ * OK
+ */
+export const vDeleteChatMessageResponse = vChatMessageResponse;
+
+export const vGetChatMessageByIdPath = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+});
+
+/**
+ * OK
+ */
+export const vGetChatMessageByIdResponse = vChatMessageResponse;
+
+export const vUpdateChatMessageBody = vUpdateChatMessageRequest;
+
+export const vUpdateChatMessagePath = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+});
+
+/**
+ * OK
+ */
+export const vUpdateChatMessageResponse = vChatMessageResponse;

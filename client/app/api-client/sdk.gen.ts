@@ -10,13 +10,62 @@ import type {
 } from "./client";
 import { client } from "./client.gen";
 import type {
+  CreateChatMessageData,
+  CreateChatMessageErrors,
+  CreateChatMessageResponses,
+  CreateChatSessionData,
+  CreateChatSessionErrors,
+  CreateChatSessionResponses,
+  DeleteChatMessageData,
+  DeleteChatMessageResponses,
+  DeleteChatSessionData,
+  DeleteChatSessionResponses,
+  GetAllChatMessagesData,
+  GetAllChatMessagesErrors,
+  GetAllChatMessagesResponses,
+  GetAllChatSessionsData,
+  GetAllChatSessionsErrors,
+  GetAllChatSessionsResponses,
+  GetChatMessageByIdData,
+  GetChatMessageByIdResponses,
+  GetChatSessionByIdData,
+  GetChatSessionByIdResponses,
   GetIdentityData,
   GetIdentityResponses,
   StreamCompletionData,
   StreamCompletionErrors,
   StreamCompletionResponses,
+  UpdateChatMessageData,
+  UpdateChatMessageErrors,
+  UpdateChatMessageResponses,
+  UpdateChatSessionData,
+  UpdateChatSessionErrors,
+  UpdateChatSessionResponses,
 } from "./types.gen";
-import { vGetIdentityResponse, vStreamCompletionQuery } from "./valibot.gen";
+import {
+  vCreateChatMessageBody,
+  vCreateChatMessageResponse,
+  vCreateChatSessionBody,
+  vCreateChatSessionResponse,
+  vDeleteChatMessagePath,
+  vDeleteChatMessageResponse,
+  vDeleteChatSessionPath,
+  vDeleteChatSessionResponse,
+  vGetAllChatMessagesResponse,
+  vGetAllChatSessionsResponse,
+  vGetChatMessageByIdPath,
+  vGetChatMessageByIdResponse,
+  vGetChatSessionByIdPath,
+  vGetChatSessionByIdResponse,
+  vGetIdentityResponse,
+  vStreamCompletionQuery,
+  vUpdateChatMessageBody,
+  vUpdateChatMessagePath,
+  vUpdateChatMessageResponse,
+  vUpdateChatSessionBody,
+  vUpdateChatSessionPath,
+  vUpdateChatSessionResponse,
+} from "./valibot.gen";
 
 export type Options<
   TData extends TDataShape = TDataShape,
@@ -83,4 +132,304 @@ export const streamCompletion = <ThrowOnError extends boolean = false>(
       ),
     url: "/api/chat/completions/stream",
     ...options,
+  });
+
+/**
+ * Retrieve all chat sessions.
+ */
+export const getAllChatSessions = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAllChatSessionsData, ThrowOnError>,
+): RequestResult<
+  GetAllChatSessionsResponses,
+  GetAllChatSessionsErrors,
+  ThrowOnError
+> =>
+  (options?.client ?? client).get<
+    GetAllChatSessionsResponses,
+    GetAllChatSessionsErrors,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: v.optional(v.never()),
+          path: v.optional(v.never()),
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vGetAllChatSessionsResponse, data),
+    url: "/api/chat/sessions",
+    ...options,
+  });
+
+/**
+ * Create a new chat session.
+ */
+export const createChatSession = <ThrowOnError extends boolean = false>(
+  options: Options<CreateChatSessionData, ThrowOnError>,
+): RequestResult<
+  CreateChatSessionResponses,
+  CreateChatSessionErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).post<
+    CreateChatSessionResponses,
+    CreateChatSessionErrors,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: vCreateChatSessionBody,
+          path: v.optional(v.never()),
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vCreateChatSessionResponse, data),
+    url: "/api/chat/sessions",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * Delete a chat session.
+ */
+export const deleteChatSession = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteChatSessionData, ThrowOnError>,
+): RequestResult<DeleteChatSessionResponses, unknown, ThrowOnError> =>
+  (options.client ?? client).delete<
+    DeleteChatSessionResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: v.optional(v.never()),
+          path: vDeleteChatSessionPath,
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vDeleteChatSessionResponse, data),
+    url: "/api/chat/sessions/{id}",
+    ...options,
+  });
+
+/**
+ * Retrieve a chat session by ID.
+ */
+export const getChatSessionById = <ThrowOnError extends boolean = false>(
+  options: Options<GetChatSessionByIdData, ThrowOnError>,
+): RequestResult<GetChatSessionByIdResponses, unknown, ThrowOnError> =>
+  (options.client ?? client).get<
+    GetChatSessionByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: v.optional(v.never()),
+          path: vGetChatSessionByIdPath,
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vGetChatSessionByIdResponse, data),
+    url: "/api/chat/sessions/{id}",
+    ...options,
+  });
+
+/**
+ * Update a chat session.
+ */
+export const updateChatSession = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateChatSessionData, ThrowOnError>,
+): RequestResult<
+  UpdateChatSessionResponses,
+  UpdateChatSessionErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).put<
+    UpdateChatSessionResponses,
+    UpdateChatSessionErrors,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: vUpdateChatSessionBody,
+          path: vUpdateChatSessionPath,
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vUpdateChatSessionResponse, data),
+    url: "/api/chat/sessions/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * Retrieve all chat messages.
+ */
+export const getAllChatMessages = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAllChatMessagesData, ThrowOnError>,
+): RequestResult<
+  GetAllChatMessagesResponses,
+  GetAllChatMessagesErrors,
+  ThrowOnError
+> =>
+  (options?.client ?? client).get<
+    GetAllChatMessagesResponses,
+    GetAllChatMessagesErrors,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: v.optional(v.never()),
+          path: v.optional(v.never()),
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vGetAllChatMessagesResponse, data),
+    url: "/api/chat/messages",
+    ...options,
+  });
+
+/**
+ * Create a new chat message.
+ */
+export const createChatMessage = <ThrowOnError extends boolean = false>(
+  options: Options<CreateChatMessageData, ThrowOnError>,
+): RequestResult<
+  CreateChatMessageResponses,
+  CreateChatMessageErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).post<
+    CreateChatMessageResponses,
+    CreateChatMessageErrors,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: vCreateChatMessageBody,
+          path: v.optional(v.never()),
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vCreateChatMessageResponse, data),
+    url: "/api/chat/messages",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * Delete a chat message.
+ */
+export const deleteChatMessage = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteChatMessageData, ThrowOnError>,
+): RequestResult<DeleteChatMessageResponses, unknown, ThrowOnError> =>
+  (options.client ?? client).delete<
+    DeleteChatMessageResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: v.optional(v.never()),
+          path: vDeleteChatMessagePath,
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vDeleteChatMessageResponse, data),
+    url: "/api/chat/messages/{id}",
+    ...options,
+  });
+
+/**
+ * Retrieve a chat message by ID.
+ */
+export const getChatMessageById = <ThrowOnError extends boolean = false>(
+  options: Options<GetChatMessageByIdData, ThrowOnError>,
+): RequestResult<GetChatMessageByIdResponses, unknown, ThrowOnError> =>
+  (options.client ?? client).get<
+    GetChatMessageByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: v.optional(v.never()),
+          path: vGetChatMessageByIdPath,
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vGetChatMessageByIdResponse, data),
+    url: "/api/chat/messages/{id}",
+    ...options,
+  });
+
+/**
+ * Update a chat message.
+ */
+export const updateChatMessage = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateChatMessageData, ThrowOnError>,
+): RequestResult<
+  UpdateChatMessageResponses,
+  UpdateChatMessageErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).put<
+    UpdateChatMessageResponses,
+    UpdateChatMessageErrors,
+    ThrowOnError
+  >({
+    requestValidator: async (data) =>
+      await v.parseAsync(
+        v.object({
+          body: vUpdateChatMessageBody,
+          path: vUpdateChatMessagePath,
+          query: v.optional(v.never()),
+        }),
+        data,
+      ),
+    responseTransformer: async (data) =>
+      await v.parseAsync(vUpdateChatMessageResponse, data),
+    url: "/api/chat/messages/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
