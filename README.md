@@ -70,9 +70,12 @@ Once inside the development shell, install git hooks via Lefthook and install Nu
 # Install git hooks
 lefthook install
 ```
+
 # Install Nuxt frontend dependencies
+
 cd client && bun install && cd ..
-```
+
+````
 
 ### 5. Start Infrastructure & Apply Database Migrations
 
@@ -82,7 +85,7 @@ Since the platform relies on multiple modules with independent `DbContext` schem
 
    ```bash
    docker compose up -d
-   ```
+````
 
 2. **Generate the initial migrations for all three storage brokers:**
 

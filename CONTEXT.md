@@ -14,7 +14,7 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
   - Performance: **Native AOT** readiness with **Source Generators** (JSON, DI).
   - API: **OpenAPI** (Scalar) with **ProblemDetails**, **IExceptionHandler**, and **Correlation ID**.
   - Real-time: **SignalR** for state synchronization and **TypedResults.ServerSentEvents** for AI token streaming.
-  - AI-Native: **Semantic Kernel Plugin Architecture** (API endpoints as AI Tools).
+  - AI-Native: **MAF Plugin Architecture** (API endpoints as AI Tools).
   - Brokers: **RESTfulSense** for communication; **PII Masking** for compliance; **AI Usage Tracking** for cost control.
   - Models: **Manual Mapping** only to prevent domain leakage.
   - Logic: **Stateless** for session state; **StronglyTypedId** for domain safety; **Distributed Locking** for concurrency.

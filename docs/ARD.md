@@ -19,7 +19,7 @@ graph TD
     end
 
     subgraph API_Gateway [API & Orchestration]
-        API[".NET 10 Core Web API<br/>(Semantic Kernel & SignalR)"]
+        API[".NET 10 Core Web API<br/>(MAF & SignalR)"]
     end
 
     subgraph Storage_Tier [Data & Vector Storage]
@@ -50,7 +50,7 @@ graph TD
 - **Core API Gateway (.NET 10 Core Web API):**
   - The central orchestrator using **.NET 10**.
   - Manages tenant routing, channel webhooks, and operator authorization.
-  - Employs **Microsoft Semantic Kernel (SK)** for on-demand RAG suggestions.
+  - Employs **Microsoft Agent Framework (MAF)** for on-demand RAG suggestions.
 - **In-Memory/Vector Tier (Qdrant via Microsoft.Extensions.VectorData):**
   - Stores 1536-dimension OpenAI embeddings with mandatory `tenant_id` payload filtering.
   - Accessed via the `Microsoft.Extensions.VectorData` abstraction layer (`VectorStore` / `VectorStoreCollection<TKey, TRecord>`), backed by the `Microsoft.SemanticKernel.Connectors.Qdrant` provider.

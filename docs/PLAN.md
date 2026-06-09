@@ -118,9 +118,9 @@
 
 ## Phase 4: AI & Knowledge Base Orchestration
 
-- [ ] **AI Orchestration (Semantic Kernel):**
+- [ ] **AI Orchestration (Microsoft Agent Framework - MAF):**
   - RAG pipeline (Embed -> Search -> Prompt -> Complete).
-  - **AI Plugins:** Design API endpoints as **AI Tools** for Semantic Kernel.
+  - **AI Plugins:** Design API endpoints as **AI Tools** forMAF.
   - **Feature Toggles:** Wrap AI flows in **Microsoft.FeatureManagement**.
 - [ ] **HybridCache Query Caching (EF Core 10):**
   - Write EF Core interceptors to cache frequent read-only queries (e.g. operator profiles, session list indexes) directly in Garnet/Redis via `HybridCache`. Leverages EF Core 10's native `HybridCache` integration hooks.

@@ -9,7 +9,7 @@ using Chatbot.Shared.Brokers.Pii;
 using Chatbot.Shared.Brokers.Processing;
 using Chatbot.Shared.Brokers.Vectors;
 using Microsoft.Extensions.VectorData;
-using Microsoft.SemanticKernel.Connectors.Qdrant;
+
 using Qdrant.Client;
 using StackExchange.Redis;
 using Chatbot.Shared.Infrastructure.Configuration;
