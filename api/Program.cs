@@ -13,7 +13,10 @@ using Chatbot.Shared.Brokers.Ai;
 using Chatbot.Shared.Models;
 using Chatbot.Api.Infrastructure.EventDrivenArchitecture;
 using Coravel;
+using Chatbot.Shared.Infrastructure.Configuration;
 using Microsoft.Extensions.AI;
+using OpenAI;
+using System.ClientModel;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -77,8 +80,31 @@ builder.Services.AddHybridCache(options =>
     };
 });
 
-// 2.3 Add AI Client
-builder.Services.AddSingleton<IChatClient, NoopChatClient>();
+// 2.3 Add AI Client (OpenRouter)
+builder.Services.AddSingleton(sp =>
+{
+    var options = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AiOptions>>().Value;
+    return new OpenAI.OpenAIClient(new System.ClientModel.ApiKeyCredential(options.ApiKey), new OpenAI.OpenAIClientOptions
+    {
+        Endpoint = new Uri(options.Endpoint)
+    });
+});
+
+builder.Services.AddSingleton<IChatClient>(sp =>
+{
+    var options = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AiOptions>>().Value;
+    var client = sp.GetRequiredService<OpenAI.OpenAIClient>();
+
+    return client.GetChatClient(options.ModelId).AsIChatClient();
+});
+
+builder.Services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(sp =>
+{
+    var options = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AiOptions>>().Value;
+    var client = sp.GetRequiredService<OpenAI.OpenAIClient>();
+
+    return client.GetEmbeddingClient(options.EmbeddingModelId).AsIEmbeddingGenerator();
+});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {

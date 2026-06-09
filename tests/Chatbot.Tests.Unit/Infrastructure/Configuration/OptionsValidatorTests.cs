@@ -61,6 +61,7 @@ public class OptionsValidatorTests
         result.FailureMessage.ShouldContain("Endpoint");
         result.FailureMessage.ShouldContain("ApiKey");
         result.FailureMessage.ShouldContain("ModelId");
+        result.FailureMessage.ShouldContain("EmbeddingModelId");
     }
 
     [Fact]
@@ -72,7 +73,8 @@ public class OptionsValidatorTests
         {
             Endpoint = "https://api.openai.com/v1",
             ApiKey = "some-key",
-            ModelId = "gpt-4"
+            ModelId = "gpt-4",
+            EmbeddingModelId = "text-embedding-3-small"
         };
 
         // when
@@ -155,7 +157,8 @@ public class OptionsValidatorTests
         {
             { "AI:Endpoint", "https://api.openai.com/v1" },
             { "AI:ModelId", "gpt-4o" },
-            { "AI:ApiKey", "expected-api-key" }
+            { "AI:ApiKey", "expected-api-key" },
+            { "AI:EmbeddingModelId", "text-embedding-3-small" }
         };
 
         var configuration = new ConfigurationBuilder()
@@ -176,6 +179,7 @@ public class OptionsValidatorTests
 
         // then
         options.ApiKey.ShouldBe("expected-api-key");
+        options.EmbeddingModelId.ShouldBe("text-embedding-3-small");
     }
 }
 

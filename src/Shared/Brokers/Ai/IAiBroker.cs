@@ -14,4 +14,5 @@ public interface IAiBroker
         string prompt,
         IEnumerable<ChatMessage>? history = null
     );
+    ValueTask<float[]> GenerateEmbeddingAsync(string text);
 }

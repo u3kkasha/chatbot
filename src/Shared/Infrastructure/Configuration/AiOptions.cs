@@ -14,4 +14,7 @@ public sealed class AiOptions
 
     [Required]
     public string ModelId { get; init; } = string.Empty;
+
+    [Required]
+    public string EmbeddingModelId { get; init; } = string.Empty;
 }

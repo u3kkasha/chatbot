@@ -5,7 +5,10 @@ using Microsoft.Extensions.AI;
 
 namespace Chatbot.Shared.Brokers.Ai;
 
-public class AiBroker(IChatClient chatClient) : IAiBroker
+public class AiBroker(
+    IChatClient chatClient,
+    IEmbeddingGenerator<string, Embedding<float>> embeddingGenerator
+) : IAiBroker
 {
     public async ValueTask<string> GetChatCompletionAsync(
         string prompt,
@@ -29,5 +32,11 @@ public class AiBroker(IChatClient chatClient) : IAiBroker
         messages.Add(new ChatMessage(ChatRole.User, prompt));
 
         return chatClient.GetStreamingResponseAsync(messages);
+    }
+
+    public async ValueTask<float[]> GenerateEmbeddingAsync(string text)
+    {
+        var response = await embeddingGenerator.GenerateAsync([text]);
+        return response.First().Vector.ToArray();
     }
 }
