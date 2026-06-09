@@ -64,15 +64,12 @@ nix develop
 
 ### 4. Restore Dependencies & Install Git Hooks
 
-Once inside the development shell, restore .NET tools, install git hooks via Husky, and install Nuxt frontend packages:
+Once inside the development shell, install git hooks via Lefthook and install Nuxt frontend packages:
 
 ```bash
-# Restore local dotnet tools (includes dotnet-ef and husky)
-dotnet tool restore
-
-# Initialize and install git hooks
-dotnet husky install
-
+# Install git hooks
+lefthook install
+```
 # Install Nuxt frontend dependencies
 cd client && bun install && cd ..
 ```

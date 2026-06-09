@@ -64,6 +64,7 @@
             docker
             docker-compose
             gitleaks
+            lefthook
             openspec
             xdg-utils
             infisical

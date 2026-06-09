@@ -7,7 +7,7 @@
   - **Modular Monolith ADR:** Document the module boundaries and internal communication strategy.
   - [x] **Vertical Slice Architecture (VSA) ADR:** Document the strategy for grouping features (Logic, DTOs, Endpoints) by folder within modules.
 - [x] **Infrastructure Scaffolding:**
-  - Set up **Scalar**, **Vitest**, **Testcontainers**, **Verify**, **Husky.Net**, and **Tailwind CSS Sorting**.
+  - Set up **Scalar**, **Vitest**, **Testcontainers**, **Verify**, **Lefthook**, and **Tailwind CSS Sorting**.
   - Initialize the **Modular Monolith** project structure (e.g., `Modules/Identity`, `Modules/Chat`).
 - [x] **Central Package Management (CPM):**
   - [x] Initialize `Directory.Packages.props` and migrate all solution projects to central versioning.

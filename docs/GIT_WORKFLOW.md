@@ -96,5 +96,6 @@ When an AI agent is asked to "wrap up" or "merge" a feature:
 
 ## Enforcement
 
-- **Husky:** pre-commit and pre-push hooks enforce linting and testing.
+- **Lefthook:** pre-commit and pre-push hooks enforce linting and testing.
+- **Auto-Emoji:** The `commit-msg` hook automatically prepends the correct inanimate emoji to your commit message if you use conventional commit syntax (e.g., `feat(ui): ...` becomes `📦 feat(ui): ...`).
 - **Gitmojis:** Strict "Abstract Only" rule is a project mandate.
