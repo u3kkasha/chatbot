@@ -51,8 +51,10 @@ graph TD
   - The central orchestrator using **.NET 10**.
   - Manages tenant routing, channel webhooks, and operator authorization.
   - Employs **Microsoft Semantic Kernel (SK)** for on-demand RAG suggestions.
-- **In-Memory/Vector Tier (Qdrant):**
+- **In-Memory/Vector Tier (Qdrant via Microsoft.Extensions.VectorData):**
   - Stores 1536-dimension OpenAI embeddings with mandatory `tenant_id` payload filtering.
+  - Accessed via the `Microsoft.Extensions.VectorData` abstraction layer (`VectorStore` / `VectorStoreCollection<TKey, TRecord>`), backed by the `Microsoft.SemanticKernel.Connectors.Qdrant` provider.
+  - The abstraction decouples business logic from the concrete vector database, making the backend swappable (e.g., to pgvector or Azure AI Search) via a DI registration change.
 - **Data Extraction Workers (Docling-Serve):**
   - Parses uploaded raw documents and emits semantic layout hierarchies for knowledge base grounding.
 - **Relational Storage Tier (PostgreSQL):**
@@ -184,8 +186,30 @@ CREATE INDEX idx_messages_session ON chat_messages(session_id);
 ### 5. Development Infrastructure Setup
 
 (Standard Docker configuration for Postgres, Qdrant, and Docling remains applicable as per the unified topology).
-.
-ns applicable as per the unified topology).
-.
-ology).
-.
+
+---
+
+### 6. Architectural Decisions
+
+#### ADR-001: Adopt Microsoft.Extensions.VectorData Abstractions for Vector Store Access
+
+**Date:** 2026-06-09
+**Status:** Accepted
+
+**Context:**
+The original `VectorBroker` used the raw `Qdrant.Client` gRPC SDK directly, manually constructing `PointStruct` objects and mapping values to/from Qdrant's protobuf `Value` type. This approach was tightly coupled to Qdrant internals, making it difficult to test without a live Qdrant instance and impossible to swap backends without a full rewrite.
+
+**Decision:**
+Adopt `Microsoft.Extensions.VectorData.Abstractions` (`v10.6.0`) as the unified vector store abstraction, backed by `Microsoft.SemanticKernel.Connectors.Qdrant` (`v1.74.0-preview`).
+
+- A new `VectorRecord` model is declared with `[VectorStoreKey]`, `[VectorStoreData]`, and `[VectorStoreVector(1536)]` attributes for declarative schema mapping.
+- `VectorBroker` injects `VectorStore` (registered as `QdrantVectorStore`) and calls `GetCollection<ulong, VectorRecord>()`, `EnsureCollectionExistsAsync()`, `UpsertAsync()`, and `SearchAsync()`.
+- The `IVectorBroker` interface boundary is **unchanged** — all services consuming vectors require zero code changes.
+- `QdrantClient` and `VectorStore` are registered via the `AddQdrantVectorStore(IServiceCollection, ...)` DI extension, using the lazy factory pattern for Options-based configuration.
+
+**Consequences:**
+
+- Provider is swappable via a single DI registration change.
+- Unit tests can use `InMemory` vector store provider without Docker.
+- Manual gRPC payload mapping helpers are eliminated.
+- IL2026/IL3050 AOT warnings are suppressed with justification (project is AOT-ready by design, not compiled with `PublishAot=true`).

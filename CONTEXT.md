@@ -24,7 +24,7 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
   - Processing: **Coravel** for near-zero config background jobs, queuing, and scheduling.
   - Feature Management: **Microsoft.FeatureManagement** for toggling AI and experimental flows.
   - Logging: **Serilog** with structured sinks.
-  - Data: **EF Core 10** with **Native JSON mapping**, **SnakeCase** naming, and **Audit Interceptors**.
+  - Data: **EF Core 10** with **Native JSON mapping**, **SnakeCase** naming, and **Audit Interceptors**. Vector store access via **Microsoft.Extensions.VectorData** (`VectorStore` abstraction) backed by `Microsoft.SemanticKernel.Connectors.Qdrant`.
   - Time: **NodaTime**.
   - Observability: **OpenTelemetry** and **Health Checks**.
 - **Frontend:** Nuxt 4 (TypeScript, Vue 3, TailwindCSS, **Nuxt UI**).
