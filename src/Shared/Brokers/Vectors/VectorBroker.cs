@@ -1,89 +1,73 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Chatbot.Shared.Infrastructure.Configuration;
-using Microsoft.Extensions.Options;
-using Qdrant.Client;
-using Qdrant.Client.Grpc;
+using Microsoft.Extensions.VectorData;
 
 namespace Chatbot.Shared.Brokers.Vectors;
 
-public class VectorBroker(IOptions<QdrantOptions> qdrantOptions) : IVectorBroker
+public class VectorBroker(VectorStore vectorStore) : IVectorBroker
 {
-    private readonly QdrantOptions options = qdrantOptions.Value;
-
+    // IL2026/IL3050: GetCollection<TKey, TRecord> uses reflection for mapping.
+    // Suppressed because Native AOT is not the current compilation target;
+    // the project is AOT-ready by design but not compiled with PublishAot=true.
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Not compiled with PublishAot=true")]
+    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Not compiled with PublishAot=true")]
     public async ValueTask CreateCollectionIfNotExistsAsync(string collectionName, int vectorSize)
     {
-        var client = new QdrantClient(options.Host, options.Port, options.UseHttps);
-        var collections = await client.ListCollectionsAsync();
-
-        if (!collections.Contains(collectionName))
-        {
-            await client.CreateCollectionAsync(
-                collectionName,
-                new VectorParams { Size = (ulong)vectorSize, Distance = Distance.Cosine }
-            );
-        }
+        var collection = vectorStore.GetCollection<ulong, VectorRecord>(collectionName);
+        await collection.EnsureCollectionExistsAsync();
     }
 
-    public async ValueTask UpsertVectorsAsync(
-        string collectionName,
-        IEnumerable<VectorPoint> points
-    )
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Not compiled with PublishAot=true")]
+    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Not compiled with PublishAot=true")]
+    public async ValueTask UpsertVectorsAsync(string collectionName, IEnumerable<VectorPoint> points)
     {
-        var client = new QdrantClient(options.Host, options.Port, options.UseHttps);
+        var collection = vectorStore.GetCollection<ulong, VectorRecord>(collectionName);
 
-        var pointStructs = points
-            .Select(p => new PointStruct
-            {
-                Id = p.Id,
-                Vectors = p.Vector,
-                Payload = { p.Payload.ToDictionary(k => k.Key, v => v.Value.ToValue()) },
-            })
-            .ToList();
+        var records = points.Select(p => new VectorRecord
+        {
+            Id = p.Id,
+            Vector = p.Vector,
+            Content = p.Payload.TryGetValue("content", out var content) ? content?.ToString() : null,
+            DocumentId = p.Payload.TryGetValue("documentId", out var docId) ? docId?.ToString() : null,
+            TenantId = p.Payload.TryGetValue("tenantId", out var tid) ? tid?.ToString() : null,
+        });
 
-        await client.UpsertAsync(collectionName, pointStructs);
+        await collection.UpsertAsync(records);
     }
 
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Not compiled with PublishAot=true")]
+    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Not compiled with PublishAot=true")]
     public async ValueTask<IEnumerable<VectorPoint>> SearchVectorsAsync(
         string collectionName,
         float[] vector,
         int limit = 10
     )
     {
-        var client = new QdrantClient(options.Host, options.Port, options.UseHttps);
+        var collection = vectorStore.GetCollection<ulong, VectorRecord>(collectionName);
 
-        var results = await client.SearchAsync(collectionName, vector, limit: (uint)limit);
+        var results = collection.SearchAsync(
+            new ReadOnlyMemory<float>(vector),
+            top: limit
+        );
 
-        return results.Select(r => new VectorPoint(
-            r.Id.Num,
-            r.Vectors.Vector.Dense.Data.ToArray(),
-            r.Payload.ToDictionary(k => k.Key, v => v.Value.ToValue())
-        ));
+        var list = new List<VectorPoint>();
+        await foreach (var r in results)
+        {
+            list.Add(new VectorPoint(
+                r.Record.Id,
+                r.Record.Vector.ToArray(),
+                new Dictionary<string, object?>
+                {
+                    ["content"] = r.Record.Content,
+                    ["documentId"] = r.Record.DocumentId,
+                    ["tenantId"] = r.Record.TenantId,
+                    ["score"] = r.Score,
+                }
+            ));
+        }
+
+        return list;
     }
-}
-
-internal static class QdrantExtensions
-{
-    public static Value ToValue(this object obj) =>
-        obj switch
-        {
-            string s => new Value { StringValue = s },
-            int i => new Value { IntegerValue = i },
-            long l => new Value { IntegerValue = l },
-            float f => new Value { DoubleValue = f },
-            double d => new Value { DoubleValue = d },
-            bool b => new Value { BoolValue = b },
-            _ => new Value { StringValue = obj?.ToString() ?? string.Empty },
-        };
-
-    public static object ToValue(this Value value) =>
-        value.KindCase switch
-        {
-            Value.KindOneofCase.StringValue => value.StringValue,
-            Value.KindOneofCase.IntegerValue => value.IntegerValue,
-            Value.KindOneofCase.DoubleValue => value.DoubleValue,
-            Value.KindOneofCase.BoolValue => value.BoolValue,
-            _ => value.ToString(),
-        };
 }

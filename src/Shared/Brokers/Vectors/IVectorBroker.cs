@@ -14,4 +14,4 @@ public interface IVectorBroker
     ValueTask CreateCollectionIfNotExistsAsync(string collectionName, int vectorSize);
 }
 
-public record VectorPoint(ulong Id, float[] Vector, Dictionary<string, object> Payload);
+public record VectorPoint(ulong Id, float[] Vector, Dictionary<string, object?> Payload);

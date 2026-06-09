@@ -8,6 +8,9 @@ using Chatbot.Shared.Brokers.Logging;
 using Chatbot.Shared.Brokers.Pii;
 using Chatbot.Shared.Brokers.Processing;
 using Chatbot.Shared.Brokers.Vectors;
+using Microsoft.Extensions.VectorData;
+using Microsoft.SemanticKernel.Connectors.Qdrant;
+using Qdrant.Client;
 using StackExchange.Redis;
 using Chatbot.Shared.Infrastructure.Configuration;
 using Chatbot.Shared.Infrastructure.Data;
@@ -96,6 +99,18 @@ public static class SharedExtensions
         // Data Infrastructure
         services.AddSingleton<AuditInterceptor>();
         services.AddSingleton<RlsInterceptor>();
+
+        // Vector Store (Microsoft.Extensions.VectorData + Qdrant)
+        // Registers QdrantClient + QdrantVectorStore as VectorStore via extension method.
+        // IL2026/IL3050: MEVD dynamic mapping path requires reflection.
+        // Suppressed: project is AOT-ready by design, not compiled with PublishAot=true.
+#pragma warning disable IL2026, IL3050
+        services.AddQdrantVectorStore(sp =>
+        {
+            var opts = sp.GetRequiredService<IOptions<QdrantOptions>>().Value;
+            return new QdrantClient(opts.Host, opts.Port, opts.UseHttps, opts.ApiKey);
+        });
+#pragma warning restore IL2026, IL3050
 
         // Brokers
         services.AddTransient<ILoggingBroker, LoggingBroker>();

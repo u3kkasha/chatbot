@@ -57,6 +57,8 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1" />
     <PackageVersion Include="Polly" Version="8.6.6" />
     <PackageVersion Include="Qdrant.Client" Version="1.18.1" />
+    <PackageVersion Include="Microsoft.Extensions.VectorData.Abstractions" Version="10.6.0" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Qdrant" Version="1.74.0-preview" />
     <PackageVersion Include="RESTFulSense" Version="3.2.0" />
     <PackageVersion Include="Scalar.AspNetCore" Version="2.14.14" />
     <PackageVersion Include="Scrutor" Version="7.0.0" />
