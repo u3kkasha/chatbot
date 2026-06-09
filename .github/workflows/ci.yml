@@ -8,9 +8,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint-commits:
+    name: Lint Commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Lint Commits
+        uses: wagoid/commitlint-github-action@v6
+
   verify:
     name: Verify Codebase
     runs-on: ubuntu-latest
+    # Optional: make verify depend on lint-commits
+    # needs: lint-commits
 
     steps:
       - name: Checkout Code
