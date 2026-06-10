@@ -45,7 +45,7 @@ public class KnowledgeFoundationServiceTests
         string query = "What is RAG?";
         float[] denseVector = [0.1f, 0.2f];
         (uint[] indices, float[] values) sparseVector = ([1u], [1.0f]);
-        
+
         var candidates = new List<QdrantSearchPoint>
         {
             new(1, "RAG stands for Retrieval-Augmented Generation.", new Dictionary<string, object?> { ["documentId"] = "doc1" }, 0.9f)
