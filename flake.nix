@@ -60,6 +60,7 @@
             bun
             cue
             dotnet-sdk_10
+            just
             tilt
             docker
             docker-compose
@@ -74,8 +75,13 @@
           commands = [
             {
               name = "run";
-              command = "tilt up";
+              command = "just run";
               help = "Start the Tilt development environment";
+            }
+            {
+              name = "setup";
+              command = "just setup";
+              help = "Full first-time setup: hooks → frontend → infra";
             }
           ];
         };

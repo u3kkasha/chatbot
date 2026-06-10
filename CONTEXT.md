@@ -59,7 +59,7 @@ The project is structured to enforce strong logical separation between features 
 
 ## ⚡ Infrastructure Port & URL Map
 
-When local Docker services are running (`tilt up` or `docker compose up`), they bind to the following host endpoints:
+When Tilt is running (`tilt up`), it orchestrates all services and binds to the following host endpoints:
 
 | Service                 | Port    | Endpoint                        | Description                                           |
 | :---------------------- | :------ | :------------------------------ | :---------------------------------------------------- |
@@ -77,20 +77,12 @@ When local Docker services are running (`tilt up` or `docker compose up`), they 
 
 ## 🔧 Operational Workflow Commands
 
-### Database Migrations
-
-Always add migrations targeting a specific module since the database uses multiple schemas (e.g. `identity` schema):
-
-```bash
-snip -- dotnet ef migrations add <MigrationName> --project src/Shared/Chatbot.Shared.csproj --startup-project api/Chatbot.Api.csproj
-```
-
 ### Running Tests
 
 To run tests:
 
 ```bash
-snip -- dotnet test
+dotnet test
 ```
 
 ### Verification
@@ -98,5 +90,6 @@ snip -- dotnet test
 Run `treefmt` to format the workspace:
 
 ```bash
-snip -- treefmt
+treefmt
 ```
+

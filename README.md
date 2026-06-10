@@ -4,8 +4,8 @@ A high-performance customer support platform built with a decoupled .NET 10 API 
 
 ## 🛠️ Tech Stack Overview
 
-- **Backend:** .NET 10 (C# 14), Microsoft.Extensions.AI, EF Core 10, Coravel, HybridCache, Scalar OpenAPI.
-- **Frontend:** Nuxt 4, Vue 3, TailwindCSS, Nuxt UI, Pinia & Pinia Colada.
+- **Backend:** .NET 10 (C# 14), Microsoft.Extensions.AI, EF Core 10, MassTransit (EDA), Coravel, HybridCache, Scalar OpenAPI.
+- **Frontend:** Nuxt 4, Vue 3, TailwindCSS 4, Nuxt UI 4, Pinia & Pinia Colada.
 - **Infrastructure:** PostgreSQL 18, Qdrant Vector DB, Azurite (Azure Storage emulator), Docling-Serve (Document parser), Garnet (Cache/Store), Seq (Structured logging).
 
 ---
@@ -62,63 +62,17 @@ Alternatively, enter the shell manually:
 nix develop
 ```
 
-### 4. Restore Dependencies & Install Git Hooks
+### 4. Setup and Restore
 
-Once inside the development shell, install git hooks via Lefthook and install Nuxt frontend packages:
+Once inside the development shell, run the automated setup to install git hooks, restore backend dependencies, and install frontend packages:
 
 ```bash
-# Install git hooks
-lefthook install
+just setup
 ```
 
-# Install Nuxt frontend dependencies
+### 5. Run the Platform
 
-cd client && bun install && cd ..
-
-````
-
-### 5. Start Infrastructure & Apply Database Migrations
-
-Since the platform relies on multiple modules with independent `DbContext` schemas (optimized with compiled models for Native AOT compliance), you must generate and apply migrations:
-
-1. **Spin up local infrastructure services (PostgreSQL, Garnet, Qdrant, etc.) in the background:**
-
-   ```bash
-   docker compose up -d
-````
-
-2. **Generate the initial migrations for all three storage brokers:**
-
-   ```bash
-   # Generate Chat module migrations
-   dotnet ef migrations add InitialCreate --context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker --project src/Modules/Chat/Chatbot.Modules.Chat.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Generate Identity module migrations
-   dotnet ef migrations add InitialCreate --context Chatbot.Modules.Identity.Brokers.Storage.StorageBroker --project src/Modules/Identity/Chatbot.Modules.Identity.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Generate Knowledge module migrations
-   dotnet ef migrations add InitialCreate --context Chatbot.Modules.Knowledge.Brokers.Storage.StorageBroker --project src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj --startup-project api/Chatbot.Api.csproj
-   ```
-
-3. **Apply migrations to the local PostgreSQL database:**
-
-   ```bash
-   # Apply Chat migrations
-   dotnet ef database update --context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker --project src/Modules/Chat/Chatbot.Modules.Chat.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Apply Identity migrations
-   dotnet ef database update --context Chatbot.Modules.Identity.Brokers.Storage.StorageBroker --project src/Modules/Identity/Chatbot.Modules.Identity.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Apply Knowledge migrations
-   dotnet ef database update --context Chatbot.Modules.Knowledge.Brokers.Storage.StorageBroker --project src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj --startup-project api/Chatbot.Api.csproj
-   ```
-
-> [!NOTE]
-> When modifying Entity Framework entities in the future, remember to regenerate the optimized compiled models for Native AOT compliance using the `dotnet ef dbcontext optimize` command for each broker (e.g. `--context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker`).
-
-### 6. Run the Platform
-
-We use [Tilt](https://tilt.dev/) to orchestrate the backend development server and frontend client alongside docker-compose:
+We use [Tilt](https://tilt.dev/) to orchestrate the entire development environment (API, Client, and all Infrastructure services):
 
 ```bash
 tilt up
@@ -130,17 +84,13 @@ Alternatively, you can run the flake-configured alias:
 start
 ```
 
-This will launch the Tilt local dashboard at [http://localhost:10350](http://localhost:10350) and run the services:
+This will launch the Tilt local dashboard at [http://localhost:10350](http://localhost:10350) and manage all services:
 
 - **Client Workspace (Nuxt 4):** [http://localhost:3000](http://localhost:3000)
 - **API Swagger / Scalar:** [http://localhost:5136/scalar/v1](http://localhost:5136/scalar/v1)
 - **Seq Log Viewer:** [http://localhost:8081](http://localhost:8081)
 
-To shut down all services and containers, run:
-
-```bash
-tilt down
-```
+To shut down the platform, simply exit the Tilt process (Ctrl+C).
 
 ---
 
@@ -156,7 +106,7 @@ dotnet test
 
 ### Code Formatting
 
-This project uses `treefmt` to enforce unified formatting rules (Csharpier, Prettier, and Alejandra):
+This project uses `treefmt` to enforce unified formatting rules. It is mandatory to run this before committing:
 
 ```bash
 treefmt

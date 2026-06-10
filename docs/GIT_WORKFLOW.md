@@ -46,9 +46,29 @@ A commit is ready only if:
 
 ## Merging and History
 
+### Linear History & Rebasing
+
+We maintain a strictly **linear history**. Avoid `git merge` (which creates merge commits) when pulling updates from `main` or preparing your branch.
+
 - **Branching & Worktrees:** We use the sibling git worktrees method for development. Use descriptive branch names: `<type>/<short-description>` (e.g., `feat/chat-persistence`).
-- **Rebase Policy:** Always rebase your feature branch on top of `main` before merging to maintain a linear history.
-- **Squash on Merge:** When merging into `main`, squash your development commits into high-quality, atomic commits that represent the "completed" unit of work.
+- **Rebase Policy:** Always `git rebase main` to incorporate upstream changes. This ensures your feature branch is a clean extension of the current state of the project.
+- **Conflict Resolution:** Resolve conflicts during the rebase process so the final PR is ready for an immediate fast-forward merge.
+
+### Atomic Commits
+
+Every commit in a Pull Request must be **atomic**:
+
+1. **Single Responsibility:** One commit addresses exactly one logical change (e.g., implementing a specific broker, fixing one bug, or adding one feature).
+2. **Self-Contained:** The codebase must compile and pass all tests at every commit in the branch history.
+3. **High Signal:** Use WIP commits during development, but **squash** them into high-signal, atomic units before opening a PR.
+
+### Pull Request Hygiene (The "Clean PR" Rule)
+
+Before opening a Pull Request for review, you MUST groom your branch history:
+
+1. **Interactive Rebase:** Use `git rebase -i main` to squash, reword, or fixup your commits.
+2. **Remove Noise:** Eliminate "fixed typo," "debugging," or "oops" commits. The final history should be clean and professional.
+3. **Squash on Merge:** When merging into `main`, ensure the feature is represented by a single, high-quality atomic commit that encapsulates the entire "Definition of Done."
 
 ## Sibling Git Worktrees Strategy
 
