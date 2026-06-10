@@ -17,19 +17,18 @@ public class IntegrationTestWebApplicationFactory : WebApplicationFactory<Progra
 {
     public IntegrationTestWebApplicationFactory()
     {
+        // This ensures the MassTransit Outbox is disabled process-wide for integration tests.
+        // We use an environment variable because it is guaranteed to be seen by the configuration
+        // builder immediately during the application's startup.
+        System.Environment.SetEnvironmentVariable("MassTransit__Outbox__Provider", "None");
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration((context, config) =>
         {
-            var inMemorySettings = new Dictionary<string, string?>
-            {
-                // Disable the Outbox entirely in integration tests.
-                // This prevents background polling workers from starting and looking for tables that might not exist yet or connection issues during shutdown.
-                { "MassTransit:Outbox:Provider", "None" }
-            };
-            config.AddInMemoryCollection(inMemorySettings);
+            // The MassTransit:Outbox:Provider is already set to "None" in the constructor
+            // via Environment.SetEnvironmentVariable to ensure it is picked up early.
         });
 
         builder.ConfigureTestServices(services =>
