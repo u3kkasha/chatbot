@@ -28,17 +28,8 @@ public class SseStreamingTests
                     (_, config) =>
                     {
                         config.AddConfiguration(fixture.Configuration);
-                        config.AddInMemoryCollection(new Dictionary<string, string?>
-                        {
-                            { "AI:Endpoint", "https://api.openai.com/v1" },
-                            { "AI:ApiKey", "test-key" },
-                            { "AI:ModelId", "gpt-4" },
-                            { "AI:EmbeddingModelId", "text-embedding-3-small" },
-                            { "AI:RerankModelId", "cohere/rerank-v3.5" },
-                            { "Processing:BaseUrl", "http://localhost:5000" },
-                            { "Qdrant:Host", "localhost" },
-                            { "Qdrant:Port", "6334" }
-                        });
+                        // No in-memory overrides, strictly use environment variables
+                        // which are validated by env_tool.cue during dev/CI.
                     }
                 );
             })

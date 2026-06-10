@@ -22,10 +22,10 @@ public class OpenRouterLiveTests
         _aiOptions = new AiOptions
         {
             ApiKey = _apiKey,
-            Endpoint = Environment.GetEnvironmentVariable("AI__Endpoint") ?? "https://openrouter.ai/api/v1",
-            ModelId = Environment.GetEnvironmentVariable("AI__ModelId") ?? "google/gemini-2.0-flash-lite-preview-02-05:free",
-            EmbeddingModelId = Environment.GetEnvironmentVariable("AI__EmbeddingModelId") ?? "qwen/qwen-turbo",
-            RerankModelId = Environment.GetEnvironmentVariable("AI__RerankModelId") ?? "cohere/rerank-v3.5"
+            Endpoint = Environment.GetEnvironmentVariable("AI__Endpoint") ?? string.Empty,
+            ModelId = Environment.GetEnvironmentVariable("AI__ModelId") ?? string.Empty,
+            EmbeddingModelId = Environment.GetEnvironmentVariable("AI__EmbeddingModelId") ?? string.Empty,
+            RerankModelId = Environment.GetEnvironmentVariable("AI__RerankModelId") ?? string.Empty
         };
     }
 
@@ -88,6 +88,9 @@ public class OpenRouterLiveTests
         // given
         var httpClient = new HttpClient { BaseAddress = new Uri(_aiOptions.Endpoint.TrimEnd('/') + "/") };
         httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
+        httpClient.DefaultRequestHeaders.Add("User-Agent", "Chatbot-Integration-Tests");
+        httpClient.DefaultRequestHeaders.Add("HTTP-Referer", "https://github.com/ukasha/chatbot");
+        httpClient.DefaultRequestHeaders.Add("X-Title", "Chatbot Integration Tests");
         var openRouterClient = new OpenRouterClient(httpClient);
 
         var aiBroker = new AiBroker(
