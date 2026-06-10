@@ -62,6 +62,9 @@ public static class SharedExtensions
             var aiOptions = sp.GetRequiredService<IOptions<AiOptions>>().Value;
             client.BaseAddress = new Uri(aiOptions.Endpoint.TrimEnd('/') + "/");
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {aiOptions.ApiKey}");
+            client.DefaultRequestHeaders.Add("User-Agent", "Chatbot-Operator-Platform");
+            client.DefaultRequestHeaders.Add("HTTP-Referer", "https://github.com/ukasha/chatbot");
+            client.DefaultRequestHeaders.Add("X-Title", "Chatbot Operator Platform");
         });
 
         services.AddHttpClient<IDoclingClient, DoclingClient>((sp, client) =>
@@ -115,6 +118,6 @@ public class ConfigureRedisCacheOptions(IOptions<ConnectionStringsOptions> conne
 {
     public void Configure(RedisCacheOptions options)
     {
-        options.Configuration = connectionStrings.Value.Redis ?? "localhost";
+        options.Configuration = connectionStrings.Value.Redis;
     }
 }

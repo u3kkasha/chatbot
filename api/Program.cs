@@ -62,7 +62,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<ITenantProvider, HttpContextTenantProvider>();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
-builder.Services.AddEventDrivenArchitecture();
+builder.Services.AddEventDrivenArchitecture(builder.Configuration);
 builder.Services.AddSignalR();
 
 // 2.1 Add Coravel
