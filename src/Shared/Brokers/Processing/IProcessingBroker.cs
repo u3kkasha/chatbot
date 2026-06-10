@@ -1,10 +1,11 @@
-using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Chatbot.Shared.Brokers.Processing.Models;
 
 namespace Chatbot.Shared.Brokers.Processing;
 
 public interface IProcessingBroker
 {
-    void Enqueue(Action action);
-    void Enqueue(Func<Task> function);
+    ValueTask<IReadOnlyList<DocumentChunk>> ChunkDocumentAsync(Stream document, string fileName);
 }

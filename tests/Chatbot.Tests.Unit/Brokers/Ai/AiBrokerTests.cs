@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Chatbot.Shared.Brokers.Ai;
+using Chatbot.Shared.Infrastructure.Configuration;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -13,13 +15,20 @@ public class AiBrokerTests
 {
     private readonly IChatClient _chatClient;
     private readonly IEmbeddingGenerator<string, Embedding<float>> _embeddingGenerator;
+    private readonly IOpenRouterClient _openRouterClient;
+    private readonly IOptions<AiOptions> _aiOptions;
     private readonly AiBroker _sut;
 
     public AiBrokerTests()
     {
         _chatClient = Substitute.For<IChatClient>();
         _embeddingGenerator = Substitute.For<IEmbeddingGenerator<string, Embedding<float>>>();
-        _sut = new AiBroker(_chatClient, _embeddingGenerator);
+        _openRouterClient = Substitute.For<IOpenRouterClient>();
+
+        var options = new AiOptions { RerankModelId = "cohere/rerank-v3.5" };
+        _aiOptions = Options.Create(options);
+
+        _sut = new AiBroker(_chatClient, _embeddingGenerator, _openRouterClient, _aiOptions);
     }
 
     [Fact]

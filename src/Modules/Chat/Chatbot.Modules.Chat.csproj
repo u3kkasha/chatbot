@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="Stateless" />
+    <PackageReference Include="Microsoft.Agents.AI" />
     <ProjectReference Include="..\..\Shared\Chatbot.Shared.csproj" />
+    <ProjectReference Include="..\Knowledge\Chatbot.Modules.Knowledge.csproj" />
   </ItemGroup>
 
   <ItemGroup>

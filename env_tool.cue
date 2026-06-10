@@ -20,11 +20,14 @@ import (
 	AI__Endpoint?:   string & =~"^https?://.+"
 	AI__ApiKey?: string & =~"^.+"
 	AI__ModelId?:    string & =~"^.+"
+	AI__EmbeddingModelId?: string & =~"^.+"
+	AI__RerankModelId?:    string & =~"^.+"
 
 	// Docling-serve
 	Processing__BaseUrl?: string & =~"^https?://.+"
 
 	// Seq
+	Serilog__WriteTo__0__Name?:            "Seq"
 	Serilog__WriteTo__0__Args__serverUrl?: string & =~"^https?://.+"
 	Serilog__WriteTo__0__Args__apiKey?:    string
 
