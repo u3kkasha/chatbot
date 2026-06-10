@@ -40,7 +40,7 @@ public class SparseVectorServiceTests
 
         indices.ShouldContain(GetHash("quick"));
         indices.ShouldContain(GetHash("brown"));
-        
+
         // "the" has length 3, so it should be included
         indices.ShouldContain(GetHash("the"));
 

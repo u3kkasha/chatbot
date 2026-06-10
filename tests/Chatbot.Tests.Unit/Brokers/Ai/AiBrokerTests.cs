@@ -24,10 +24,10 @@ public class AiBrokerTests
         _chatClient = Substitute.For<IChatClient>();
         _embeddingGenerator = Substitute.For<IEmbeddingGenerator<string, Embedding<float>>>();
         _openRouterClient = Substitute.For<IOpenRouterClient>();
-        
+
         var options = new AiOptions { RerankModelId = "cohere/rerank-v3.5" };
         _aiOptions = Options.Create(options);
-        
+
         _sut = new AiBroker(_chatClient, _embeddingGenerator, _openRouterClient, _aiOptions);
     }
 
