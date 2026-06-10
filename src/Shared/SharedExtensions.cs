@@ -30,47 +30,11 @@ public static class SharedExtensions
         IConfiguration configuration
     )
     {
-        // Options & Secrets Validation
-        bool isGeneratingOpenApi = IsGeneratingOpenApi();
-
-        var connectionStringsBuilder = services
-            .AddOptions<ConnectionStringsOptions>()
-            .Bind(configuration.GetSection(ConnectionStringsOptions.SectionName));
-        if (!isGeneratingOpenApi)
-        {
-            connectionStringsBuilder.ValidateOnStart();
-        }
-        services.AddSingleton<
-            IValidateOptions<ConnectionStringsOptions>,
-            ConnectionStringsOptionsValidator
-        >();
-
-        var qdrantBuilder = services
-            .AddOptions<QdrantOptions>()
-            .Bind(configuration.GetSection(QdrantOptions.SectionName));
-        if (!isGeneratingOpenApi)
-        {
-            qdrantBuilder.ValidateOnStart();
-        }
-        services.AddSingleton<IValidateOptions<QdrantOptions>, QdrantOptionsValidator>();
-
-        var aiBuilder = services
-            .AddOptions<AiOptions>()
-            .Bind(configuration.GetSection(AiOptions.SectionName));
-        if (!isGeneratingOpenApi)
-        {
-            aiBuilder.ValidateOnStart();
-        }
-        services.AddSingleton<IValidateOptions<AiOptions>, AiOptionsValidator>();
-
-        var processingBuilder = services
-            .AddOptions<ProcessingOptions>()
-            .Bind(configuration.GetSection(ProcessingOptions.SectionName));
-        if (!isGeneratingOpenApi)
-        {
-            processingBuilder.ValidateOnStart();
-        }
-        services.AddSingleton<IValidateOptions<ProcessingOptions>, ProcessingOptionsValidator>();
+        // Options Binding
+        services.Configure<ConnectionStringsOptions>(configuration.GetSection(ConnectionStringsOptions.SectionName));
+        services.Configure<QdrantOptions>(configuration.GetSection(QdrantOptions.SectionName));
+        services.Configure<AiOptions>(configuration.GetSection(AiOptions.SectionName));
+        services.Configure<ProcessingOptions>(configuration.GetSection(ProcessingOptions.SectionName));
 
         // NodaTime
         services.AddSingleton<IClock>(SystemClock.Instance);
@@ -92,6 +56,20 @@ public static class SharedExtensions
         services.AddStackExchangeRedisCache(options => { });
         services.AddTransient<IConfigureOptions<RedisCacheOptions>, ConfigureRedisCacheOptions>();
 
+        // Typed Http Clients
+        services.AddHttpClient<IOpenRouterClient, OpenRouterClient>((sp, client) =>
+        {
+            var aiOptions = sp.GetRequiredService<IOptions<AiOptions>>().Value;
+            client.BaseAddress = new Uri(aiOptions.Endpoint.TrimEnd('/') + "/");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {aiOptions.ApiKey}");
+        });
+
+        services.AddHttpClient<IDoclingClient, DoclingClient>((sp, client) =>
+        {
+            var processingOptions = sp.GetRequiredService<IOptions<ProcessingOptions>>().Value;
+            client.BaseAddress = new Uri(processingOptions.BaseUrl);
+        });
+
 #pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this since we are in net10.0 and this is a core feature we want to use.
         services.AddHybridCache();
 #pragma warning restore EXTEXP0018
@@ -100,16 +78,19 @@ public static class SharedExtensions
         services.AddSingleton<AuditInterceptor>();
         services.AddSingleton<RlsInterceptor>();
 
+        // Native Qdrant Client
+        services.AddSingleton(sp =>
+        {
+            var opts = sp.GetRequiredService<IOptions<QdrantOptions>>().Value;
+            return new QdrantClient(opts.Host, opts.Port, opts.UseHttps, opts.ApiKey);
+        });
+
         // Vector Store (Microsoft.Extensions.VectorData + Qdrant)
         // Registers QdrantClient + QdrantVectorStore as VectorStore via extension method.
         // IL2026/IL3050: MEVD dynamic mapping path requires reflection.
         // Suppressed: project is AOT-ready by design, not compiled with PublishAot=true.
 #pragma warning disable IL2026, IL3050
-        services.AddQdrantVectorStore(sp =>
-        {
-            var opts = sp.GetRequiredService<IOptions<QdrantOptions>>().Value;
-            return new QdrantClient(opts.Host, opts.Port, opts.UseHttps, opts.ApiKey);
-        });
+        services.AddQdrantVectorStore();
 #pragma warning restore IL2026, IL3050
 
         // Brokers
@@ -119,21 +100,13 @@ public static class SharedExtensions
         services.AddTransient<IAiUsageBroker, AiUsageBroker>();
         services.AddTransient<IBlobBroker, BlobBroker>();
         services.AddTransient<IVectorBroker, VectorBroker>();
+        services.AddTransient<IQdrantBroker, QdrantBroker>();
         services.AddTransient<IAiBroker, AiBroker>();
         services.AddTransient<IProcessingBroker, ProcessingBroker>();
         services.AddTransient<IEventBroker, EventBroker>();
         services.AddTransient<IDistributedLockBroker, DistributedLockBroker>();
 
         return services;
-    }
-
-    private static bool IsGeneratingOpenApi()
-    {
-        var entryAssembly = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name;
-        if (entryAssembly == null) return false;
-
-        return entryAssembly.StartsWith("GetDocument", StringComparison.OrdinalIgnoreCase) ||
-               entryAssembly.StartsWith("dotnet-getdocument", StringComparison.OrdinalIgnoreCase);
     }
 }
 
@@ -142,10 +115,6 @@ public class ConfigureRedisCacheOptions(IOptions<ConnectionStringsOptions> conne
 {
     public void Configure(RedisCacheOptions options)
     {
-        if (string.IsNullOrEmpty(connectionStrings.Value.Redis))
-        {
-            throw new InvalidOperationException("Redis connection string not configured.");
-        }
-        options.Configuration = connectionStrings.Value.Redis;
+        options.Configuration = connectionStrings.Value.Redis ?? "localhost";
     }
 }

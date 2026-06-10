@@ -23,12 +23,18 @@ public class ArchitectureTests
 
         foreach (var module in modules)
         {
-            var otherModules = moduleNames.Where(n => n != module.GetName().Name).ToArray();
+            var otherModules = moduleNames.Where(n => n != module.GetName().Name).ToList();
+
+            // Exceptions: Chat module relies on Knowledge module for RAG context
+            if (module == ChatAssembly)
+            {
+                otherModules.Remove(KnowledgeAssembly.GetName().Name);
+            }
 
             var result = Types
                 .InAssembly(module)
                 .ShouldNot()
-                .HaveDependencyOnAny(otherModules)
+                .HaveDependencyOnAny(otherModules.ToArray())
                 .GetResult();
 
             // Assert

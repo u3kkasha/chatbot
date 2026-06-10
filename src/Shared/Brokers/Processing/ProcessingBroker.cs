@@ -1,12 +1,15 @@
-using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-using Coravel.Queuing.Interfaces;
+using Chatbot.Shared.Brokers.Processing.Models;
 
 namespace Chatbot.Shared.Brokers.Processing;
 
-public class ProcessingBroker(IQueue queue) : IProcessingBroker
+public class ProcessingBroker(IDoclingClient doclingClient) : IProcessingBroker
 {
-    public void Enqueue(Action action) => queue.QueueTask(action);
-
-    public void Enqueue(Func<Task> function) => queue.QueueAsyncTask(function);
+    public async ValueTask<IReadOnlyList<DocumentChunk>> ChunkDocumentAsync(Stream document, string fileName)
+    {
+        var response = await doclingClient.ProcessAsync(document, fileName);
+        return response.Chunks;
+    }
 }

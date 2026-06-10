@@ -5,6 +5,7 @@ using Chatbot.Modules.Chat.Features.Messages;
 using Chatbot.Modules.Chat.Features.Sessions;
 using Chatbot.Modules.Chat.Features.Sessions.Jobs;
 using Chatbot.Modules.Chat.Features.StreamCompletion;
+using Chatbot.Modules.Chat.Services;
 using Chatbot.Shared.Infrastructure.Data;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,7 @@ public static class ModuleExtensions
         });
 
         services.AddScoped<IStreamCompletionService, StreamCompletionService>();
+        services.AddScoped<IChatFoundationService, ChatFoundationService>();
         services.AddScoped<IChatSessionService, ChatSessionService>();
         services.AddScoped<IChatMessageService, ChatMessageService>();
         services.AddTransient<ChatSessionCleanupJob>();

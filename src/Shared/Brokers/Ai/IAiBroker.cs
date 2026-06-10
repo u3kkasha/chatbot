@@ -15,4 +15,7 @@ public interface IAiBroker
         IEnumerable<ChatMessage>? history = null
     );
     ValueTask<float[]> GenerateEmbeddingAsync(string text);
+    ValueTask<IReadOnlyList<RerankResult>> RerankAsync(string query, IEnumerable<string> documents, int? topN = null);
 }
+
+public record RerankResult(int Index, string Document, float Score);

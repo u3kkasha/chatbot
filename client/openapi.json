@@ -8,7 +8,9 @@
   "paths": {
     "/identity": {
       "get": {
-        "tags": ["Chatbot.Api"],
+        "tags": [
+          "Chatbot.Api"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -25,7 +27,9 @@
     },
     "/api/chat/completions/stream": {
       "get": {
-        "tags": ["Chat"],
+        "tags": [
+          "Chat"
+        ],
         "summary": "Stream AI completion tokens via Server-Sent Events.",
         "description": "Opens an SSE connection and emits individual AI token chunks as they are produced by the language model. Each event carries a JSON-serialized SseToken payload. A final event with IsFinal=true signals stream completion.",
         "operationId": "StreamCompletion",
@@ -58,7 +62,9 @@
     },
     "/api/chat/sessions": {
       "post": {
-        "tags": ["ChatSessionEndpoints"],
+        "tags": [
+          "ChatSessionEndpoints"
+        ],
         "summary": "Create a new chat session.",
         "operationId": "CreateChatSession",
         "requestBody": {
@@ -95,7 +101,9 @@
         }
       },
       "get": {
-        "tags": ["ChatSessionEndpoints"],
+        "tags": [
+          "ChatSessionEndpoints"
+        ],
         "summary": "Retrieve all chat sessions.",
         "operationId": "GetAllChatSessions",
         "responses": {
@@ -127,7 +135,9 @@
     },
     "/api/chat/sessions/{id}": {
       "get": {
-        "tags": ["ChatSessionEndpoints"],
+        "tags": [
+          "ChatSessionEndpoints"
+        ],
         "summary": "Retrieve a chat session by ID.",
         "operationId": "GetChatSessionById",
         "parameters": [
@@ -155,7 +165,9 @@
         }
       },
       "put": {
-        "tags": ["ChatSessionEndpoints"],
+        "tags": [
+          "ChatSessionEndpoints"
+        ],
         "summary": "Update a chat session.",
         "operationId": "UpdateChatSession",
         "parameters": [
@@ -203,7 +215,9 @@
         }
       },
       "delete": {
-        "tags": ["ChatSessionEndpoints"],
+        "tags": [
+          "ChatSessionEndpoints"
+        ],
         "summary": "Delete a chat session.",
         "operationId": "DeleteChatSession",
         "parameters": [
@@ -233,7 +247,9 @@
     },
     "/api/chat/messages": {
       "post": {
-        "tags": ["ChatMessageEndpoints"],
+        "tags": [
+          "ChatMessageEndpoints"
+        ],
         "summary": "Create a new chat message.",
         "operationId": "CreateChatMessage",
         "requestBody": {
@@ -270,7 +286,9 @@
         }
       },
       "get": {
-        "tags": ["ChatMessageEndpoints"],
+        "tags": [
+          "ChatMessageEndpoints"
+        ],
         "summary": "Retrieve all chat messages.",
         "operationId": "GetAllChatMessages",
         "responses": {
@@ -302,7 +320,9 @@
     },
     "/api/chat/messages/{id}": {
       "get": {
-        "tags": ["ChatMessageEndpoints"],
+        "tags": [
+          "ChatMessageEndpoints"
+        ],
         "summary": "Retrieve a chat message by ID.",
         "operationId": "GetChatMessageById",
         "parameters": [
@@ -330,7 +350,9 @@
         }
       },
       "put": {
-        "tags": ["ChatMessageEndpoints"],
+        "tags": [
+          "ChatMessageEndpoints"
+        ],
         "summary": "Update a chat message.",
         "operationId": "UpdateChatMessage",
         "parameters": [
@@ -378,7 +400,9 @@
         }
       },
       "delete": {
-        "tags": ["ChatMessageEndpoints"],
+        "tags": [
+          "ChatMessageEndpoints"
+        ],
         "summary": "Delete a chat message.",
         "operationId": "DeleteChatMessage",
         "parameters": [
@@ -424,22 +448,34 @@
           },
           "prompt_tokens": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": ["integer", "string"],
+            "type": [
+              "integer",
+              "string"
+            ],
             "format": "int32"
           },
           "completion_tokens": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": ["integer", "string"],
+            "type": [
+              "integer",
+              "string"
+            ],
             "format": "int32"
           },
           "total_tokens": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": ["integer", "string"],
+            "type": [
+              "integer",
+              "string"
+            ],
             "format": "int32"
           },
           "latency_ms": {
             "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
-            "type": ["number", "string"],
+            "type": [
+              "number",
+              "string"
+            ],
             "format": "double"
           }
         }
@@ -486,7 +522,10 @@
             "type": "boolean"
           },
           "approved_by": {
-            "type": ["null", "string"],
+            "type": [
+              "null",
+              "string"
+            ],
             "format": "uuid"
           },
           "citations": {
@@ -539,13 +578,19 @@
             "type": "string"
           },
           "external_reference_id": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "customer_identifier": {
             "type": "string"
           },
           "operator_id": {
-            "type": ["null", "string"],
+            "type": [
+              "null",
+              "string"
+            ],
             "format": "uuid"
           },
           "status": {
@@ -560,7 +605,12 @@
         }
       },
       "CitationDto": {
-        "required": ["source_url", "title", "snippet", "score"],
+        "required": [
+          "source_url",
+          "title",
+          "snippet",
+          "score"
+        ],
         "type": "object",
         "properties": {
           "source_url": {
@@ -574,7 +624,10 @@
           },
           "score": {
             "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
-            "type": ["number", "string"],
+            "type": [
+              "number",
+              "string"
+            ],
             "format": "double"
           }
         }
@@ -614,11 +667,17 @@
             "type": "boolean"
           },
           "approved_by": {
-            "type": ["null", "string"],
+            "type": [
+              "null",
+              "string"
+            ],
             "format": "uuid"
           },
           "citations": {
-            "type": ["null", "array"],
+            "type": [
+              "null",
+              "array"
+            ],
             "items": {
               "$ref": "#/components/schemas/CitationDto"
             }
@@ -653,13 +712,19 @@
             "type": "string"
           },
           "external_reference_id": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "customer_identifier": {
             "type": "string"
           },
           "operator_id": {
-            "type": ["null", "string"],
+            "type": [
+              "null",
+              "string"
+            ],
             "format": "uuid"
           }
         }
@@ -668,21 +733,37 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "title": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "status": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": ["null", "integer", "string"],
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
             "format": "int32"
           },
           "detail": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "instance": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "errors": {
             "type": "object",
@@ -702,21 +783,37 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "title": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "status": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": ["null", "integer", "string"],
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
             "format": "int32"
           },
           "detail": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "instance": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           }
         }
       },
@@ -755,11 +852,17 @@
             "type": "boolean"
           },
           "approved_by": {
-            "type": ["null", "string"],
+            "type": [
+              "null",
+              "string"
+            ],
             "format": "uuid"
           },
           "citations": {
-            "type": ["null", "array"],
+            "type": [
+              "null",
+              "array"
+            ],
             "items": {
               "$ref": "#/components/schemas/CitationDto"
             }
@@ -795,13 +898,19 @@
             "type": "string"
           },
           "external_reference_id": {
-            "type": ["null", "string"]
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "customer_identifier": {
             "type": "string"
           },
           "operator_id": {
-            "type": ["null", "string"],
+            "type": [
+              "null",
+              "string"
+            ],
             "format": "uuid"
           },
           "status": {

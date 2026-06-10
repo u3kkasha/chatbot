@@ -14,6 +14,7 @@
     <PackageReference Include="Coravel" />
     <PackageReference Include="EFCore.NamingConventions" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.Extensions.AI" />
     <PackageReference Include="Microsoft.Extensions.AI.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
@@ -27,6 +28,7 @@
     <PackageReference Include="Microsoft.Recognizers.Text.Sequence" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.Qdrant" />
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="OneOf" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" />
     <PackageReference Include="NuGet.CommandLine">
@@ -35,6 +37,7 @@
     </PackageReference>
     <PackageReference Include="Polly" />
     <PackageReference Include="Qdrant.Client" />
+    <PackageReference Include="RESTFulSense" />
     <PackageReference Include="StronglyTypedId" />
     <PackageReference Include="MassTransit" />
     <PackageReference Include="MassTransit.EntityFrameworkCore" />
