@@ -39,8 +39,8 @@ jobs:
       - name: Install Frontend Dependencies
         run: nix develop --command bun install --cwd client
 
-      - name: Check Formatting (treefmt)
-        run: nix develop --command treefmt --ci
+      - name: Check Nix Formatting (alejandra)
+        run: nix develop --command alejandra --check .
 
       - name: Check Backend Formatting (dotnet format)
         run: nix develop --command dotnet format --verify-no-changes

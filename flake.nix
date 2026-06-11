@@ -5,7 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devshell.url = "github:numtide/devshell";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   outputs = inputs @ {
@@ -13,39 +12,16 @@
     nixpkgs,
     flake-parts,
     devshell,
-    treefmt-nix,
+    ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
         devshell.flakeModule
-        treefmt-nix.flakeModule
       ];
 
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
 
-      perSystem = {
-        config,
-        pkgs,
-        system,
-        ...
-      }: {
-        treefmt = {
-          projectRootFile = "flake.nix";
-          programs.alejandra.enable = true;
-          programs.prettier.enable = true;
-          settings.global.excludes = [".agents/**" "**/openapi.json" "client/app/api-client/**"];
-          settings.formatter.dotnet-format-whitespace = {
-            command = "dotnet";
-            options = ["format" "whitespace" "--include"];
-            includes = ["*.cs"];
-          };
-          settings.formatter.dotnet-format-style = {
-            command = "dotnet";
-            options = ["format" "style" "--include"];
-            includes = ["*.cs"];
-          };
-        };
-
+      perSystem = {pkgs, ...}: {
         devshells.default = {
           name = "chatbot-dev";
 
@@ -57,6 +33,7 @@
           ];
 
           packages = with pkgs; [
+            alejandra
             bun
             cue
             dotnet-sdk_10
@@ -68,7 +45,6 @@
             openspec
             xdg-utils
             infisical
-            config.treefmt.build.wrapper
           ];
 
           commands = [

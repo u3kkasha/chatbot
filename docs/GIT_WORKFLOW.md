@@ -40,7 +40,7 @@ Commits should be frequent and mirror the **Red-Green-Refactor** cycle:
 A commit is ready only if:
 
 1. **Surgical:** It addresses exactly one logical change.
-2. **Formatted:** `treefmt` has been run.
+2. **Formatted:** `just format` has been run.
 3. **Tested:** The specific tests related to the change pass.
 4. **Compile:** The code compiles (verified for Native AOT readiness).
 

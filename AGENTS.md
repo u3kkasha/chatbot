@@ -5,8 +5,8 @@ This file provides foundational mandates for AI agents (like Gemini CLI) operati
 ## ⚙️ Environment & CLI Execution
 
 - **Sandboxing Constraints:** If standard sandbox commands fail due to host/Nix/bubblewrap dependencies, configure tools with `BypassSandbox: true` and execute the command.
-- **Snip Token Optimizer:** Prefix all terminal commands with `snip --` (e.g., `snip -- dotnet test`, `snip -- treefmt`) to minimize token consumption.
-- **Formatting:** ALWAYS run `snip -- treefmt` (or `snip -- nix fmt`) to format files before committing. Do not run individual formatters manually.
+- **Snip Token Optimizer:** Prefix all terminal commands with `snip --` (e.g., `snip -- dotnet test`, `snip -- just format`) to minimize token consumption.
+- **Formatting:** ALWAYS run `just format` to format files before committing. Do not run individual formatters manually.
 
 ---
 
