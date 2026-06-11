@@ -18,10 +18,16 @@ init-env:
 
 # Start infrastructure and show instructions
 run: infra-up
-    @echo "Infrastructure is up."
-    @echo "To start the backend:  just server-run"
-    @echo "To start the frontend: just client-run"
-    @echo "Logs:                  just infra-logs"
+    @echo \"Infrastructure is up.\"
+    @echo \"To start the backend:  just server-run\"
+    @echo \"To start the frontend: just client-run\"
+    @echo \"Logs:                  just infra-logs\"
+
+# Development mode: start infrastructure and both services in parallel
+dev: infra-up
+    @echo \"Starting backend and frontend in parallel...\"
+    just --parallel server-run client-run
+
 
 # --- Infrastructure ---
 

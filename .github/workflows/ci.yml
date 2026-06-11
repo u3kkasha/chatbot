@@ -36,29 +36,10 @@ jobs:
       - name: Magic Nix Cache
         uses: determinateSystems/magic-nix-cache-action@v14
 
-      - name: Install Frontend Dependencies
-        run: nix develop --command just client-install
+      - name: Install Dependencies
+        run: |
+          nix develop --command just server-restore
+          nix develop --command just client-install
 
-      - name: Check Nix Formatting
-        run: nix develop --command just check-nix
-
-      - name: Check Backend Formatting
-        run: nix develop --command just server-lint
-
-      - name: Run Knip
-        run: nix develop --command just client-knip
-
-      - name: Run Backend Build
-        run: nix develop --command just server-build
-
-      - name: Run Backend Tests
-        run: nix develop --command just server-test
-
-      - name: Run Frontend Lint
-        run: nix develop --command just client-lint
-
-      - name: Run Frontend Typecheck
-        run: nix develop --command just client-typecheck
-
-      - name: Run Frontend Tests
-        run: nix develop --command just client-test
+      - name: Run CI
+        run: nix develop --command just ci

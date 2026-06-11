@@ -23,6 +23,6 @@
 
 ## Phase 4: Testing & Verification
 
-- [ ] Write unit tests for `SparseVectorService` (custom BM25 logic).
-- [ ] Write unit tests for `KnowledgeFoundationService` ensuring exception wrapping into `OneOf`.
+- [x] Write unit tests for `SparseVectorService` (custom BM25 logic).
+- [x] Write unit tests for `KnowledgeFoundationService` ensuring exception wrapping into `OneOf`.
 - [ ] Write integration tests for the Qdrant connection and Agent flow.
