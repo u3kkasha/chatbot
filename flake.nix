@@ -45,7 +45,7 @@
             openspec
             xdg-utils
             infisical
-            nodePackages.prettier
+            prettier
           ];
 
           commands = [
