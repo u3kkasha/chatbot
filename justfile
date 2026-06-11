@@ -141,7 +141,7 @@ format-just:
 
 # Format documentation and config files (Markdown, YAML, JSON)
 format-docs:
-    bunx prettier --write "**/*.{md,yaml,yml,json}" --ignore-path .gitignore
+    bunx prettier --write "**/*.{md,yaml,yml,json}" "!client/openapi.json" --ignore-path .gitignore
 
 # Format CUE files
 format-cue:
@@ -169,7 +169,7 @@ check-just:
 
 # Check documentation formatting
 check-docs:
-    bunx prettier --check "**/*.{md,yaml,yml,json}" --ignore-path .gitignore
+    bunx prettier --check "**/*.{md,yaml,yml,json}" "!client/openapi.json" --ignore-path .gitignore
 
 # Check CUE formatting
 check-cue:
@@ -178,6 +178,11 @@ check-cue:
 # Run secret scanning
 secret-scanning:
     gitleaks protect --staged --verbose
+# Unified quality check (CI equivalent)
+ci: verify server-test client-test
+
+# Fast verification (build, lint, types) - used for local pre-push
+verify: check-format client-typecheck client-knip server-build
 
 # --- Git Hooks ---
 
@@ -186,8 +191,8 @@ hook-pre-commit: check-format secret-scanning
     @echo \"Pre-commit checks passed.\"
 
 # Pre-push hook command
-hook-pre-push: server-build client-typecheck client-knip server-lint client-lint
-    @echo "Pre-push checks passed."
+hook-pre-push: verify
+    @echo \"Pre-push checks passed.\"
 
 # Commit message validation hook command
 hook-commit-msg msg_file:
