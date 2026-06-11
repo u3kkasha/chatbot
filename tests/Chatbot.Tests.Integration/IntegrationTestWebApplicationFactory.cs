@@ -15,21 +15,9 @@ namespace Chatbot.Tests.Integration;
 
 public class IntegrationTestWebApplicationFactory : WebApplicationFactory<Program>
 {
-    public IntegrationTestWebApplicationFactory()
-    {
-        // This ensures the MassTransit Outbox is disabled process-wide for integration tests.
-        // We use an environment variable because it is guaranteed to be seen by the configuration
-        // builder immediately during the application's startup.
-        System.Environment.SetEnvironmentVariable("MassTransit__Outbox__Provider", "None");
-    }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration((context, config) =>
-        {
-            // The MassTransit:Outbox:Provider is already set to "None" in the constructor
-            // via Environment.SetEnvironmentVariable to ensure it is picked up early.
-        });
+        builder.UseSetting("MassTransit:Outbox:Provider", "None");
 
         builder.ConfigureTestServices(services =>
         {
