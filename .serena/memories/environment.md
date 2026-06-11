@@ -4,7 +4,7 @@
 
 - Controlled via Nix Flakes and Direnv.
 - Enter manually with `nix develop` or automatically with `direnv allow`.
-- Local stack orchestrated using Tilt (`tilt up` command).
+- Local stack orchestrated using Just (`just run` command).
 
 ## CLI & Shell Execution
 

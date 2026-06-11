@@ -59,7 +59,7 @@ The project is structured to enforce strong logical separation between features 
 
 ## ⚡ Infrastructure Port & URL Map
 
-When local Docker services are running (`tilt up` or `docker compose up`), they bind to the following host endpoints:
+When local Docker services are running (`just run` or `docker compose up`), they bind to the following host endpoints:
 
 | Service                 | Port    | Endpoint                        | Description                                           |
 | :---------------------- | :------ | :------------------------------ | :---------------------------------------------------- |
@@ -71,7 +71,6 @@ When local Docker services are running (`tilt up` or `docker compose up`), they 
 | **Garnet Store**        | `6379`  | localhost:6379                  | Redis-compatible distributed cache and locker         |
 | **Docling-serve**       | `5001`  | http://localhost:5001           | Document extraction microservice                      |
 | **Azurite Storage**     | `10000` | localhost:10000                 | Blob storage API (Queue on `10001`, Table on `10002`) |
-| **Tilt Dashboard**      | `10350` | http://localhost:10350          | Local developer orchestrator dashboard                |
 
 ---
 

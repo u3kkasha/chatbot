@@ -60,7 +60,7 @@
             bun
             cue
             dotnet-sdk_10
-            tilt
+            just
             docker
             docker-compose
             gitleaks
@@ -73,9 +73,14 @@
 
           commands = [
             {
+              name = "setup";
+              command = "just setup";
+              help = "Install dependencies and start infrastructure";
+            }
+            {
               name = "run";
-              command = "tilt up";
-              help = "Start the Tilt development environment";
+              command = "just run";
+              help = "Start the development environment";
             }
           ];
         };

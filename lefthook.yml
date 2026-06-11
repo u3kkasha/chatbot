@@ -2,32 +2,16 @@
 # https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
 
 pre-commit:
-  parallel: true
   commands:
-    formatting:
-      run: treefmt {staged_files}
-    secret-scanning:
-      tags: security
-      run: gitleaks protect --staged --verbose
-    frontend-lint:
-      glob: "client/**/*.{ts,vue,js,mjs}"
-      run: bash .hooks/frontend-lint.sh {staged_files}
+    just-hooks:
+      run: just hook-pre-commit
 
 pre-push:
-  parallel: true
   commands:
-    backend-typecheck:
-      run: dotnet build /p:VerifyNoChanges=true
-    frontend-typecheck:
-      run: bun --cwd client typecheck
-    frontend-knip:
-      run: bun --cwd client knip
-    backend-tests:
-      run: dotnet test
-    frontend-tests:
-      run: bun --cwd client test run
+    just-hooks:
+      run: just hook-pre-push
 
 commit-msg:
   commands:
-    commit-msg-validation:
-      run: bash .hooks/validate-commit.sh {1}
+    just-hooks:
+      run: just hook-commit-msg {1}
