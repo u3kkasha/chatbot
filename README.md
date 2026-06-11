@@ -64,57 +64,34 @@ nix develop
 
 ### 4. Restore Dependencies & Install Git Hooks
 
-Once inside the development shell, install git hooks via Lefthook and install Nuxt frontend packages:
+Once inside the development shell, simply run the setup command:
 
 ```bash
-# Install git hooks
-lefthook install
+just setup
 ```
 
-# Install Nuxt frontend dependencies
+This will initialize the environment, install both backend and frontend dependencies, start infrastructure services, and apply database migrations.
 
-cd client && bun install && cd ..
+---
 
-````
+### 5. Start Infrastructure & Apply Database Migrations (Manual)
 
-### 5. Start Infrastructure & Apply Database Migrations
+If you prefer manual control over the setup process:
 
-Since the platform relies on multiple modules with independent `DbContext` schemas (optimized with compiled models for Native AOT compliance), you must generate and apply migrations:
-
-1. **Spin up local infrastructure services (PostgreSQL, Garnet, Qdrant, etc.) in the background:**
-
+1. **Spin up local infrastructure services:**
    ```bash
-   docker compose up -d
-````
-
-2. **Generate the initial migrations for all three storage brokers:**
-
-   ```bash
-   # Generate Chat module migrations
-   dotnet ef migrations add InitialCreate --context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker --project src/Modules/Chat/Chatbot.Modules.Chat.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Generate Identity module migrations
-   dotnet ef migrations add InitialCreate --context Chatbot.Modules.Identity.Brokers.Storage.StorageBroker --project src/Modules/Identity/Chatbot.Modules.Identity.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Generate Knowledge module migrations
-   dotnet ef migrations add InitialCreate --context Chatbot.Modules.Knowledge.Brokers.Storage.StorageBroker --project src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj --startup-project api/Chatbot.Api.csproj
+   just infra-up
    ```
 
-3. **Apply migrations to the local PostgreSQL database:**
-
+2. **Generate initial migrations for all modules:**
    ```bash
-   # Apply Chat migrations
-   dotnet ef database update --context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker --project src/Modules/Chat/Chatbot.Modules.Chat.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Apply Identity migrations
-   dotnet ef database update --context Chatbot.Modules.Identity.Brokers.Storage.StorageBroker --project src/Modules/Identity/Chatbot.Modules.Identity.csproj --startup-project api/Chatbot.Api.csproj
-
-   # Apply Knowledge migrations
-   dotnet ef database update --context Chatbot.Modules.Knowledge.Brokers.Storage.StorageBroker --project src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj --startup-project api/Chatbot.Api.csproj
+   just server-migrations-add InitialCreate
    ```
 
-> [!NOTE]
-> When modifying Entity Framework entities in the future, remember to regenerate the optimized compiled models for Native AOT compliance using the `dotnet ef dbcontext optimize` command for each broker (e.g. `--context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker`).
+3. **Apply migrations:**
+   ```bash
+   just server-migrate
+   ```
 
 ### 6. Run the Platform
 
@@ -122,25 +99,26 @@ We use [Just](https://github.com/casey/just) to orchestrate the development envi
 
 #### Initial Setup
 
-If this is your first time setting up the project, run:
+If this is your first time setting up the project:
 
 ```bash
-setup
+just setup
 ```
-
-This will install client dependencies and start the infrastructure.
 
 #### Daily Development
 
-To start the infrastructure services (PostgreSQL, Qdrant, Azurite, etc.):
+To start everything (infrastructure + backend + frontend) in parallel:
 
 ```bash
-run
+just dev
 ```
 
-Once infrastructure is up, you can start the backend and frontend in separate terminals:
+Alternatively, you can start them separately:
 
 ```bash
+# Start infrastructure only
+just run
+
 # Start backend API (watch mode)
 just server-run
 
