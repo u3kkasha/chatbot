@@ -5,9 +5,16 @@ set shell := ["bash", "-c"]
 # --- Orchestration ---
 
 # Initial setup: install dependencies and start infrastructure
-setup: server-restore client-install infra-up
+setup: init-env server-restore client-install infra-up
+    @echo "Waiting for database to be ready..."
+    sleep 5
+    just server-migrate
     lefthook install
     @echo "Setup complete. You can now run 'run' to start the development environment."
+
+# Initialize local environment file (Cross-platform)
+init-env:
+    node .hooks/init-env.mjs
 
 # Start infrastructure and show instructions
 run: infra-up
@@ -32,9 +39,28 @@ infra-logs:
 
 # --- Server (.NET 10 API) ---
 
-# Restore backend dependencies
+# Restore backend dependencies and tools
 server-restore:
+    dotnet tool restore
     dotnet restore
+
+# Apply all database migrations
+server-migrate:
+    @echo "Applying Chat migrations..."
+    dotnet ef database update --context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker --project src/Modules/Chat/Chatbot.Modules.Chat.csproj --startup-project api/Chatbot.Api.csproj
+    @echo "Applying Identity migrations..."
+    dotnet ef database update --context Chatbot.Modules.Identity.Brokers.Storage.StorageBroker --project src/Modules/Identity/Chatbot.Modules.Identity.csproj --startup-project api/Chatbot.Api.csproj
+    @echo "Applying Knowledge migrations..."
+    dotnet ef database update --context Chatbot.Modules.Knowledge.Brokers.Storage.StorageBroker --project src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj --startup-project api/Chatbot.Api.csproj
+
+# Generate initial migrations for all modules
+server-migrations-add name="InitialCreate":
+    @echo "Generating Chat migrations..."
+    dotnet ef migrations add {{ name }} --context Chatbot.Modules.Chat.Brokers.Storage.StorageBroker --project src/Modules/Chat/Chatbot.Modules.Chat.csproj --startup-project api/Chatbot.Api.csproj
+    @echo "Generating Identity migrations..."
+    dotnet ef migrations add {{ name }} --context Chatbot.Modules.Identity.Brokers.Storage.StorageBroker --project src/Modules/Identity/Chatbot.Modules.Identity.csproj --startup-project api/Chatbot.Api.csproj
+    @echo "Generating Knowledge migrations..."
+    dotnet ef migrations add {{ name }} --context Chatbot.Modules.Knowledge.Brokers.Storage.StorageBroker --project src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj --startup-project api/Chatbot.Api.csproj
 
 # Run the API in watch mode
 server-run:

@@ -37,6 +37,7 @@
             bun
             cue
             dotnet-sdk_10
+            nodejs_22
             just
             docker
             docker-compose
