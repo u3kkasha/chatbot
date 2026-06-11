@@ -119,16 +119,16 @@
 
 ## Phase 4: AI & Knowledge Base Orchestration
 
-- [ ] **AI Orchestration (Microsoft Agent Framework - MAF):**
-  - RAG pipeline (Embed -> Search -> Prompt -> Complete).
-  - **AI Plugins:** Design API endpoints as **AI Tools** forMAF.
-  - **Feature Toggles:** Wrap AI flows in **Microsoft.FeatureManagement**.
+- [x] **AI Orchestration (Microsoft Agent Framework - MAF):**
+  - [x] RAG pipeline (Embed -> Search -> Prompt -> Complete).
+  - [ ] **AI Plugins:** Design API endpoints as **AI Tools** for MAF.
+  - [ ] **Feature Toggles:** Wrap AI flows in **Microsoft.FeatureManagement**.
 - [ ] **HybridCache Query Caching (EF Core 10):**
   - Write EF Core interceptors to cache frequent read-only queries (e.g. operator profiles, session list indexes) directly in Garnet/Redis via `HybridCache`. Leverages EF Core 10's native `HybridCache` integration hooks.
 - [ ] **AI Streaming Implementation:**
   - [ ] Use **TypedResults.ServerSentEvents** to stream LLM completion tokens to the client.
-- [ ] **Ingestion Orchestration:**
-  - Full ingestion flow (Upload -> Parse -> Chunk -> Embed -> Index).
+- [x] **Ingestion Orchestration:**
+  - [x] Full ingestion flow (Upload -> Parse -> Chunk -> Embed -> Index).
 
 ## Phase 5: Frontend Refactoring (Nuxt 4 Operator Workspace)
 
