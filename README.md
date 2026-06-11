@@ -118,28 +118,46 @@ Since the platform relies on multiple modules with independent `DbContext` schem
 
 ### 6. Run the Platform
 
-We use [Tilt](https://tilt.dev/) to orchestrate the backend development server and frontend client alongside docker-compose:
+We use [Just](https://github.com/casey/just) to orchestrate the development environment.
+
+#### Initial Setup
+
+If this is your first time setting up the project, run:
 
 ```bash
-tilt up
+setup
 ```
 
-Alternatively, you can run the flake-configured alias:
+This will install client dependencies and start the infrastructure.
+
+#### Daily Development
+
+To start the infrastructure services (PostgreSQL, Qdrant, Azurite, etc.):
 
 ```bash
-start
+run
 ```
 
-This will launch the Tilt local dashboard at [http://localhost:10350](http://localhost:10350) and run the services:
+Once infrastructure is up, you can start the backend and frontend in separate terminals:
+
+```bash
+# Start backend API (watch mode)
+just server-run
+
+# Start frontend client (dev mode)
+just client-run
+```
+
+The services will be available at:
 
 - **Client Workspace (Nuxt 4):** [http://localhost:3000](http://localhost:3000)
 - **API Swagger / Scalar:** [http://localhost:5136/scalar/v1](http://localhost:5136/scalar/v1)
 - **Seq Log Viewer:** [http://localhost:8081](http://localhost:8081)
 
-To shut down all services and containers, run:
+To shut down infrastructure services:
 
 ```bash
-tilt down
+just infra-down
 ```
 
 ---
