@@ -1,7 +1,6 @@
 services:
   postgres:
     image: docker.io/library/postgres:18-alpine
-    container_name: postgres-local
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -18,7 +17,6 @@ services:
 
   qdrant:
     image: docker.io/qdrant/qdrant:latest
-    container_name: qdrant-local
     ports:
       - "6333:6333"
       - "6334:6334"
@@ -32,7 +30,6 @@ services:
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite
-    container_name: azurite-local
     command: azurite --disableTelemetry -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0
     ports:
       - "10000:10000"
@@ -46,7 +43,6 @@ services:
 
   docling-serve:
     image: quay.io/docling-project/docling-serve:latest
-    container_name: docling-serve-local
     environment:
       - DOCLING_SERVE_ENABLE_UI=false
       - OMP_NUM_THREADS=2
@@ -61,7 +57,6 @@ services:
 
   garnet:
     image: ghcr.io/microsoft/garnet:latest
-    container_name: garnet-local
     ports:
       - "6379:6379"
     healthcheck:
@@ -72,7 +67,6 @@ services:
 
   seq:
     image: docker.io/datalust/seq:latest
-    container_name: seq-local
     ports:
       - "5341:5341"
       - "8081:80"
