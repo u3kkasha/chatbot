@@ -3,7 +3,7 @@
   "info": {
     "title": "Omnichannel Chatbot API",
     "description": "API for the Omnichannel Customer Support Operator Platform.",
-    "version": "v1"
+    "version": "1.0.0"
   },
   "paths": {
     "/identity": {

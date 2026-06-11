@@ -46,12 +46,12 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 // 2. Add Infrastructure Services
-builder.Services.AddOpenApi(options =>
+builder.Services.AddOpenApi("openapi", options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
         document.Info.Title = "Omnichannel Chatbot API";
-        document.Info.Version = "v1";
+        document.Info.Version = "1.0.0";
         document.Info.Description = "API for the Omnichannel Customer Support Operator Platform.";
         return Task.CompletedTask;
     });
@@ -140,7 +140,7 @@ app.MapGet("/identity", () => TypedResults.Ok(nameof(IdentityModule)));
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options => options.WithTitle("Omnichannel Chatbot API"));
 }
 
 app.UseCors();

@@ -133,7 +133,7 @@ just client-run
 The services will be available at:
 
 - **Client Workspace (Nuxt 4):** [http://localhost:3000](http://localhost:3000)
-- **API Swagger / Scalar:** [http://localhost:5136/scalar/v1](http://localhost:5136/scalar/v1)
+- **API Swagger / Scalar:** [http://localhost:5136/scalar/openapi](http://localhost:5136/scalar/openapi)
 - **Seq Log Viewer:** [http://localhost:8081](http://localhost:8081)
 
 To shut down infrastructure services:
