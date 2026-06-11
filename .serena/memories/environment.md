@@ -5,6 +5,8 @@
 - Controlled via Nix Flakes and Direnv.
 - Enter manually with `nix develop` or automatically with `direnv allow`.
 - Local stack orchestrated using Just (`just run` command).
+- **Environment Initialization:** Use `just init-env` (cross-platform Node script) to set up `.env.local`. It verifies Infisical login status before copying.
+- **Secret Precedence:** Secrets are loaded from Infisical first, then `.env.local` acts as an override layer (defined in `.envrc`).
 
 ## CLI & Shell Execution
 

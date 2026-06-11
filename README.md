@@ -40,13 +40,13 @@ eval $(infisical export --format=dotenv-export --silent)
 
 #### Option B: Local File Configuration (Fallback)
 
-Copy the example environment file to `.env.local` (which is gitignored):
+Initialize the `.env.local` file (which is gitignored) using the unified `just` command:
 
 ```bash
-cp .env.local.example .env.local
+just init-env
 ```
 
-Then configure your local secrets (e.g., `OpenAI_API_KEY`) inside `.env.local`.
+This script will verify your Infisical login status before creating the file. Then configure your local secrets inside `.env.local`. **Note:** Values in `.env.local` will override those fetched from Infisical.
 
 ### 3. Enter Development Shell
 
