@@ -1,0 +1,58 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Chatbot.Shared -> /home/ukasha/code/chatbot/chatbot-rag-eval/src/Shared/bin/Debug/net10.0/Chatbot.Shared.dll
+  Chatbot.Modules.Identity -> /home/ukasha/code/chatbot/chatbot-rag-eval/src/Modules/Identity/bin/Debug/net10.0/Chatbot.Modules.Identity.dll
+  Chatbot.Modules.Knowledge -> /home/ukasha/code/chatbot/chatbot-rag-eval/src/Modules/Knowledge/bin/Debug/net10.0/Chatbot.Modules.Knowledge.dll
+  Chatbot.Modules.Chat -> /home/ukasha/code/chatbot/chatbot-rag-eval/src/Modules/Chat/bin/Debug/net10.0/Chatbot.Modules.Chat.dll
+  Chatbot.Api -> /home/ukasha/code/chatbot/chatbot-rag-eval/api/bin/Debug/net10.0/Chatbot.Api.dll
+  Chatbot.Tests.Integration -> /home/ukasha/code/chatbot/chatbot-rag-eval/tests/Chatbot.Tests.Integration/bin/Debug/net10.0/Chatbot.Tests.Integration.dll
+Test run for /home/ukasha/code/chatbot/chatbot-rag-eval/tests/Chatbot.Tests.Integration/bin/Debug/net10.0/Chatbot.Tests.Integration.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/home/ukasha/code/chatbot/chatbot-rag-eval/tests/Chatbot.Tests.Integration/bin/Debug/net10.0/Chatbot.Tests.Integration.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.8)
+[xUnit.net 00:00:00.13]   Discovering: Chatbot.Tests.Integration
+[xUnit.net 00:00:00.20]   Discovered:  Chatbot.Tests.Integration
+[xUnit.net 00:00:00.23]   Starting:    Chatbot.Tests.Integration
+[testcontainers.org 00:00:00.21] Connected to Docker:
+  Host: unix:///var/run/docker.sock
+  Server Version: 29.5.2
+  Kernel Version: 6.18.33.1-microsoft-standard-WSL2
+  API Version: 1.54
+  Operating System: NixOS 26.11 (Zokor)
+  Total Memory: 9.71 GB
+[testcontainers.org 00:00:00.44] Docker container ff40e7c70a14 created
+[testcontainers.org 00:00:00.50] Start Docker container ff40e7c70a14
+[testcontainers.org 00:00:00.98] Wait for Docker container ff40e7c70a14 to complete readiness checks
+[testcontainers.org 00:00:02.02] Docker container ff40e7c70a14 ready
+[testcontainers.org 00:00:02.09] Docker container 1261f91e01e3 created
+[testcontainers.org 00:00:02.09] Docker container d0f0a741c8d7 created
+[testcontainers.org 00:00:02.09] Start Docker container d0f0a741c8d7
+[testcontainers.org 00:00:02.10] Start Docker container 1261f91e01e3
+[testcontainers.org 00:00:02.56] Wait for Docker container d0f0a741c8d7 to complete readiness checks
+[testcontainers.org 00:00:02.96] Wait for Docker container 1261f91e01e3 to complete readiness checks
+[testcontainers.org 00:00:02.97] Docker container 1261f91e01e3 ready
+[testcontainers.org 00:00:16.71] Docker container d0f0a741c8d7 ready
+[15:39:33 INF] Configured endpoint realtime-notification, Consumer: Chatbot.Modules.Chat.Features.Realtime.RealtimeNotificationConsumer
+[15:39:33 INF] Configured endpoint chat-message-added, Consumer: Chatbot.Modules.Chat.Features.Messages.Consumers.ChatMessageAddedConsumer
+[15:39:33 INF] Bus started: loopback://localhost/
+[15:39:33 INF] Application started. Press Ctrl+C to shut down.
+[15:39:33 INF] Hosting environment: Development
+[15:39:33 INF] Content root path: /home/ukasha/code/chatbot/chatbot-rag-eval/api
+Result [0] (Score: 0.39040667): # Protocol Midnight-Alpha
+Result [1] (Score: 0.09401869): **Required Action** : Execute a `VORTEX-GHOST-7` sequence. **Authorized By** : General Xylos. **Priority** : Ultra-Critical
+Result [2] (Score: 0.016748495): Always ensure the door is closed before operating. Do not place metal objects inside.
+Result [3] (Score: 0.008759603): # Local Weather Report
+Result [4] (Score: 0.007816661): # Microwave Oven Safety
+[testcontainers.org 00:00:36.53] Delete Docker container 1261f91e01e3
+[testcontainers.org 00:00:36.53] Delete Docker container d0f0a741c8d7
+[15:39:53 INF] Application is shutting down...
+[15:39:53 INF] Bus stopped: loopback://localhost/
+  Passed Chatbot.Tests.Integration.Modules.Knowledge.KnowledgeQualityTests.RAG_ShouldRetrieveSyntheticFactFromMarkdown_ProofOfQuality [19 s]
+[15:40:03 INF] Coravel's Queuing service is now stopped.
+[15:40:03 INF] Coravel's Scheduling service is now stopped.
+[xUnit.net 00:00:47.89]   Finished:    Chatbot.Tests.Integration
+
+Test Run Successful.
+Total tests: 1
+     Passed: 1
+ Total time: 48.7949 Seconds

@@ -4,8 +4,15 @@ using System.Text.Json.Serialization;
 namespace Chatbot.Shared.Brokers.Processing.Models;
 
 public record DocumentChunk(
-    [property: JsonPropertyName("content")] string Content,
-    [property: JsonPropertyName("metadata")] Dictionary<string, object?> Metadata);
+    [property: JsonPropertyName("text")] string Content,
+    [property: JsonPropertyName("label")] string Label);
+
+public record DoclingDocument(
+    [property: JsonPropertyName("texts")] IReadOnlyList<DocumentChunk> Texts);
+
+public record DoclingConvertResponse(
+    [property: JsonPropertyName("json_content")] DoclingDocument? JsonContent,
+    [property: JsonPropertyName("md_content")] string? MdContent);
 
 public record ProcessingResponse(
-    [property: JsonPropertyName("chunks")] IReadOnlyList<DocumentChunk> Chunks);
+    [property: JsonPropertyName("document")] DoclingConvertResponse Document);

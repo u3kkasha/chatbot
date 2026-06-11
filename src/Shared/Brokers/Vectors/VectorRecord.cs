@@ -12,7 +12,7 @@ public sealed class VectorRecord
     [VectorStoreKey]
     public ulong Id { get; set; }
 
-    [VectorStoreVector(1536, DistanceFunction = DistanceFunction.CosineSimilarity)]
+    [VectorStoreVector(4096, DistanceFunction = DistanceFunction.CosineSimilarity)]
     public ReadOnlyMemory<float> Vector { get; set; }
 
     [VectorStoreData]
