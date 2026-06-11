@@ -17,9 +17,9 @@ import (
 	Qdrant__ApiKey?:   string
 
 	// AI Provider
-	AI__Endpoint?:   string & =~"^https?://.+"
-	AI__ApiKey?: string & =~"^.+"
-	AI__ModelId?:    string & =~"^.+"
+	AI__Endpoint?:         string & =~"^https?://.+"
+	AI__ApiKey?:           string & =~"^.+"
+	AI__ModelId?:          string & =~"^.+"
 	AI__EmbeddingModelId?: string & =~"^.+"
 	AI__RerankModelId?:    string & =~"^.+"
 
@@ -36,10 +36,10 @@ import (
 
 	// Nuxt / Frontend
 	NUXT_DATABASE_URL?:                   string & =~"^postgresql://.+"
-	NUXT_REDIS_URL?:                       string & =~"^redis://.+"
-	NUXT_BLOB_STORAGE_CONNECTION_STRING?:  string & =~"^DefaultEndpointsProtocol=.+"
-	NUXT_QDRANT_API_KEY?:                  string & =~"^.+"
-	NUXT_PUBLIC_API_BASE?:                 string & =~"^https?://.+"
+	NUXT_REDIS_URL?:                      string & =~"^redis://.+"
+	NUXT_BLOB_STORAGE_CONNECTION_STRING?: string & =~"^DefaultEndpointsProtocol=.+"
+	NUXT_QDRANT_API_KEY?:                 string & =~"^.+"
+	NUXT_PUBLIC_API_BASE?:                string & =~"^https?://.+"
 
 	// Infrastructure Docker Compose Secrets
 	POSTGRES_PASSWORD?:              string & =~"^.+"
