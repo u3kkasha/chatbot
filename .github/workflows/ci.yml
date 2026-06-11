@@ -37,28 +37,28 @@ jobs:
         uses: determinateSystems/magic-nix-cache-action@v14
 
       - name: Install Frontend Dependencies
-        run: nix develop --command bun install --cwd client
+        run: nix develop --command just client-install
 
-      - name: Check Nix Formatting (alejandra)
-        run: nix develop --command alejandra --check .
+      - name: Check Nix Formatting
+        run: nix develop --command just check-nix
 
-      - name: Check Backend Formatting (dotnet format)
-        run: nix develop --command dotnet format --verify-no-changes
+      - name: Check Backend Formatting
+        run: nix develop --command just server-lint
 
       - name: Run Knip
-        run: nix develop --command bun --cwd client knip
+        run: nix develop --command just client-knip
 
       - name: Run Backend Build
-        run: nix develop --command dotnet build
+        run: nix develop --command just server-build
 
       - name: Run Backend Tests
-        run: nix develop --command dotnet test
+        run: nix develop --command just server-test
 
       - name: Run Frontend Lint
-        run: nix develop --command bun --cwd client lint
+        run: nix develop --command just client-lint
 
       - name: Run Frontend Typecheck
-        run: nix develop --command bun --cwd client typecheck
+        run: nix develop --command just client-typecheck
 
       - name: Run Frontend Tests
-        run: nix develop --command bun --cwd client test run
+        run: nix develop --command just client-test

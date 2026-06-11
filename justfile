@@ -130,6 +130,13 @@ format-client:
 format-nix:
     alejandra .
 
+# Check Nix formatting
+check-nix:
+    alejandra --check .
+
+# Unified quality check (CI equivalent)
+ci: check-nix server-lint client-lint client-typecheck client-knip server-build server-test client-test
+
 # Format Justfile
 format-just:
     just --fmt
