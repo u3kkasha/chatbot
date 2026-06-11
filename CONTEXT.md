@@ -79,16 +79,16 @@ When local Docker services are running (`just run` or `docker compose up`), they
 
 The project uses a **Nix Flake** to provide a reproducible environment and **Just** for task orchestration.
 
-| Command | Description |
-| :--- | :--- |
-| `just setup` | Full initial setup (install dependencies, start infra, apply migrations). |
-| `just dev` | Start everything (infra + backend + frontend) in parallel. |
-| `just ci` | Run the complete quality suite (linting, types, build, tests). |
-| `just run` | Start infrastructure and show manual run instructions. |
-| `just server-run` | Start the .NET API in watch mode. |
-| `just client-run` | Start the Nuxt frontend in development mode. |
-| `just format` | Unified formatting for C#, TS/Vue, Nix, Just, and documentation. |
-| `just infra-up/down` | Manage local Docker infrastructure services. |
+| Command              | Description                                                               |
+| :------------------- | :------------------------------------------------------------------------ |
+| `just setup`         | Full initial setup (install dependencies, start infra, apply migrations). |
+| `just dev`           | Start everything (infra + backend + frontend) in parallel.                |
+| `just ci`            | Run the complete quality suite (linting, types, build, tests).            |
+| `just run`           | Start infrastructure and show manual run instructions.                    |
+| `just server-run`    | Start the .NET API in watch mode.                                         |
+| `just client-run`    | Start the Nuxt frontend in development mode.                              |
+| `just format`        | Unified formatting for C#, TS/Vue, Nix, Just, and documentation.          |
+| `just infra-up/down` | Manage local Docker infrastructure services.                              |
 
 ---
 

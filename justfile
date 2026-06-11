@@ -28,7 +28,6 @@ dev: infra-up
     @echo \"Starting backend and frontend in parallel...\"
     just --parallel server-run client-run
 
-
 # --- Infrastructure ---
 
 # Spin up local infrastructure services
@@ -136,13 +135,6 @@ format-client:
 format-nix:
     alejandra .
 
-# Check Nix formatting
-check-nix:
-    alejandra --check .
-
-# Unified quality check (CI equivalent)
-ci: check-nix server-lint client-lint client-typecheck client-knip server-build server-test client-test
-
 # Format Justfile
 format-just:
     just --fmt
@@ -155,6 +147,34 @@ format-docs:
 format-cue:
     cue fmt ./...
 
+# Verify formatting for the entire project without modifying files
+check-format: check-server check-client check-nix check-just check-docs check-cue
+
+# Check backend formatting
+check-server:
+    dotnet format whitespace --verify-no-changes
+    dotnet format style --verify-no-changes
+
+# Check frontend formatting
+check-client:
+    bun run --cwd client lint
+
+# Check Nix formatting
+check-nix:
+    alejandra --check .
+
+# Check Justfile formatting
+check-just:
+    just --fmt --check
+
+# Check documentation formatting
+check-docs:
+    bunx prettier --check "**/*.{md,yaml,yml,json}" --ignore-path .gitignore
+
+# Check CUE formatting
+check-cue:
+    cue fmt --check ./...
+
 # Run secret scanning
 secret-scanning:
     gitleaks protect --staged --verbose
@@ -162,8 +182,8 @@ secret-scanning:
 # --- Git Hooks ---
 
 # Pre-commit hook command
-hook-pre-commit: format secret-scanning
-    @echo "Pre-commit checks passed."
+hook-pre-commit: check-format secret-scanning
+    @echo \"Pre-commit checks passed.\"
 
 # Pre-push hook command
 hook-pre-push: server-build client-typecheck client-knip server-lint client-lint

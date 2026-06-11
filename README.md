@@ -79,11 +79,13 @@ This will initialize the environment, install both backend and frontend dependen
 If you prefer manual control over the setup process:
 
 1. **Spin up local infrastructure services:**
+
    ```bash
    just infra-up
    ```
 
 2. **Generate initial migrations for all modules:**
+
    ```bash
    just server-migrations-add InitialCreate
    ```
