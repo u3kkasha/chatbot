@@ -12,6 +12,7 @@ This skill governs the backend architectural decisions of the Chatbot codebase. 
 We follow a **Modular Monolith** structure where modules are logically decoupled and "Ready-to-Split". Within each module (e.g., `Modules.Chat`), we enforce a **Vertical Slice Architecture (VSA)**.
 
 ### 1. Vertical Slice Architecture (VSA) Folder Rules
+
 - Code must be grouped by feature/domain area, not by technical type.
 - A vertical slice folder (e.g., `Features/Conversations/SendMessage`) must co-locate:
   - **DTOs / Models:** Request and response schemas specific to the feature.
@@ -21,6 +22,7 @@ We follow a **Modular Monolith** structure where modules are logically decoupled
 - Slices can call Foundation Services of other slices within the same module, but cross-module communication must use MassTransit events or contracts.
 
 ### 2. Layering & Responsibility Boundaries
+
 - **Brokers:** Act as lightweight, thin wrappers around external SDKs, databases, or APIs.
   - Must implement a local interface (e.g., `IStorageBroker`).
   - Must carry no business or mapping logic.
@@ -37,6 +39,7 @@ We follow a **Modular Monolith** structure where modules are logically decoupled
 We do **not** throw exceptions for business rules, validation failures, or expected domain conditions (e.g., Entity Not Found). Instead, we use functional discriminated unions via the **OneOf** library.
 
 ### 1. Service Return Types
+
 - Methods must return `Task<OneOf<TSuccess, TError1, ...>>` or `ValueTask<OneOf<TSuccess, ...>>`.
 - Common domain/business errors:
   - `ValidationError` (contains structured validation failures).
@@ -45,14 +48,17 @@ We do **not** throw exceptions for business rules, validation failures, or expec
   - `UnauthorizedError` (operation disallowed).
 
 ### 2. Example Service Method Signature
+
 ```csharp
 public async ValueTask<OneOf<ChatSession, ValidationError, NotFoundError>> GetSessionAsync(
-    ChatSessionId sessionId, 
+    ChatSessionId sessionId,
     TenantId tenantId);
 ```
 
 ### 3. Exposer/Endpoint Result Handling
+
 - Map the `OneOf` result to HTTP `IResult` using C# pattern matching (`Match` or `Switch`):
+
 ```csharp
 return result.Match(
     session => TypedResults.Ok(session.ToDto()),
@@ -62,7 +68,9 @@ return result.Match(
 ```
 
 ### 4. Categorized Exceptions (For Technical Failures Only)
+
 We restrict exceptions to truly unexpected technical or transport failures (e.g., DB connection loss, API timeout).
+
 - Catch native broker exceptions in the Service layer and wrap them in Xeption-derived categories:
   - `DependencyException` (transient external database or HTTP failures).
   - `ServiceException` (unhandled exceptions, system errors).
@@ -73,22 +81,28 @@ We restrict exceptions to truly unexpected technical or transport failures (e.g.
 ## 🔒 Domain-Driven Design (DDD) & C# 14 Conventions
 
 ### 1. Strongly-Typed IDs (StronglyTypedId)
+
 - Every entity ID must be represented as a strongly-typed value object using **StronglyTypedId** (for Native AOT compatibility):
+
 ```csharp
 [StronglyTypedId(Template.Guid)]
 public readonly partial struct ChatSessionId;
 ```
+
 - In EF Core entity configurations, always map these value objects:
+
 ```csharp
 builder.Property(x => x.Id)
     .HasConversion(id => id.Value, value => new ChatSessionId(value));
 ```
 
 ### 2. Manual Mapping
+
 - Do not use AutoMapper or similar reflection-based libraries.
 - Write explicit extension methods or static factory methods to map between DTOs, Entities, and Events to preserve readability.
 
 ### 3. Modern C# Syntax Mandates
+
 - Use **Primary Constructors** for dependency injection.
 - Use **Records** for DTOs and immutable domain events.
 - Use **Collection Expressions** `[...]` instead of `new List<T>()` or `new[]`.

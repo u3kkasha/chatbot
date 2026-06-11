@@ -89,7 +89,7 @@ client-gen:
 # --- Quality & Formatting ---
 
 # Run unified formatting for the entire project
-format: format-server format-client format-nix
+format: format-server format-client format-nix format-just format-docs format-cue
 
 # Format C# files (whitespace and style)
 format-server:
@@ -103,6 +103,18 @@ format-client:
 # Format Nix files using Alejandra
 format-nix:
     alejandra .
+
+# Format Justfile
+format-just:
+    just --fmt
+
+# Format documentation and config files (Markdown, YAML, JSON)
+format-docs:
+    bunx prettier --write "**/*.{md,yaml,yml,json}" --ignore-path .gitignore
+
+# Format CUE files
+format-cue:
+    cue fmt ./...
 
 # Run secret scanning
 secret-scanning:
@@ -120,4 +132,4 @@ hook-pre-push: server-build client-typecheck client-knip server-test client-test
 
 # Commit message validation hook command
 hook-commit-msg msg_file:
-    bash .hooks/validate-commit.sh {{msg_file}}
+    bash .hooks/validate-commit.sh {{ msg_file }}

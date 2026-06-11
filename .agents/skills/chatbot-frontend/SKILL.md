@@ -21,11 +21,13 @@ This skill governs the frontend architectural decisions, directory structures, a
 To ensure backend and frontend models are perfectly synchronized, we auto-generate our API client, TypeScript types, and validation schemas from the backend OpenAPI JSON using `@hey-api/openapi-ts`.
 
 ### 1. Generation Pipeline
+
 - The backend builds and outputs `openapi.json`.
 - The frontend runs `npx openapi-ts` to generate type definitions, HTTP fetch methods (using `@hey-api/client-ofetch`), and **Valibot** validation schemas.
 - Do not manually code API requests, DTO TypeScript interfaces, or form validations. Always import from the generated client.
 
 ### 2. Form Validation
+
 - Use the auto-generated **Valibot** schemas to validate forms before submitting them to the backend API.
 
 ---
@@ -46,6 +48,6 @@ To ensure backend and frontend models are perfectly synchronized, we auto-genera
 
 - **Strict Constraint:** **NEVER** use images, icons, or emojis of animate beings (people, animals, bugs, robots, etc.) in the frontend user interface, layout icons, or mock data.
 - **Allowed Alternatives:** Use abstract symbols, geometric shapes, or plain text.
-  - *Prohibited:* 👤 (user icon), 🤖 (robot icon), 🐛 (bug), 🚀 (rocket), 🐳 (docker).
-  - *Compliant:* 🔧 (wrench), ⚙️ (gear), ⚡ (bolt), 📦 (package), 🔒 (lock), key, chat box, checkmarks, line graphs.
+  - _Prohibited:_ 👤 (user icon), 🤖 (robot icon), 🐛 (bug), 🚀 (rocket), 🐳 (docker).
+  - _Compliant:_ 🔧 (wrench), ⚙️ (gear), ⚡ (bolt), 📦 (package), 🔒 (lock), key, chat box, checkmarks, line graphs.
 - If a user profile picture or placeholder is needed, generate an abstract geometric pattern (like a letter avatar with a stylized background) rather than a silhouette or person icon.
