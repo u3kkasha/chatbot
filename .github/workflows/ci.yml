@@ -3,9 +3,26 @@ name: CI
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+      - ".serena/**"
+      - "AGENTS.md"
+      - "CONTEXT.md"
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+      - ".serena/**"
+      - "AGENTS.md"
+      - "CONTEXT.md"
   workflow_dispatch:
+
+# Auto-cancel redundant runs for the same PR or branch to save CI minutes
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint-commits:
@@ -23,12 +40,34 @@ jobs:
   verify:
     name: Verify Codebase
     runs-on: ubuntu-latest
-    # Optional: make verify depend on lint-commits
-    # needs: lint-commits
+    needs: lint-commits # Fail fast: don't run heavy checks if commit lint fails
+    timeout-minutes: 15 # Prevent hung jobs from burning all your minutes
+
+    # Skip CI for changes that don't affect the code (docs, configs, etc.)
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]'))
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6
+
+      - name: Detect Changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'api/**'
+              - 'src/**'
+              - 'Directory.Packages.props'
+              - 'Directory.Build.props'
+            frontend:
+              - 'client/**'
+            infra:
+              - 'docker-compose.yml'
+              - 'flake.nix'
+              - 'justfile'
 
       - name: Install Nix
         uses: determinateSystems/nix-installer-action@v22
@@ -54,8 +93,31 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          nix develop --command just server-restore
-          nix develop --command just client-install
+          if [ "${{ steps.filter.outputs.backend }}" == 'true' ] || [ "${{ steps.filter.outputs.infra }}" == 'true' ]; then
+            nix develop --command just server-restore
+          fi
+          if [ "${{ steps.filter.outputs.frontend }}" == 'true' ] || [ "${{ steps.filter.outputs.infra }}" == 'true' ]; then
+            nix develop --command just client-install
+          fi
 
-      - name: Run CI
-        run: nix develop --command just ci
+      - name: Run CI (Selective)
+        run: |
+          # If infra/configs changed, run everything
+          if [ "${{ steps.filter.outputs.infra }}" == 'true' ]; then
+            nix develop --command just ci
+          else
+            # Otherwise, run only what changed
+            if [ "${{ steps.filter.outputs.backend }}" == 'true' ]; then
+              nix develop --command just server-lint
+              nix develop --command just server-build
+              nix develop --command just server-test
+            fi
+            if [ "${{ steps.filter.outputs.frontend }}" == 'true' ]; then
+              nix develop --command just client-lint
+              nix develop --command just client-typecheck
+              nix develop --command just client-test
+            fi
+            # Always check formatting and API drift if anything changed
+            nix develop --command just check-format
+            nix develop --command just check-api-drift
+          fi
