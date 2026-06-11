@@ -83,6 +83,12 @@ server-test:
 server-lint:
     dotnet format --verify-no-changes
 
+# Generate OpenAPI document
+server-openapi-gen:
+    rm -f api/obj/Chatbot.Api.OpenApiFiles.cache
+    dotnet build api/Chatbot.Api.csproj -p:OpenApiGenerateDocumentsOnBuild=true
+    mv api/obj/Chatbot.Api.json client/openapi.json
+
 # --- Client (Nuxt 4) ---
 
 # Install client dependencies
@@ -114,7 +120,7 @@ client-knip:
     bun run --cwd client knip
 
 # Generate API client from OpenAPI spec
-client-gen:
+client-gen: server-openapi-gen
     bun run --cwd client openapi:generate
 
 # --- Quality & Formatting ---
@@ -175,6 +181,11 @@ check-docs:
 check-cue:
     cue fmt --check ./...
 
+# Check if API generation creates any changes
+check-api-drift: client-gen
+    @echo "Checking for API drift..."
+    git diff --exit-code client/openapi.json client/app/api-client/ || (echo "API drift detected! Run 'just client-gen' and commit the changes." && exit 1)
+
 # Run secret scanning
 secret-scanning:
     gitleaks protect --staged --verbose
@@ -182,7 +193,7 @@ secret-scanning:
 ci: verify server-test client-test
 
 # Fast verification (build, lint, types) - used for local pre-push
-verify: check-format client-typecheck client-knip server-build
+verify: check-format check-api-drift client-typecheck client-knip server-build
 
 # --- Git Hooks ---
 
