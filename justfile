@@ -7,7 +7,7 @@ set shell := ["bash", "-c"]
 # Initial setup: install dependencies and start infrastructure
 setup: init-env server-restore client-install infra-up
     @echo "Waiting for database to be ready..."
-    sleep 5
+    node -e "setTimeout(() => {}, 5000);"
     just server-migrate
     lefthook install
     @echo "Setup complete. You can now run 'run' to start the development environment."
@@ -85,9 +85,7 @@ server-lint:
 
 # Generate OpenAPI document
 server-openapi-gen:
-    rm -f api/obj/Chatbot.Api.OpenApiFiles.cache
-    dotnet build api/Chatbot.Api.csproj -p:OpenApiGenerateDocumentsOnBuild=true
-    mv api/obj/Chatbot.Api.json client/openapi.json
+    node .hooks/generate-openapi.mjs
 
 # --- Client (Nuxt 4) ---
 
