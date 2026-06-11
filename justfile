@@ -183,8 +183,7 @@ check-cue:
 
 # Check if API generation creates any changes
 check-api-drift: client-gen
-    @echo "Checking for API drift..."
-    git diff --exit-code client/openapi.json client/app/api-client/ || (echo "API drift detected! Run 'just client-gen' and commit the changes." && exit 1)
+    node .hooks/check-api-drift.mjs
 
 # Run secret scanning
 secret-scanning:
