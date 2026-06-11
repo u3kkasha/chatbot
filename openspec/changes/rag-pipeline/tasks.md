@@ -25,4 +25,5 @@
 
 - [x] Write unit tests for `SparseVectorService` (custom BM25 logic).
 - [x] Write unit tests for `KnowledgeFoundationService` ensuring exception wrapping into `OneOf`.
-- [ ] Write integration tests for the Qdrant connection and Agent flow.
+- [x] Write integration tests for the Qdrant connection and Agent flow.
+- [x] Implement the "Synthetic Fact" AI Quality integration test (Knowledge Retrieval Proof) using Testcontainers for Qdrant and Docling-Serve.
