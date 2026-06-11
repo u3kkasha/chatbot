@@ -22,6 +22,8 @@ This project uses **Nix Flakes** and **direnv** to manage a fully reproducible d
 
 ### 2. Environment Variables & Secret Management
 
+**Important:** This project explicitly avoids using `appsettings.json`. **All** configuration and secret management are entirely centralized in environment variables to strictly adhere to the 12-Factor App methodology.
+
 This project supports secret delivery via **Infisical** (primary) and `.env.local` file (fallback/local overrides).
 
 #### Option A: Infisical (Primary)

@@ -14,8 +14,8 @@ const TARGET_FILE = '.env.local';
 
 function checkInfisicalLogin() {
   try {
-    // 'infisical status' returns 0 if logged in, non-zero otherwise
-    execSync('infisical status', { stdio: 'ignore' });
+    // 'infisical user get token' succeeds if logged in, fails otherwise
+    execSync('infisical user get token', { stdio: 'ignore' });
     return true;
   } catch {
     return false;
