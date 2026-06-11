@@ -153,7 +153,7 @@ hook-pre-commit: format secret-scanning
     @echo "Pre-commit checks passed."
 
 # Pre-push hook command
-hook-pre-push: server-build client-typecheck client-knip server-test client-test
+hook-pre-push: server-build client-typecheck client-knip server-lint client-lint
     @echo "Pre-push checks passed."
 
 # Commit message validation hook command
