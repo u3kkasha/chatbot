@@ -4,7 +4,7 @@ import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 
 const cacheFile = 'api/obj/Chatbot.Api.OpenApiFiles.cache';
-const sourceFile = 'api/obj/Chatbot.Api.json';
+const sourceFile = 'api/obj/Chatbot.Api_openapi.json';
 const targetFile = 'client/openapi.json';
 
 // Remove cache file if it exists to force regeneration

@@ -46,7 +46,7 @@ public class StartupTests
     public async Task OpenApiDocument_ContainsExpectedMetadata()
     {
         // Arrange & Act
-        var response = await _httpClient.GetAsync("/openapi/v1.json");
+        var response = await _httpClient.GetAsync("/openapi/openapi.json");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -58,7 +58,7 @@ public class StartupTests
         info.ShouldNotBeNull();
 
         info["title"]?.ToString().ShouldBe("Omnichannel Chatbot API");
-        info["version"]?.ToString().ShouldBe("v1");
+        info["version"]?.ToString().ShouldBe("1.0.0");
         info["description"]?.ToString().ShouldBe("API for the Omnichannel Customer Support Operator Platform.");
     }
 
@@ -66,7 +66,7 @@ public class StartupTests
     public async Task ScalarDocumentation_IsAccessible()
     {
         // Arrange & Act
-        var response = await _httpClient.GetAsync("/scalar/v1");
+        var response = await _httpClient.GetAsync("/scalar/openapi");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
