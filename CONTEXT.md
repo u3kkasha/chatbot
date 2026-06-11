@@ -30,8 +30,9 @@ A full-stack chatbot development environment featuring a .NET 10 API and a Nuxt 
 - **Frontend:** Nuxt 4 (TypeScript, Vue 3, TailwindCSS, **Nuxt UI**).
   - State: **Pinia** & **Pinia Colada** (Data Fetching).
   - Patterns: **Idiomatic Nuxt** (Composables, standard directory structure).
-  - Validation: **Automated Zod Schema Generation** from backend OpenAPI.
+  - Validation: **Automated TypeScript Type & Valibot Schema Generation** from backend OpenAPI via `@hey-api`.
   - Testing: **Playwright** (E2E) and **Vitest** (Unit/Component Testing).
+- **Orchestration:** [Just](https://github.com/casey/just) (replaces Tilt).
 - **Infrastructure:**
   - **PostgreSQL:** Primary relational database (and Hangfire storage/locking).
   - **Qdrant:** Vector database for RAG/AI capabilities.
@@ -74,7 +75,24 @@ When local Docker services are running (`just run` or `docker compose up`), they
 
 ---
 
-## 🔧 Operational Workflow Commands
+## 🚀 Commands & Development Workflow
+
+The project uses a **Nix Flake** to provide a reproducible environment and **Just** for task orchestration.
+
+| Command | Description |
+| :--- | :--- |
+| `just setup` | Full initial setup (install dependencies, start infra, apply migrations). |
+| `just dev` | Start everything (infra + backend + frontend) in parallel. |
+| `just ci` | Run the complete quality suite (linting, types, build, tests). |
+| `just run` | Start infrastructure and show manual run instructions. |
+| `just server-run` | Start the .NET API in watch mode. |
+| `just client-run` | Start the Nuxt frontend in development mode. |
+| `just format` | Unified formatting for C#, TS/Vue, Nix, Just, and documentation. |
+| `just infra-up/down` | Manage local Docker infrastructure services. |
+
+---
+
+## 🔧 Manual Operational Commands
 
 ### Database Migrations
 
