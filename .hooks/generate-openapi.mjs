@@ -15,7 +15,11 @@ if (fs.existsSync(cacheFile)) {
 // Run dotnet build to generate the OpenAPI document
 try {
   execSync('dotnet build api/Chatbot.Api.csproj -p:OpenApiGenerateDocumentsOnBuild=true', { 
-    stdio: 'inherit' 
+    stdio: 'inherit',
+    env: {
+      ...process.env,
+      MassTransit__Outbox__Provider: 'None'
+    }
   });
 } catch (error) {
   console.error('❌ Failed to build and generate OpenAPI document.');
