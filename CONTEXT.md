@@ -94,8 +94,8 @@ snip -- dotnet test
 
 ### Verification
 
-Run `treefmt` to format the workspace:
+Run `just format` to format the workspace:
 
 ```bash
-snip -- treefmt
+just format
 ```

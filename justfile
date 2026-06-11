@@ -6,6 +6,7 @@ set shell := ["bash", "-c"]
 
 # Initial setup: install dependencies and start infrastructure
 setup: server-restore client-install infra-up
+    lefthook install
     @echo "Setup complete. You can now run 'run' to start the development environment."
 
 # Start infrastructure and show instructions
@@ -88,8 +89,20 @@ client-gen:
 # --- Quality & Formatting ---
 
 # Run unified formatting for the entire project
-format:
-    treefmt
+format: format-server format-client format-nix
+
+# Format C# files (whitespace and style)
+format-server:
+    dotnet format whitespace
+    dotnet format style
+
+# Format frontend files using ESLint
+format-client:
+    bun run --cwd client lint --fix
+
+# Format Nix files using Alejandra
+format-nix:
+    alejandra .
 
 # Run secret scanning
 secret-scanning:
@@ -98,7 +111,7 @@ secret-scanning:
 # --- Git Hooks ---
 
 # Pre-commit hook command
-hook-pre-commit: format secret-scanning client-lint
+hook-pre-commit: format secret-scanning
     @echo "Pre-commit checks passed."
 
 # Pre-push hook command

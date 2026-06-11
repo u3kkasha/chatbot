@@ -174,10 +174,10 @@ dotnet test
 
 ### Code Formatting
 
-This project uses `treefmt` to enforce unified formatting rules (Csharpier, Prettier, and Alejandra):
+This project uses `just format` to enforce unified formatting rules (dotnet format, ESLint, and Alejandra):
 
 ```bash
-treefmt
+just format
 ```
 
 ---

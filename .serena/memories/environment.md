@@ -10,4 +10,4 @@
 
 - Prefix commands with the `snip --` proxy to optimize tokens.
 - **Sandboxing Issues:** Standard sandbox execution can fail due to local Nix wrapper boundaries. If a command fails or requires local tooling context, configure with `BypassSandbox: true` and execute.
-- Always run `snip -- treefmt` to format files before committing.
+- Always run `just format` to format files before committing.
