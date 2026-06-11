@@ -145,7 +145,7 @@ format-just:
 
 # Format documentation and config files (Markdown, YAML, JSON)
 format-docs:
-    bunx prettier --write "**/*.{md,yaml,yml,json}" "!client/openapi.json" --ignore-path .gitignore
+    bunx prettier --write "**/*.{md,yaml,yml,json}"
 
 # Format CUE files
 format-cue:
@@ -173,7 +173,7 @@ check-just:
 
 # Check documentation formatting
 check-docs:
-    bunx prettier --check "**/*.{md,yaml,yml,json}" "!client/openapi.json" --ignore-path .gitignore
+    bunx prettier --check "**/*.{md,yaml,yml,json}"
 
 # Check CUE formatting
 check-cue:
