@@ -189,6 +189,10 @@ secret-scanning:
 # Unified quality check (CI equivalent)
 ci: verify server-test client-test
 
+# Run only live integration tests (requires AI__ApiKey)
+test-live:
+    dotnet test tests/Chatbot.Tests.Integration/Chatbot.Tests.Integration.csproj --filter "Category=Live"
+
 # Fast verification (build, lint, types) - used for local pre-push
 verify: check-format check-api-drift client-typecheck client-knip server-build
 
