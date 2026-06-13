@@ -8,7 +8,7 @@ module.exports = {
       // Group 3: Optional Scope
       // Group 4: Optional Breaking Change indicator (!)
       // Group 5: Subject
-      headerPattern: /^(?:📦|🔧|⚡|♻️|🧪|📝|🎨|⚙️)\s+(\w+)(?:\(([\w\$\.\-\* ]+)\))?(!?): (.*)$/,
+      headerPattern: /^(?:📦|🔧|⚡|♻️|🧪|📝|🎨|⚙️)\s+(\w+)\s*(?:\(([\w\$\.\-\* ]+)\))?(!?): (.*)$/,
       headerCorrespondence: ["type", "scope", "breaking", "subject"],
     },
   },
@@ -18,6 +18,7 @@ module.exports = {
       "always",
       ["feat", "fix", "perf", "refactor", "test", "docs", "style", "chore"],
     ],
+    "subject-case": [0],
     "subject-empty": [2, "never"],
     "type-empty": [2, "never"],
     "body-max-line-length": [0, "always"],
