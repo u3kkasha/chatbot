@@ -39,7 +39,5 @@
     <PackageReference Include="Qdrant.Client" />
     <PackageReference Include="RESTFulSense" />
     <PackageReference Include="StronglyTypedId" />
-    <PackageReference Include="MassTransit" />
-    <PackageReference Include="MassTransit.EntityFrameworkCore" />
   </ItemGroup>
 </Project>

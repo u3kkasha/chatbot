@@ -17,8 +17,6 @@ public class IntegrationTestWebApplicationFactory : WebApplicationFactory<Progra
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseSetting("MassTransit:Outbox:Provider", "None");
-
         builder.ConfigureTestServices(services =>
         {
             // Replace AI brokers with Noop implementations to avoid hitting real AI services

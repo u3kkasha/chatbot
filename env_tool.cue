@@ -26,9 +26,6 @@ import (
 	// Docling-serve
 	Processing__BaseUrl?: string & =~"^https?://.+"
 
-	// MassTransit
-	MassTransit__Outbox__Provider?: "Postgres" | "None"
-
 	// Seq
 	Serilog__WriteTo__0__Name?:            "Seq"
 	Serilog__WriteTo__0__Args__serverUrl?: string & =~"^https?://.+"

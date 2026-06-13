@@ -4,7 +4,6 @@ using Chatbot.Modules.Identity.Models.Users;
 using Chatbot.Shared.Models;
 using Chatbot.Shared.Infrastructure.Data;
 using EFCore.NamingConventions;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -21,10 +20,6 @@ public partial class StorageBroker(DbContextOptions<StorageBroker> options)
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.HasDefaultSchema("identity");
-
-        modelBuilder.AddInboxStateEntity();
-        modelBuilder.AddOutboxMessageEntity();
-        modelBuilder.AddOutboxStateEntity();
 
         modelBuilder.Entity<Models.Users.User>(user =>
         {

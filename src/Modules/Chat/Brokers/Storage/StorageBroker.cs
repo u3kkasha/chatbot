@@ -3,7 +3,6 @@ using Chatbot.Modules.Chat.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Chat.Models.Sessions;
 using Chatbot.Shared.Infrastructure.Data;
 using EFCore.NamingConventions;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -20,10 +19,6 @@ public partial class StorageBroker(DbContextOptions<StorageBroker> options)
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.HasDefaultSchema("chat");
-
-        modelBuilder.AddInboxStateEntity();
-        modelBuilder.AddOutboxMessageEntity();
-        modelBuilder.AddOutboxStateEntity();
 
         modelBuilder.Entity<ChatSession>(session =>
         {

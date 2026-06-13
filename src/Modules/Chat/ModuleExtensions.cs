@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Chatbot.Modules.Chat.Brokers.Storage;
 using Chatbot.Modules.Chat.Brokers.Storage.CompiledModels;
 using Chatbot.Modules.Chat.Features.Messages;
+using Chatbot.Modules.Chat.Features.Messages.Consumers;
+using Chatbot.Modules.Chat.Features.Realtime;
 using Chatbot.Modules.Chat.Features.Sessions;
 using Chatbot.Modules.Chat.Features.Sessions.Jobs;
 using Chatbot.Modules.Chat.Features.StreamCompletion;
@@ -42,6 +44,9 @@ public static class ModuleExtensions
         services.AddScoped<IChatSessionService, ChatSessionService>();
         services.AddScoped<IChatMessageService, ChatMessageService>();
         services.AddTransient<ChatSessionCleanupJob>();
+        services.AddTransient<ChatMessageAddedListener>();
+        services.AddTransient<ChatMessageAddedRealtimeListener>();
+        services.AddTransient<ChatSessionStatusChangedRealtimeListener>();
 
         return services;
     }
