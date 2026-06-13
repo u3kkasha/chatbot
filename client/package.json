@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.98.2",
+    "@iconify-json/material-symbols": "^1.2.78",
     "@nuxt/eslint": "^1.16.0",
     "@nuxt/test-utils": "^4.0.3",
     "@types/node": "25.9.3",
