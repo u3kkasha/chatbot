@@ -38,7 +38,7 @@ if (BLOCKLIST.test(commitMsg)) {
 
 // 3. Regex Patterns
 const TYPES = Object.keys(EMOJI_MAP).join('|');
-const CORE_PATTERN = `(${TYPES})(\\([^)]+\\))?!?:[ ]+.+`;
+const CORE_PATTERN = `(${TYPES})\\s*(\\([^)]+\\))?!?:[ ]+.+`;
 
 // Full format: <emoji> <type>(<scope>): <message>
 const FULL_CONVENTIONAL_REGEX = new RegExp(`^[^ ]+[ ]+${CORE_PATTERN}`);
