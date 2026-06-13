@@ -43,7 +43,6 @@
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.Seq" />
     <PackageReference Include="StronglyTypedId" />
-    <PackageReference Include="MassTransit" />
   </ItemGroup>
 
   <ItemGroup>

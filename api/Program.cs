@@ -4,14 +4,15 @@ using Chatbot.Api.Infrastructure.Middleware;
 using Chatbot.Api.Infrastructure.MultiTenancy;
 using Chatbot.Api.Infrastructure.Serialization;
 using Chatbot.Modules.Chat;
+using Chatbot.Modules.Chat.Features.Messages.Consumers;
 using Chatbot.Modules.Chat.Features.Realtime;
 using Chatbot.Modules.Chat.Features.Sessions.Jobs;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
 using Chatbot.Shared;
 using Chatbot.Shared.Brokers.Ai;
+using Chatbot.Shared.Events;
 using Chatbot.Shared.Models;
-using Chatbot.Api.Infrastructure.EventDrivenArchitecture;
 using Coravel;
 using Chatbot.Shared.Infrastructure.Configuration;
 using Microsoft.Extensions.AI;
@@ -62,7 +63,6 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<ITenantProvider, HttpContextTenantProvider>();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
-builder.Services.AddEventDrivenArchitecture(builder.Configuration);
 builder.Services.AddSignalR();
 
 // 2.1 Add Coravel
@@ -155,6 +155,15 @@ app.Services.UseScheduler(scheduler =>
 {
     scheduler.Schedule<ChatSessionCleanupJob>().EveryMinute();
 });
+
+app.Services.ConfigureEvents()
+    .Register<ChatMessageAddedEvent>()
+    .Subscribe<ChatMessageAddedListener>()
+    .Subscribe<ChatMessageAddedRealtimeListener>();
+
+app.Services.ConfigureEvents()
+    .Register<ChatSessionStatusChangedEvent>()
+    .Subscribe<ChatSessionStatusChangedRealtimeListener>();
 
 app.Run();
 

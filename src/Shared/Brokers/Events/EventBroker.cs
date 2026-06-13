@@ -1,14 +1,16 @@
 using System.Threading.Tasks;
-using MassTransit;
+using Coravel.Events.Interfaces;
+using Coravel.Queuing.Interfaces;
 
 namespace Chatbot.Shared.Brokers.Events;
 
-public class EventBroker(IPublishEndpoint publishEndpoint) : IEventBroker
+public class EventBroker(IQueue queue) : IEventBroker
 {
-    private readonly IPublishEndpoint publishEndpoint = publishEndpoint;
+    private readonly IQueue queue = queue;
 
-    public async ValueTask PublishAsync<T>(T @event) where T : class
+    public ValueTask PublishAsync<T>(T @event) where T : class, IEvent
     {
-        await this.publishEndpoint.Publish(@event);
+        this.queue.QueueBroadcast(@event);
+        return ValueTask.CompletedTask;
     }
 }

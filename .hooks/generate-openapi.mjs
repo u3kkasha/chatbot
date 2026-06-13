@@ -17,8 +17,7 @@ try {
   execSync('dotnet build api/Chatbot.Api.csproj -p:OpenApiGenerateDocumentsOnBuild=true', { 
     stdio: 'inherit',
     env: {
-      ...process.env,
-      MassTransit__Outbox__Provider: 'None'
+      ...process.env
     }
   });
 } catch (error) {

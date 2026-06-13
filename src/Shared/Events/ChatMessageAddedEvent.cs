@@ -1,5 +1,6 @@
 using System;
 using Chatbot.Shared.Models;
+using Coravel.Events.Interfaces;
 using NodaTime;
 
 namespace Chatbot.Shared.Events;
@@ -12,4 +13,4 @@ public record ChatMessageAddedEvent(
     string Content,
     bool IsAiGenerated,
     Instant CreatedDate
-);
+) : IEvent;

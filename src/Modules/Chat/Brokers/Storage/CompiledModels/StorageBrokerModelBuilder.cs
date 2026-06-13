@@ -12,7 +12,7 @@ namespace Chatbot.Modules.Chat.Brokers.Storage.CompiledModels
     public partial class StorageBrokerModel
     {
         private StorageBrokerModel()
-            : base(skipDetectChanges: false, modelId: new Guid("b6e551be-1b8b-4d51-8bb4-860277a7ba41"), entityTypeCount: 7)
+            : base(skipDetectChanges: false, modelId: new Guid("a4f16c5e-7e50-4226-8cef-510d75f47071"), entityTypeCount: 4)
         {
         }
 
@@ -22,25 +22,17 @@ namespace Chatbot.Modules.Chat.Brokers.Storage.CompiledModels
             var chatMessage = ChatMessageEntityType.Create(this);
             var chatSession = ChatSessionEntityType.Create(this);
             var citation = CitationEntityType.Create(this);
-            var inboxState = InboxStateEntityType.Create(this);
-            var outboxMessage = OutboxMessageEntityType.Create(this);
-            var outboxState = OutboxStateEntityType.Create(this);
 
             AiMetadataEntityType.CreateForeignKey1(aiMetadata, chatMessage);
             CitationEntityType.CreateForeignKey1(citation, chatMessage);
-            OutboxMessageEntityType.CreateForeignKey1(outboxMessage, outboxState);
-            OutboxMessageEntityType.CreateForeignKey2(outboxMessage, inboxState);
 
             AiMetadataEntityType.CreateAnnotations(aiMetadata);
             ChatMessageEntityType.CreateAnnotations(chatMessage);
             ChatSessionEntityType.CreateAnnotations(chatSession);
             CitationEntityType.CreateAnnotations(citation);
-            InboxStateEntityType.CreateAnnotations(inboxState);
-            OutboxMessageEntityType.CreateAnnotations(outboxMessage);
-            OutboxStateEntityType.CreateAnnotations(outboxState);
 
             AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-            AddAnnotation("ProductVersion", "10.0.8");
+            AddAnnotation("ProductVersion", "10.0.9");
             AddAnnotation("Relational:DefaultSchema", "chat");
             AddAnnotation("Relational:MaxIdentifierLength", 63);
         }
