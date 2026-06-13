@@ -37,7 +37,7 @@
     "@vue/test-utils": "2.4.11",
     "eslint": "^10.5.0",
     "eslint-config-prettier": "^10.1.8",
-    "happy-dom": "^20.10.1",
+    "happy-dom": "^20.10.3",
     "knip": "^6.15.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.8",
