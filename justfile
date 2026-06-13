@@ -17,17 +17,12 @@ setup: init-env server-restore client-install infra-up
 init-env:
     node .hooks/init-env.mjs
 
-# Start infrastructure and show instructions
+# Start infrastructure and run both services in parallel
 run: infra-up
-    @echo \"Infrastructure is up.\"
-    @echo \"To start the backend:  just server-run\"
-    @echo \"To start the frontend: just client-run\"
-    @echo \"Logs:                  just infra-logs\"
-
-# Development mode: start infrastructure and both services in parallel
-dev: infra-up
-    @echo \"Starting backend and frontend in parallel...\"
-    just --parallel server-run client-run
+    @echo "Starting backend and frontend..."
+    just server-run & \
+    just client-run & \
+    wait
 
 # --- Infrastructure ---
 
