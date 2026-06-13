@@ -36,6 +36,8 @@ jobs:
 
       - name: Lint Commits
         uses: wagoid/commitlint-github-action@v6
+        with:
+          configFile: commitlint.config.cjs
 
   verify:
     name: Verify Codebase
