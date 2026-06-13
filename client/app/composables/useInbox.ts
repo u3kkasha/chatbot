@@ -77,19 +77,61 @@ function mapMessageToChat(m: ChatMessageResponse): ChatMessage {
 
 function buildProfile(session: ChatSessionResponse): CustomerProfile {
   const name = session.customer_identifier;
-  const isEmail = session.external_reference_id?.includes("@");
+  const status = session.status === "Open" ? "active" : session.status === "Pending" ? "away" : "offline";
 
+  // Match seeded demo profiles for a highly realistic, premium experience
+  if (name === "Sarah Jenkins") {
+    return {
+      name,
+      initials: "SJ",
+      status,
+      email: "sarah.j@example.com",
+      phone: "+1 555-0123",
+      location: "New York, USA",
+      tags: ["Premium", "Beta User", "Billing Issue"],
+      about: "Customer since Jan 2022. Currently on the Pro Tier Plan. Frequent user of the mobile app and dashboard analytics.",
+    };
+  }
+
+  if (name === "Michael Ross") {
+    return {
+      name,
+      initials: "MR",
+      status,
+      email: "m.ross@example.com",
+      phone: session.external_reference_id ?? "+1 555-0198",
+      location: "London, UK",
+      tags: ["WhatsApp", "Standard"],
+      about: "Customer since March 2023. Prefers communicating via WhatsApp. Interested in enterprise upgrade.",
+    };
+  }
+
+  if (name === "David Chen") {
+    return {
+      name,
+      initials: "DC",
+      status,
+      email: session.external_reference_id ?? "david.chen@example.com",
+      phone: "+1 555-0742",
+      location: "San Francisco, USA",
+      tags: ["Email", "Resolved"],
+      about: "Customer since June 2021. Legacy account holder. Integrates with Slack and Salesforce.",
+    };
+  }
+
+  // Fallback for new dynamically created sessions
+  const isEmail = session.external_reference_id?.includes("@");
   return {
     name,
     initials: toInitials(name),
-    status: session.status === "Open" ? "active" : session.status === "Pending" ? "away" : "offline",
+    status,
     email: isEmail
       ? (session.external_reference_id ?? `${name.toLowerCase().replace(/\s+/g, ".")}@example.com`)
       : `${name.toLowerCase().replace(/\s+/g, ".")}@example.com`,
     phone: session.channel_provider === "WhatsApp"
       ? (session.external_reference_id ?? "")
       : "",
-    location: "",
+    location: "Unknown Location",
     tags: [session.channel_provider, session.status],
     about: `Customer on ${session.channel_provider} channel. Session status: ${session.status}.`,
   };
