@@ -9,6 +9,7 @@ using Chatbot.Modules.Chat.Features.Realtime;
 using Chatbot.Modules.Chat.Features.Sessions.Jobs;
 using Chatbot.Modules.Identity;
 using Chatbot.Modules.Knowledge;
+using Chatbot.Modules.Chat.Infrastructure;
 using Chatbot.Shared;
 using Chatbot.Shared.Brokers.Ai;
 using Chatbot.Shared.Events;
@@ -164,6 +165,9 @@ app.Services.ConfigureEvents()
 app.Services.ConfigureEvents()
     .Register<ChatSessionStatusChangedEvent>()
     .Subscribe<ChatSessionStatusChangedRealtimeListener>();
+
+// 6. Seed demo data on first startup (no-op when DB already has data)
+await ChatSeeder.SeedAsync(app.Services);
 
 app.Run();
 
