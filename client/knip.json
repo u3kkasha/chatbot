@@ -12,6 +12,7 @@
     "#imports": ["./.nuxt/imports.d.ts"]
   },
   "ignore": ["app/api-client/**"],
+  "ignoreDependencies": ["@iconify-json/material-symbols"],
   "nuxt": {
     "entry": [
       "nuxt.config.ts",
