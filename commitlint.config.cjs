@@ -8,7 +8,7 @@ module.exports = {
       // Group 3: Optional Scope
       // Group 4: Optional Breaking Change indicator (!)
       // Group 5: Subject
-      headerPattern: /^(?:.*?\s+)?(\w+)(?:\(([\w\$\.\-\* ]+)\))?(!?): (.*)$/,
+      headerPattern: /^(?:📦|🔧|⚡|♻️|🧪|📝|🎨|⚙️)\s+(\w+)(?:\(([\w\$\.\-\* ]+)\))?(!?): (.*)$/,
       headerCorrespondence: ["type", "scope", "breaking", "subject"],
     },
   },
