@@ -37,6 +37,8 @@
             bun
             cue
             dotnet-sdk_10
+            dotnet-ef
+            dotnet-outdated
             nodejs_22
             just
             docker

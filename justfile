@@ -44,9 +44,8 @@ infra-logs:
 
 # --- Server (.NET 10 API) ---
 
-# Restore backend dependencies and tools
+# Restore backend dependencies
 server-restore:
-    dotnet tool restore
     dotnet restore
 
 # Apply all database migrations
