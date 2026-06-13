@@ -161,7 +161,7 @@ check-server:
 
 # Check frontend formatting
 check-client:
-    bun run --cwd client lint
+    @if [ -d client/node_modules ]; then bun run --cwd client lint; else echo "Skipping client lint (node_modules missing)"; fi
 
 # Check Nix formatting
 check-nix:

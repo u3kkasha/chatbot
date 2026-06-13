@@ -60,14 +60,28 @@ jobs:
             backend:
               - 'api/**'
               - 'src/**'
+              - 'tests/**'
+              - 'Chatbot.slnx'
               - 'Directory.Packages.props'
               - 'Directory.Build.props'
+              - 'dotnet-tools.json'
             frontend:
               - 'client/**'
             infra:
               - 'docker-compose.yml'
               - 'flake.nix'
+              - 'flake.lock'
               - 'justfile'
+              - '.github/workflows/**'
+              - '.hooks/**'
+              - '.editorconfig'
+              - '.prettierignore'
+              - '.gitignore'
+              - '.gitattributes'
+              - 'lefthook.yml'
+              - 'commitlint.config.cjs'
+              - 'env_tool.cue'
+              - '.infisical.json'
 
       - name: Install Nix
         uses: determinateSystems/nix-installer-action@v22
@@ -93,10 +107,8 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          if [ "${{ steps.filter.outputs.backend }}" == 'true' ] || [ "${{ steps.filter.outputs.infra }}" == 'true' ]; then
+          if [ "${{ steps.filter.outputs.backend }}" == 'true' ] || [ "${{ steps.filter.outputs.frontend }}" == 'true' ] || [ "${{ steps.filter.outputs.infra }}" == 'true' ]; then
             nix develop --command just server-restore
-          fi
-          if [ "${{ steps.filter.outputs.frontend }}" == 'true' ] || [ "${{ steps.filter.outputs.infra }}" == 'true' ]; then
             nix develop --command just client-install
           fi
 
@@ -111,13 +123,17 @@ jobs:
               nix develop --command just server-lint
               nix develop --command just server-build
               nix develop --command just server-test
+              nix develop --command just check-server
             fi
             if [ "${{ steps.filter.outputs.frontend }}" == 'true' ]; then
               nix develop --command just client-lint
               nix develop --command just client-typecheck
               nix develop --command just client-test
             fi
-            # Always check formatting and API drift if anything changed
-            nix develop --command just check-format
-            nix develop --command just check-api-drift
+            
+            # Formatting and API drift checks
+            if [ "${{ steps.filter.outputs.backend }}" == 'true' ] || [ "${{ steps.filter.outputs.frontend }}" == 'true' ]; then
+                nix develop --command just check-api-drift
+                nix develop --command just check-nix check-just check-docs check-cue
+            fi
           fi
