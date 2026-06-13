@@ -132,11 +132,9 @@ public static class ChatSeeder
 
             logger.LogInformation("ChatSeeder: seeded {Count} sessions successfully.", 3);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Do not print the exception or the word 'error' to stdout/stderr,
-            // as MSBuild's OpenAPI generator intercepts stdout and interprets 'error' as a build failure.
-            Console.WriteLine("ChatSeeder: database or migrations not ready, skipping seeding.");
+            Console.WriteLine($"Error: ChatSeeder failed to seed database: {ex.Message}");
         }
     }
 

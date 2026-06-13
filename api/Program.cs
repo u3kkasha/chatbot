@@ -166,8 +166,11 @@ app.Services.ConfigureEvents()
     .Register<ChatSessionStatusChangedEvent>()
     .Subscribe<ChatSessionStatusChangedRealtimeListener>();
 
-// 6. Seed demo data on first startup (no-op when DB already has data)
-await ChatSeeder.SeedAsync(app.Services);
+if (args.Contains("--seed"))
+{
+    await ChatSeeder.SeedAsync(app.Services);
+    return;
+}
 
 app.Run();
 

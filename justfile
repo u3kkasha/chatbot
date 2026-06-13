@@ -9,6 +9,7 @@ setup: init-env server-restore client-install infra-up
     @echo "Waiting for database to be ready..."
     node -e "setTimeout(() => {}, 5000);"
     just server-migrate
+    just server-seed
     lefthook install
     @echo "Setup complete. You can now run 'run' to start the development environment."
 
@@ -56,6 +57,11 @@ server-migrate:
     dotnet ef database update --context Chatbot.Modules.Identity.Brokers.Storage.StorageBroker --project src/Modules/Identity/Chatbot.Modules.Identity.csproj --startup-project api/Chatbot.Api.csproj
     @echo "Applying Knowledge migrations..."
     dotnet ef database update --context Chatbot.Modules.Knowledge.Brokers.Storage.StorageBroker --project src/Modules/Knowledge/Chatbot.Modules.Knowledge.csproj --startup-project api/Chatbot.Api.csproj
+
+# Seed the database with demo data
+server-seed:
+    @echo "Seeding database with demo data..."
+    dotnet run --project api/Chatbot.Api.csproj -- --seed
 
 # Generate initial migrations for all modules
 server-migrations-add name="InitialCreate":
