@@ -2,7 +2,7 @@
 
 import * as v from 'valibot';
 
-import type { Client, Options as Options2, RequestResult, TDataShape } from './client';
+import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
 import type { CreateChatMessageData, CreateChatMessageErrors, CreateChatMessageResponses, CreateChatSessionData, CreateChatSessionErrors, CreateChatSessionResponses, DeleteChatMessageData, DeleteChatMessageResponses, DeleteChatSessionData, DeleteChatSessionResponses, GetAllChatMessagesData, GetAllChatMessagesErrors, GetAllChatMessagesResponses, GetAllChatSessionsData, GetAllChatSessionsErrors, GetAllChatSessionsResponses, GetChatMessageByIdData, GetChatMessageByIdResponses, GetChatSessionByIdData, GetChatSessionByIdResponses, GetIdentityData, GetIdentityResponses, StreamCompletionData, StreamCompletionErrors, StreamCompletionResponses, UpdateChatMessageData, UpdateChatMessageErrors, UpdateChatMessageResponses, UpdateChatSessionData, UpdateChatSessionErrors, UpdateChatSessionResponses } from './types.gen';
 import { vCreateChatMessageBody, vCreateChatMessageResponse, vCreateChatSessionBody, vCreateChatSessionResponse, vDeleteChatMessagePath, vDeleteChatMessageResponse, vDeleteChatSessionPath, vDeleteChatSessionResponse, vGetAllChatMessagesResponse, vGetAllChatSessionsResponse, vGetChatMessageByIdPath, vGetChatMessageByIdResponse, vGetChatSessionByIdPath, vGetChatSessionByIdResponse, vGetIdentityResponse, vStreamCompletionQuery, vUpdateChatMessageBody, vUpdateChatMessagePath, vUpdateChatMessageResponse, vUpdateChatSessionBody, vUpdateChatSessionPath, vUpdateChatSessionResponse } from './valibot.gen';
@@ -18,7 +18,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      * You can pass arbitrary values through the `meta` object. This can be
      * used to access values that aren't defined as part of the SDK function.
      */
-    meta?: Record<string, unknown>;
+    meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
 
 export const getIdentity = <ThrowOnError extends boolean = false>(options?: Options<GetIdentityData, ThrowOnError>): RequestResult<GetIdentityResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetIdentityResponses, unknown, ThrowOnError>({
