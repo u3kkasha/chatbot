@@ -9,5 +9,5 @@
 ## Source Control Rules
 
 - Format: Conventional commits in the `type(scope): message` format.
-- Enforce gitmojis in commit messages (using abstract/inanimate gitmojis only).
+- Do not manually include gitmojis in commit messages; the hook prepends them automatically (using abstract/inanimate gitmojis only).
 - Do not rewrite files completely; use surgical edits where possible.

@@ -37,7 +37,7 @@ This file provides foundational mandates for AI agents (like Gemini CLI) operati
 - **Commit Format:** ALWAYS use the `type(scope): message` format (Conventional Commits).
   - **Types:** `feat`, `fix`, `perf`, `refactor`, `docs`, `chore`, `test`, `style`.
   - **Scope:** The module or component name (e.g., `chat`, `identity`, `api`, `client`).
-- **Gitmojis:** Use abstract or inanimate gitmojis in commit messages (e.g., 🔧, ⚙️, ⚡, 📝, 📦, 🔒).
+- **Gitmojis:** Do not include gitmojis in commit messages manually; the `commit-msg` hook automatically prepends the correct inanimate emoji.
   - **CRITICAL:** **NEVER** use animate gitmojis (e.g., 🐛, 🚀, 🐳, 👤, 🤖) in commits, code, or documentation.
 - **Workflow:** Adhere to the [Git Workflow Strategy](docs/GIT_WORKFLOW.md).
 - **Surgical Edits:** Prefer targeted replacing over rewriting entire files unless necessary.
