@@ -1,5 +1,7 @@
 # Omnichannel Customer Support Operator Platform
 
+![Platform User Interface](ui.png)
+
 A high-performance customer support platform built with a decoupled .NET 10 API backend and a Nuxt 4 client.
 
 ## 🛠️ Tech Stack Overview
