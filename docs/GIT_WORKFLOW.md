@@ -4,26 +4,27 @@ This document defines the git standards for the Chatbot project. All contributor
 
 ## Commit Message Format
 
-We follow **Conventional Commits** combined with **Abstract Gitmojis**.
+We follow **Conventional Commits** which automatically prepends **Abstract Gitmojis** via a git hook.
 
-**Format:** `<emoji> <type>(<scope>): <description>`
+**Format:** `<type>(<scope>): <description>` (The hook will automatically prepend the correct inanimate emoji)
 
 ### Types & Emojis
 
-Only use **abstract** symbols. Never use "animate" beings (bugs, rockets, people, etc.).
+Only use **abstract** symbols. Never use "animate" beings (bugs, rockets, people, etc.). Emojis are prepended automatically by the commit-msg hook based on the commit type:
 
-| Type       | Emoji | Description                                                    |
-| :--------- | :---- | :------------------------------------------------------------- |
-| `feat`     | 📦    | New features or domain logic.                                  |
-| `fix`      | 🔧    | Bug fixes (Note: Never use the bug emoji 🐛).                  |
-| `perf`     | ⚡    | Performance improvements (Native AOT, caching).                |
-| `refactor` | ♻️    | Code changes that neither fix a bug nor add a feature.         |
-| `test`     | 🧪    | Adding or correcting tests.                                    |
-| `docs`     | 📝    | Documentation only changes.                                    |
-| `style`    | 🎨    | Changes that do not affect code meaning (linting, formatting). |
-| `chore`    | ⚙️    | Build process, auxiliary tools, or config.                     |
+| Type       | Auto-Prepended Emoji | Description                                                    |
+| :--------- | :------------------- | :------------------------------------------------------------- |
+| `feat`     | 📦                   | New features or domain logic.                                  |
+| `fix`      | 🔧                   | Bug fixes (Note: Never use the bug emoji 🐛).                  |
+| `perf`     | ⚡                   | Performance improvements (Native AOT, caching).                |
+| `refactor` | ♻️                   | Code changes that neither fix a bug nor add a feature.         |
+| `test`     | 🧪                   | Adding or correcting tests.                                    |
+| `docs`     | 📝                   | Documentation only changes.                                    |
+| `style`    | 🎨                   | Changes that do not affect code meaning (linting, formatting). |
+| `chore`    | ⚙️                   | Build process, auxiliary tools, or config.                     |
 
-**Example:** `📦 feat(chat): implement message persistence in storage broker`
+**Example (written by author):** `feat(chat): implement message persistence in storage broker`
+**Result (after hook):** `📦 feat(chat): implement message persistence in storage broker`
 
 ## Development Lifecycle
 
