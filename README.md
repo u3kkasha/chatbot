@@ -116,14 +116,14 @@ just setup
 To start everything (infrastructure + backend + frontend) in parallel:
 
 ```bash
-just dev
+just run
 ```
 
 Alternatively, you can start them separately:
 
 ```bash
 # Start infrastructure only
-just run
+just infra-up
 
 # Start backend API (watch mode)
 just server-run
@@ -150,10 +150,24 @@ just infra-down
 
 ### Running Tests
 
-Always run the complete test suite before committing or pushing:
+Always run the test suite before committing or pushing:
+
+To run backend (.NET) tests:
 
 ```bash
-dotnet test
+just server-test
+```
+
+To run frontend (Nuxt) tests:
+
+```bash
+just client-test
+```
+
+Alternatively, run the complete verification suite (build, lint, formatting, and tests):
+
+```bash
+just ci
 ```
 
 ### Code Formatting
