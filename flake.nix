@@ -62,6 +62,11 @@
               command = "just run";
               help = "Start the development environment";
             }
+            {
+              name = "wt-create";
+              command = "$(git rev-parse --show-toplevel)/scripts/wt-create.sh \"$@\"";
+              help = "Fetch main, create a new worktree, and enter it";
+            }
           ];
         };
       };
